@@ -7,7 +7,7 @@ var contentHeight;
 
 $(document).ready(function() {
 	initAjaxLoading();
-	
+	 
 	/* 임시 사용자 로그인 
 	console.log("tempLogin()...........");
 	console.log(rootPath);
