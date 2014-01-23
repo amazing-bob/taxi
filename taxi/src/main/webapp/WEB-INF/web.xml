@@ -7,7 +7,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:net/bitacademy/java41/oldboy/conf/application-context*.xml</param-value>
+		<param-value>classpath:com/taxi/conf/application-context*.xml</param-value>
 	</context-param>
 
 	<!-- 리스너 등록 -->
@@ -15,7 +15,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>net.bitacademy.java41.oldboy.listeners.WebAppListener</listener-class>
+		<listener-class>com.taxi.listeners.WebAppListener</listener-class>
 	</listener>
 
 	<!-- 필터 선언 -->
@@ -33,7 +33,7 @@
 	</filter>
 	<filter>
 		<filter-name>AuthFilter</filter-name>
-		<filter-class>net.bitacademy.java41.oldboy.filters.AuthFilter</filter-class>
+		<filter-class>com.taxi.filters.AuthFilter</filter-class>
 	</filter>
 
 	<!-- 필터에 URL을 설정 . URL 패턴의 설정 순서대로 필터를 실행한다. -->
