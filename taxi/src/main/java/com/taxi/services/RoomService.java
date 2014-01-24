@@ -1,5 +1,12 @@
 package com.taxi.services;
 
+import java.util.List;
+
+import com.taxi.vo.FvrtLoc;
+import com.taxi.vo.Room;
+import com.taxi.vo.RoomMbr;
+import com.taxi.vo.RoomPath;
+
 
 public interface RoomService {
 

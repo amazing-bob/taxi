@@ -1,6 +1,25 @@
 package com.taxi.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.taxi.dao.FeedDao;
+import com.taxi.dao.FvrtLocDao;
+import com.taxi.dao.RoomDao;
+import com.taxi.dao.RoomMbrDao;
+import com.taxi.dao.RoomPathDao;
+import com.taxi.vo.FvrtLoc;
+import com.taxi.vo.Room;
+import com.taxi.vo.RoomMbr;
+import com.taxi.vo.RoomPath;
 
 
 @Service

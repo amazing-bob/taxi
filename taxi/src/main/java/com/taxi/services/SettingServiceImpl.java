@@ -1,6 +1,18 @@
 package com.taxi.services;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.taxi.dao.FvrtLocDao;
+import com.taxi.dao.SettingDao;
+import com.taxi.vo.FvrtLoc;
+import com.taxi.vo.Setting;
 
 
 @Service

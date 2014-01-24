@@ -1,6 +1,29 @@
 package com.taxi.services;
 
+import java.io.EOFException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.android.gcm.server.Constants;
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Message.Builder;
+import com.google.android.gcm.server.MulticastResult;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
+import com.taxi.dao.RoomDao;
+import com.taxi.dao.RoomMbrDao;
+import com.taxi.vo.Room;
+import com.taxi.vo.RoomMbr;
 
 
 @Service
@@ -92,18 +115,13 @@ public class GcmServiceImpl implements GcmService {
 		 	} else if ( GcmServiceImpl.StartAlramRunnable.class == clazz ) {
 		 		System.out.println("StartAlramRunnable Alarm Request()...............");
 
-//			    threadPool.execute( new StartAlramRunnable(regList, bundleMap) );
-	
 		 	}
 		}
 
 	}
 
-	*//**
-	 * 피드 등록시 푸쉬 실행부분 
-	 * @author Buru
-	 *
-	 *//*
+	// * 피드 등록시 푸쉬 실행부분 
+	// * @author Buru
 	public class FeedRunnable implements  Runnable {
 		
 		Sender sender = null;
@@ -148,11 +166,8 @@ public class GcmServiceImpl implements GcmService {
 	  }
 	}
 	
-	*//**
-	 * 새로운 멤버참여시 푸쉬 실행부분 
-	 * @author Buru
-	 *
-	 *//*
+	// * 새로운 멤버참여시 푸쉬 실행부분 
+	// * @author Buru
 	public class RoomRunnable implements  Runnable {
 		
 		Sender sender = null;
@@ -198,11 +213,8 @@ public class GcmServiceImpl implements GcmService {
 	}
 	
 	
-	*//**
-	 * 출발시간 알람 푸쉬 실행부분 
-	 * @author Buru
-	 *
-	 *//*
+	// * 출발시간 알람 푸쉬 실행부분 
+	// * @author Buru
 	public class StartAlramRunnable implements  Runnable {
 		
 		Sender sender = null;

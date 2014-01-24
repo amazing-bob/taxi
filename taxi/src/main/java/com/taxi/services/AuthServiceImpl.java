@@ -1,6 +1,10 @@
 package com.taxi.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.taxi.dao.MbrDao;
+import com.taxi.vo.LoginInfo;
 
 @Service
 public class AuthServiceImpl implements AuthService {

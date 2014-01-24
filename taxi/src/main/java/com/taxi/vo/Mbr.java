@@ -1,6 +1,11 @@
 package com.taxi.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.taxi.util.CustomDateSerializer;
 
 
 public class Mbr implements Serializable {

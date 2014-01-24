@@ -1,5 +1,8 @@
 package com.taxi.dao;
 
+import com.taxi.vo.LoginInfo;
+import com.taxi.vo.Mbr;
+
 
 
 public interface MbrDao {

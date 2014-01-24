@@ -1,6 +1,10 @@
 package com.taxi.vo;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.taxi.util.CustomDateSerializer;
 
 
 public class FvrtLoc implements Serializable {

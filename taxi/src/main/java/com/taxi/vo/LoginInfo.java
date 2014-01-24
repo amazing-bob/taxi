@@ -1,6 +1,7 @@
 package com.taxi.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 public class LoginInfo implements Serializable {

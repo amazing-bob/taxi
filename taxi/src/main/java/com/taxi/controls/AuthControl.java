@@ -1,13 +1,36 @@
 package com.taxi.controls;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+import com.taxi.services.AuthService;
+import com.taxi.services.MemberService;
+import com.taxi.vo.Frnd;
+import com.taxi.vo.JsonResult;
+import com.taxi.vo.LoginInfo;
+import com.taxi.vo.Mbr;
 
 
 @Controller
 @RequestMapping("/auth")
 public class AuthControl {
-	
 	
 /*	//====================== AS-IS =======================//
  	

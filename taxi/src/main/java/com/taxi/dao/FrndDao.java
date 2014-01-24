@@ -1,11 +1,15 @@
 package com.taxi.dao;
 
+import java.util.List;
+
+import com.taxi.vo.Frnd;
+
 
 public interface FrndDao {
 
 	
 	
-/*	 ====================== AS-IS =======================
+/*	//====================== AS-IS =======================//
  
 	void addFrndList(List<Frnd> list);
 	

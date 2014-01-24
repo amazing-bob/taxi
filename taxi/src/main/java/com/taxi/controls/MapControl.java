@@ -1,7 +1,23 @@
 package com.taxi.controls;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
+import javax.servlet.ServletContext;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.taxi.vo.JsonResult;
 
 
 @Controller

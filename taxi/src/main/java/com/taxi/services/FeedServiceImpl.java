@@ -1,6 +1,19 @@
 package com.taxi.services;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.taxi.dao.FeedDao;
+import com.taxi.dao.RoomMbrDao;
+import com.taxi.vo.Feed;
+
 
 @Service
 public class FeedServiceImpl implements FeedService {

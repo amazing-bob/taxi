@@ -1,5 +1,6 @@
 package com.taxi.dao;
 
+import com.taxi.vo.Setting;
 
 
 public interface SettingDao {

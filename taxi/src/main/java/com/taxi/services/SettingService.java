@@ -1,5 +1,9 @@
 package com.taxi.services;
 
+import java.util.List;
+
+import com.taxi.vo.FvrtLoc;
+import com.taxi.vo.Setting;
 
 
 public interface SettingService {

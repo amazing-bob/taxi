@@ -1,5 +1,10 @@
 package com.taxi.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.taxi.vo.Feed;
+
 
 public interface FeedDao {
 

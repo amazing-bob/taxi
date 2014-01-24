@@ -2,7 +2,10 @@ package com.taxi.util.quartz;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import com.taxi.services.QuartzServiceImpl;
 
 
 public class JobQuartz extends QuartzJobBean {
