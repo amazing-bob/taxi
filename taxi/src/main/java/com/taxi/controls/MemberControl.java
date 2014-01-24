@@ -20,7 +20,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.taxi.services.MemberService;
+import com.taxi.services.member.MemberService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.LoginInfo;
 import com.taxi.vo.friend.Frnd;

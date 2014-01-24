@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taxi.services.RoomService;
+import com.taxi.services.room.RoomService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.LoginInfo;
 import com.taxi.vo.location.FvrtLoc;
