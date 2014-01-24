@@ -2,7 +2,7 @@ package com.taxi.dao;
 
 import java.util.List;
 
-import com.taxi.vo.Frnd;
+import com.taxi.vo.friend.Frnd;
 
 
 public interface FrndDao {

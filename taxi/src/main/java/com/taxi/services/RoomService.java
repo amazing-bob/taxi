@@ -2,10 +2,10 @@ package com.taxi.services;
 
 import java.util.List;
 
-import com.taxi.vo.FvrtLoc;
-import com.taxi.vo.Room;
-import com.taxi.vo.RoomMbr;
-import com.taxi.vo.RoomPath;
+import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.room.Room;
+import com.taxi.vo.room.RoomMbr;
+import com.taxi.vo.room.RoomPath;
 
 
 public interface RoomService {

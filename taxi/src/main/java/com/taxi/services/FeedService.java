@@ -2,7 +2,7 @@ package com.taxi.services;
 
 import java.util.List;
 
-import com.taxi.vo.Feed;
+import com.taxi.vo.feed.Feed;
 
 
 public interface FeedService {

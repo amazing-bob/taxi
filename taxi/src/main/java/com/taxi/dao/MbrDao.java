@@ -1,7 +1,7 @@
 package com.taxi.dao;
 
-import com.taxi.vo.LoginInfo;
-import com.taxi.vo.Mbr;
+import com.taxi.vo.auth.LoginInfo;
+import com.taxi.vo.member.Mbr;
 
 
 

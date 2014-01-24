@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.dao.FeedDao;
 import com.taxi.dao.RoomMbrDao;
-import com.taxi.vo.Feed;
+import com.taxi.vo.feed.Feed;
 
 
 @Service

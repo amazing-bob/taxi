@@ -1,9 +1,11 @@
-package com.taxi.vo;
+package com.taxi.vo.setting;
 
 import java.io.Serializable;
 
+import com.taxi.vo.setting.base.BaseSetting;
 
-public class Setting implements Serializable {
+
+public class Setting extends BaseSetting implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

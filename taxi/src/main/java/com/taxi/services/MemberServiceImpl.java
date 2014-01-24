@@ -16,9 +16,9 @@ import com.taxi.dao.FvrtLocDao;
 import com.taxi.dao.MbrDao;
 import com.taxi.dao.RoomMbrDao;
 import com.taxi.dao.SettingDao;
-import com.taxi.vo.FvrtLoc;
-import com.taxi.vo.Mbr;
-import com.taxi.vo.Setting;
+import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.member.Mbr;
+import com.taxi.vo.setting.Setting;
 
 
 @Service

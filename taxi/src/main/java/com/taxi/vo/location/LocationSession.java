@@ -1,4 +1,4 @@
-package com.taxi.vo;
+package com.taxi.vo.location;
 
 import java.io.Serializable;
 

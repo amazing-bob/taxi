@@ -1,4 +1,4 @@
-package com.taxi.vo;
+package com.taxi.vo.room;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,9 +6,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.taxi.util.CustomDateSerializer;
+import com.taxi.vo.room.base.BaseRoom;
 
 
-public class Room implements Serializable {
+public class Room extends BaseRoom implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

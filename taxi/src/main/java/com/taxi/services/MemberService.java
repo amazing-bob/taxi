@@ -2,8 +2,8 @@ package com.taxi.services;
 
 import java.util.List;
 
-import com.taxi.vo.FvrtLoc;
-import com.taxi.vo.Mbr;
+import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.member.Mbr;
 
 
 

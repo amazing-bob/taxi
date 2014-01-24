@@ -1,8 +1,10 @@
-package com.taxi.vo;
+package com.taxi.vo.friend;
 
 import java.io.Serializable;
 
-public class Frnd implements Serializable {
+import com.taxi.vo.friend.base.BaseFrnd;
+
+public class Frnd extends BaseFrnd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

@@ -1,4 +1,4 @@
-package com.taxi.vo;
+package com.taxi.vo.feed.base;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.taxi.util.CustomDateSerializer;
 
 
-public class Feed implements Serializable {
+public class BaseFeed implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

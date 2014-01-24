@@ -1,10 +1,10 @@
-package com.taxi.vo;
+package com.taxi.vo.auth.base;
 
 import java.io.Serializable;
 import java.util.List;
 
 
-public class LoginInfo implements Serializable {
+public class BaseLoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

@@ -3,7 +3,7 @@ package com.taxi.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.taxi.vo.RoomPath;
+import com.taxi.vo.room.RoomPath;
 
 
 public interface RoomPathDao {

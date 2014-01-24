@@ -22,8 +22,8 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.taxi.dao.RoomDao;
 import com.taxi.dao.RoomMbrDao;
-import com.taxi.vo.Room;
-import com.taxi.vo.RoomMbr;
+import com.taxi.vo.room.Room;
+import com.taxi.vo.room.RoomMbr;
 
 
 @Service

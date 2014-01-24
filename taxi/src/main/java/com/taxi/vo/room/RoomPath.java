@@ -1,9 +1,11 @@
-package com.taxi.vo;
+package com.taxi.vo.room;
 
 import java.io.Serializable;
 
+import com.taxi.vo.room.base.BaseRoomPath;
 
-public class RoomPath implements Serializable {
+
+public class RoomPath extends BaseRoomPath implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

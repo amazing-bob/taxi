@@ -1,4 +1,4 @@
-package com.taxi.vo;
+package com.taxi.vo.member;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -6,9 +6,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.taxi.util.CustomDateSerializer;
+import com.taxi.vo.member.base.BaseMbr;
 
 
-public class Mbr implements Serializable {
+public class Mbr extends BaseMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	

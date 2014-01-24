@@ -21,11 +21,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.taxi.services.MemberService;
-import com.taxi.vo.Frnd;
-import com.taxi.vo.FvrtLoc;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.LoginInfo;
-import com.taxi.vo.Mbr;
+import com.taxi.vo.auth.LoginInfo;
+import com.taxi.vo.friend.Frnd;
+import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.member.Mbr;
 
 
 @Controller

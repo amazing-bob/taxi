@@ -15,8 +15,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.taxi.services.SettingService;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.LoginInfo;
-import com.taxi.vo.Setting;
+import com.taxi.vo.auth.LoginInfo;
+import com.taxi.vo.setting.Setting;
 
 
 @Controller

@@ -3,7 +3,7 @@ package com.taxi.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.taxi.vo.FvrtLoc;
+import com.taxi.vo.location.FvrtLoc;
 
 
 public interface FvrtLocDao {
