@@ -2,8 +2,10 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.taxi.dao.SettingDao">
+<mapper namespace="com.taxi.dao.setting.SettingDao">
     
+<!-- //====================== AS-IS =======================// -->
+<!--     
     <insert id="addSetting" parameterType="Setting">
         INSERT INTO SETTING ( mbr_id, start_range, end_range )
         values ( #{mbrId}, #{startRange}, #{endRange} )
@@ -36,7 +38,8 @@
 		where MBR_ID= #{mbrId}
         
     </update>
-	
+ -->	
+
 </mapper>
 
 

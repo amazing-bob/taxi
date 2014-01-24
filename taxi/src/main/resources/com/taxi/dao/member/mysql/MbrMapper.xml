@@ -2,8 +2,11 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.taxi.dao.MbrDao">
-    
+<mapper namespace="com.taxi.dao.member.MbrDao">
+
+
+<!-- //====================== AS-IS =======================// -->
+<!--     
     <insert id="signUp" parameterType="Mbr">
 	    insert into	MBR ( MBR_ID, MBR_NAME, MBR_PHONE_NO, 
 	    			MBR_PHOTO_URL, MBR_GENDER, MBR_REG_DATE)
@@ -31,7 +34,7 @@
         delete from MBR  
         where MBR_ID=#{value}  
     </delete> 
-	
+ -->	
 </mapper>
 
 

@@ -46,7 +46,7 @@
         <property name="typeAliasesPackage"
                 value="com.taxi.vo" />
         <property name="mapperLocations"
-                value="classpath*:com/taxi/dao/mysql/*Mapper.xml" />
+                value="classpath*:com/taxi/dao/*/mysql/*Mapper.xml" />
     </bean>
  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

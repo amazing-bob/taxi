@@ -2,7 +2,11 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.taxi.dao.RoomDao">
+<mapper namespace="com.taxi.dao.room.RoomDao">
+    
+
+<!-- //====================== AS-IS =======================// -->
+<!--     
     <resultMap id="roomResultMap" type="Room">
 	    <result 	property="roomNo" 			column="room_no"/>
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
@@ -182,7 +186,8 @@
 			</trim>
 		</where>
 	</delete>
-
+ -->
+ 
 </mapper>
 
 

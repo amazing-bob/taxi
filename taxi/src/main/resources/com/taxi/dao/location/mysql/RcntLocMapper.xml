@@ -2,8 +2,11 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.taxi.dao.FvrtLocDao">
-    
+<mapper namespace="com.taxi.dao.location.RcntLocDao">
+
+
+<!-- //====================== AS-IS =======================// -->
+<!--
 	<select id="getFvrtLoc"
             parameterType="Map" 
             resultType="FvrtLoc"> 
@@ -20,12 +23,7 @@
                 where 	1 = 1
                		and	MBR_ID = #{mbrId}
                		and 	FVRT_LOC_STATUS = #{fvrtLocStatus}
-<!-- 			<if test='fvrtLocStatus == "F"'> -->
 				order by	FVRT_LOC_RANK
-<!-- 			</if> -->
-<!-- 			<if test='fvrtLocStatus == "F"'> -->
-<!-- 			    order by	FVRT_REG_DATE desc -->
-<!-- 			</if> -->
     </select>  
     
 	
@@ -74,7 +72,7 @@
 	    delete from FVRT_LOC  
 	    where FVRT_LOC_NO = #{value} 
 	</delete> 
-	
+ -->	
 	
 </mapper>
 
