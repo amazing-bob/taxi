@@ -1,12 +1,19 @@
 package com.taxi.controls;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.taxi.services.feed.FeedService;
+import com.taxi.vo.JsonResult;
+import com.taxi.vo.feed.Feed;
 
 
 @Controller
@@ -15,7 +22,7 @@ public class FeedControl {
 	@Autowired ServletContext sc;
 	@Autowired FeedService feedService;	
 	
-/*  ====================== AS-IS =======================
+/*  //====================== AS-IS =======================//
  	
 	@RequestMapping("/feedList")
 	@ResponseBody

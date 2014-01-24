@@ -3,23 +3,12 @@ package com.taxi.services.quartz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.taxi.services.gcm.GcmService;
+import com.taxi.services.room.RoomService;
+
 
 @Service
 public  class QuartzServiceImpl implements QuartzService {
-
-	//////////////////////////  꼭 AS-IS를 보고 참고 해서 바꿔야만 한다
-	@Override
-	public void performService() throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void roomCheckService() throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-	//////////////////////////  꼭 AS-IS를 보고 참고 해서 바꿔야만 한다
-	
 
 	
 /*	//====================== AS-IS =======================//

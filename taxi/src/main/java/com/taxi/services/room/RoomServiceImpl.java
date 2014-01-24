@@ -16,6 +16,8 @@ import com.taxi.dao.location.FvrtLocDao;
 import com.taxi.dao.room.RoomDao;
 import com.taxi.dao.room.RoomMbrDao;
 import com.taxi.dao.room.RoomPathDao;
+import com.taxi.services.gcm.GcmService;
+import com.taxi.services.gcm.GcmServiceImpl;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.room.Room;
 import com.taxi.vo.room.RoomMbr;

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.taxi.util.CustomDateSerializer;
+import com.taxi.vo.friend.Frnd;
 import com.taxi.vo.member.base.BaseMbr;
 
 

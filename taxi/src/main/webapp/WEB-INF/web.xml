@@ -31,10 +31,6 @@
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
-	<filter>
-		<filter-name>AuthFilter</filter-name>
-		<filter-class>com.taxi.filters.AuthFilter</filter-class>
-	</filter>
 
 	<!-- 필터에 URL을 설정 . URL 패턴의 설정 순서대로 필터를 실행한다. -->
 	<filter-mapping>

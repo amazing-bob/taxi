@@ -53,7 +53,7 @@
         <property name="basePackage" value="com.taxi.dao" />
     </bean>
  
-    <bean id="quartzService" class="com.taxi.services.QuartzServiceImpl" />
+    <bean id="quartzService" class="com.taxi.services.quartz.QuartzServiceImpl" />
  
      <bean name="jobQuartz" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="jobClass" value="com.taxi.util.quartz.JobQuartz" />

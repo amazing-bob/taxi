@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.dao.feed.FeedDao;
 import com.taxi.dao.room.RoomMbrDao;
+import com.taxi.services.gcm.GcmService;
+import com.taxi.services.gcm.GcmServiceImpl;
 import com.taxi.vo.feed.Feed;
 
 

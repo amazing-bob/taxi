@@ -6,7 +6,7 @@
     
 
 <!-- //====================== AS-IS =======================// -->
-<!--     
+<!-- 
     <resultMap id="roomResultMap" type="Room">
 	    <result 	property="roomNo" 			column="room_no"/>
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
@@ -16,9 +16,9 @@
 	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
 	    <result 	property="differenceTime" 	column="differenceTime"/>
 	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
-	        select="com.taxi.dao.RoomPathDao.getRoomPathList"/>
+	        select="com.taxi.dao.room.RoomPathDao.getRoomPathList"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
-	        select="com.taxi.dao.RoomMbrDao.getRoomMbrDetailList"/>
+	        select="com.taxi.dao.room.RoomMbrDao.getRoomMbrDetailList"/>
 	</resultMap>
 
 	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
@@ -148,7 +148,7 @@
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
 	    <result 	property="differenceTime" 	column="differenceTime"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
-	        select="com.taxi.dao.RoomMbrDao.getAlramGcmTargetRoomMbrList"/>
+	        select="com.taxi.dao.room.RoomMbrDao.getAlramGcmTargetRoomMbrList"/>
 	</resultMap>
 	
 	<select id="getAlramGcmTargetRoomList" parameterType="string" resultMap="alramGcmTargetRoomResultMap">

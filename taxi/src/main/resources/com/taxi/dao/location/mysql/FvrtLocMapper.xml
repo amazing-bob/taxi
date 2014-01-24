@@ -3,6 +3,8 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.location.FvrtLocDao">
+
+
 <!-- //====================== AS-IS =======================// -->
 <!-- 
 	<select id="getFvrtLoc"
@@ -21,12 +23,7 @@
                 where 	1 = 1
                		and	MBR_ID = #{mbrId}
                		and 	FVRT_LOC_STATUS = #{fvrtLocStatus}
-			<if test='fvrtLocStatus == "F"'>
 				order by	FVRT_LOC_RANK
-			</if>
-			<if test='fvrtLocStatus == "F"'>
-			    order by	FVRT_REG_DATE desc
-			</if>
     </select>  
     
 	

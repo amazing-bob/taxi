@@ -25,8 +25,7 @@ import com.taxi.vo.JsonResult;
 public class MapControl {
 	@Autowired ServletContext sc;	
 	
-/*	//====================== AS-IS =======================//
- 
+	
 	@RequestMapping(value="/ollehMapApi")
 	@ResponseBody
 	public <T> Object ollehMapApi( String url, String params ) throws Exception {
@@ -63,6 +62,6 @@ public class MapControl {
 		}
 		return jsonResult;
 	}
-*/	
+	
 	
 }

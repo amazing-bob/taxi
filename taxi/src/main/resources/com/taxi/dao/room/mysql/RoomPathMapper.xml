@@ -6,7 +6,7 @@
 
 
 <!-- //====================== AS-IS =======================// -->
-<!--     
+<!-- 
 	<insert id="addRoomPathList" parameterType="java.util.List"> 
         insert into ROOM_PATH
         	( ROOM_NO, PATH_RANK, PATH_NAME, PATH_LAT, PATH_LNG ) 
