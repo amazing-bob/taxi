@@ -31,13 +31,11 @@ import com.taxi.vo.member.Mbr;
 @Controller
 @RequestMapping("/member")
 public class MemberControl {
-	
+	@Autowired ServletContext sc;
+	@Autowired MemberService memberService;	
 	
 /*	//====================== AS-IS =======================//
  
-	@Autowired ServletContext sc;
-	@Autowired MemberService memberService;
-	
 	@RequestMapping("/leaveMember")
     @ResponseBody
     public Object leaveMember(HttpSession session) throws Exception {

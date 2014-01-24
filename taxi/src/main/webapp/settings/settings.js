@@ -18,7 +18,7 @@ $(document).ready(function() {
 	$(".rangeSave").click(function() {
 		addRange();
 	});
-	$.getJSON( rootPath + "/settings/getRange.do", function(result){
+	$.getJSON( rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 			var setting = result.data;
 			$("#startRange1").val(setting.startRange);
@@ -243,7 +243,7 @@ var getFacebookMyInfo = function( callback, args ) {
 
 function startRangeChk() {
 
-	$.getJSON(rootPath + "/settings/getRange.do", function(result){
+	$.getJSON(rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 			if(setting.startRange == "500"){
@@ -266,7 +266,7 @@ function startRangeChk() {
 
 function endRangeChk() {
 
-	$.getJSON(rootPath + "/settings/getRange.do", function(result){
+	$.getJSON(rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 			if(setting.endRange == "500"){
@@ -289,7 +289,7 @@ function endRangeChk() {
 function logout() {
 	console.log("logout()");
 //	event.preventDefault();
-	$.getJSON(rootPath + "/settings/logout.do", function(result) {
+	$.getJSON(rootPath + "/setting/logout.do", function(result) {
 		if(result.status == "success") {
 			Toast.shortshow("로그아웃이 성공적으로 되었습니다.");
 			facebookLogout();
@@ -308,7 +308,7 @@ function frndRefresh() {
     		success: function(result) {
     			if(result.status == "success") {
     				Toast.shortshow("친구목록이 갱신 되었습니다.");
-//    				location.href = "../settings/settings.html";
+//    				location.href = "../setting/settings.html";
     				$(".btnRefresh").attr("src", "../images/common/btn_refresh.png");
     				$(".btnRefresh").attr("style", "width:40px");
     				$(".btnRefresh").attr("style", "height:40px");
@@ -379,7 +379,7 @@ function deleteFvrtLoc() {
 /*반경설정 변경*/
 function addRange(){
 
-	$.post(rootPath + "/settings/updateRange.do",
+	$.post(rootPath + "/setting/updateRange.do",
 			{
 		startRange: $('input[name=radio-choice-h-2]:checked', '#updateRange').val(),
 		endRange: $('input[name=radio-choice-h-2]:checked', '#updateRange1').val(),
@@ -388,14 +388,14 @@ function addRange(){
 			function(result) {
 				if(result.status == "success") {
 					Toast.shortshow("반경설정이 변경되었습니다.");
-					location.href = "../settings/settings.html";
+					location.href = "../setting/settings.html";
 				} else {
 					Toast.shortshow("실행중 오류발생!");
 					console.log(result.data);
 				}
 			},
 	"json");
-	$.getJSON(rootPath + "/settings/getRange.do", function(result){
+	$.getJSON(rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 		$("#startRange1").val(setting.startRange);
@@ -502,7 +502,7 @@ function rankUpdate() {
     			fvrtLocLists();
     			Toast.shortshow("우선순위가 변경되었습니다.")
     			/*$("#sortable").listview('refresh');*/
-            	location.href = "../settings/settings.html";
+            	location.href = "../setting/settings.html";
 			} else {
 				Toast.shortshow("실행중 오류발생!");
 			}
@@ -518,7 +518,7 @@ var touchBackBtnCallbackFunc = function() {
 
 	var pageId = $.mobile.activePage.attr('id');
 	if ( pageId && ( pageId == 'pageFvrtSetting' || pageId == 'pageRangeSetting' )) {
-		changeHref("../settings/settings.html");
+		changeHref("../setting/settings.html");
 	} else {
 		changeHref("../home/home.html");
 	}

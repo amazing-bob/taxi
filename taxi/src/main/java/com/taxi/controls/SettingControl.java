@@ -20,16 +20,13 @@ import com.taxi.vo.setting.Setting;
 
 
 @Controller
-@RequestMapping("/settings")
+@RequestMapping("/setting")
 public class SettingControl {
-
-	
-/*	//====================== AS-IS =======================//
- 
 	@Autowired ServletContext sc;
 	@Autowired SettingService settingService;
 	
-	
+/*	//====================== AS-IS =======================//
+ 
 	@RequestMapping(value="/getRange")
     @ResponseBody
     public Object getRange( HttpSession session,

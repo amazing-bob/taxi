@@ -24,14 +24,11 @@ import com.taxi.vo.room.RoomPath;
 @Controller
 @RequestMapping("/room")
 public class RoomControl {
-	
+	@Autowired ServletContext sc;
+	@Autowired RoomService roomService;	
 	
 /*	//====================== AS-IS =======================//
  	
-	@Autowired ServletContext sc;
-	@Autowired RoomService roomService;
-
-
 	@RequestMapping(value="/setLocationSession")
 	@ResponseBody
 	public Object setLocationSession(

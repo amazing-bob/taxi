@@ -31,11 +31,11 @@ import com.taxi.vo.member.Mbr;
 @Controller
 @RequestMapping("/auth")
 public class AuthControl {
+	@Autowired ServletContext sc;
+	@Autowired AuthService authService;
 	
 /*	//====================== AS-IS =======================//
  	
-	@Autowired ServletContext sc;
-	@Autowired AuthService authService;
 	@Autowired MemberService memberService;
 	
 	

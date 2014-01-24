@@ -24,14 +24,13 @@ import com.taxi.vo.room.RoomPath;
 
 @Service
 public class RoomServiceImpl implements RoomService {
-
+	@Autowired RoomDao roomDao;
+	@Autowired RoomMbrDao roomMbrDao;
+	@Autowired RoomPathDao roomPathDao;
 	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
-	@Autowired RoomDao roomDao;
-	@Autowired RoomMbrDao roomMbrDao;
-	@Autowired RoomPathDao roomPathDao;
 	@Autowired FvrtLocDao fvrtLocDao;  
 	@Autowired FeedDao feedDao;
 	@Autowired PlatformTransactionManager txManager;

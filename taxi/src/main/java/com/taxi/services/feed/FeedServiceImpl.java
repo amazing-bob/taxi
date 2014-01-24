@@ -17,12 +17,11 @@ import com.taxi.vo.feed.Feed;
 
 @Service
 public class FeedServiceImpl implements FeedService {
-	
+	@Autowired FeedDao feedDao;	
 	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
-	@Autowired FeedDao feedDao;
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired PlatformTransactionManager txManager;
 

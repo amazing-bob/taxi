@@ -23,13 +23,10 @@ import com.taxi.vo.JsonResult;
 @Controller
 @RequestMapping("/map")
 public class MapControl {
-	
+	@Autowired ServletContext sc;	
 	
 /*	//====================== AS-IS =======================//
  
-	@Autowired ServletContext sc;
-	
-	
 	@RequestMapping(value="/ollehMapApi")
 	@ResponseBody
 	public <T> Object ollehMapApi( String url, String params ) throws Exception {

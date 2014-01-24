@@ -23,7 +23,7 @@ import com.taxi.vo.setting.Setting;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-	
+	@Autowired MbrDao 		mbrDao;	
 	
 /*	//====================== AS-IS =======================//
  	
@@ -32,7 +32,6 @@ public class MemberServiceImpl implements MemberService {
     @Autowired FeedDao 		feedDao; 
     @Autowired RoomMbrDao 	roomMbrDao; 
     @Autowired SettingDao 	settingDao; 
-    @Autowired MbrDao 		mbrDao; 
     @Autowired PlatformTransactionManager txManager; 
 	
 	@Transactional(
