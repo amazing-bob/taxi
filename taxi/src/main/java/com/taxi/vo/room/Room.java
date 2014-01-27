@@ -12,6 +12,28 @@ import com.taxi.vo.room.base.BaseRoom;
 public class Room extends BaseRoom implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/* Base 변수
+	 * 
+	 * protected int 		roomNo;
+	 * protected Date		roomStartTime;
+	 * protected int		roomMbrNumLimit;
+	 * protected Date		roomRegDate;
+	 */
+	
+	// protected int 		추가되는 변수;
+	
+	public Room setRoomNo(int roomNo) {
+		return (Room) super.setRoomNo(roomNo);
+	}
+	public Room setRoomStartTime(Date roomStartTime) {
+		return (Room) super.setRoomStartTime(roomStartTime);
+	}
+	public Room setRoomMbrNumLimit(int roomMbrNumLimit) {
+		return (Room) super.setRoomMbrNumLimit(roomMbrNumLimit);
+	}
+	public Room setRoomRegDate(Date roomRegDate) {
+		return (Room) super.setRoomRegDate(roomRegDate);
+	}
 	
 /*	//====================== AS-IS =======================//
  	

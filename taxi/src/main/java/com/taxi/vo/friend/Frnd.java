@@ -1,12 +1,36 @@
 package com.taxi.vo.friend;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.taxi.vo.friend.base.BaseFrnd;
 
 public class Frnd extends BaseFrnd implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/* Base 변수
+	 * 
+	 * protected int 		mbrNo;
+	 * protected String 	frndPhoneNo;
+	 * protected String 	frndName;
+	 * protected Date 		frndRegDate;
+	 */
+	
+	// protected int 		추가되는 변수;
+	
+	public Frnd setMbrNo(int mbrNo) {
+		return (Frnd) super.setMbrNo(mbrNo);
+	}
+	public Frnd setFrndPhoneNo(String frndPhoneNo) {
+		return (Frnd) super.setFrndPhoneNo(frndPhoneNo);
+	}
+	public Frnd setFrndName(String frndName) {
+		return (Frnd) super.setFrndName(frndName);
+	}
+	public Frnd setFrndRegDate(Date frndRegDate) {
+		return (Frnd) super.setFrndRegDate(frndRegDate);
+	}
+	
 	
 /*	//====================== AS-IS =======================//
  	

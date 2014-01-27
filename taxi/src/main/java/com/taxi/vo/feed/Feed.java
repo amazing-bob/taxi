@@ -11,6 +11,33 @@ import com.taxi.vo.feed.base.BaseFeed;
 public class Feed extends BaseFeed implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/* Base 변수
+	 * 
+	 * protected int 		feedNo;
+	 * protected int 		roomNo;
+	 * protected int 		mbrNo;
+	 * protected String 	feedContent;
+	 * protected Date		feedRegDate;
+	 */
+	
+	// protected int 		추가되는 변수;
+	
+	public Feed setFeedNo(int feedNo) {
+		return (Feed) super.setFeedNo(feedNo);
+	}
+	public Feed setRoomNo(int roomNo) {
+		return (Feed) super.setRoomNo(roomNo);
+	}
+	public Feed setMbrNo(int mbrNo) {
+		return (Feed) super.setMbrNo(mbrNo);
+	}
+	public Feed setFeedContent(String feedContent) {
+		return (Feed) super.setFeedContent(feedContent);
+	}
+	public Feed setFeedRegDate(Date feedRegDate) {
+		return (Feed) super.setFeedRegDate(feedRegDate);
+	}
+	
 	
 /*	//====================== AS-IS =======================//
  	

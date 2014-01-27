@@ -8,6 +8,49 @@ import com.taxi.vo.room.base.BaseRoomMbr;
 public class RoomMbr extends BaseRoomMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/* Base 변수
+	 * 
+	 * protected int 		roomNo;
+	 * protected String 	mbrNo;
+	 * protected String 	gcmRegId;
+	 * protected int		roomMbrNo;
+	 * protected String 	roomMbrSt;
+	 * protected String 	relFrndPhoneNo;
+	 * protected String 	relFrndName;
+	 * protected String 	relFrndSt;
+	 * protected int		roomMbrRank;
+	 */
+	
+	// protected int 		추가되는 변수;
+	
+	public RoomMbr setRoomNo(int roomNo) {
+		return (RoomMbr) super.setRoomNo(roomNo);
+	}
+	public RoomMbr setMbrNo(String mbrNo) {
+		return (RoomMbr) super.setMbrNo(mbrNo);
+	}
+	public RoomMbr setGcmRegId(String gcmRegId) {
+		return (RoomMbr) super.setGcmRegId(gcmRegId);
+	}
+	public RoomMbr setRoomMbrNo(int roomMbrNo) {
+		return (RoomMbr) super.setRoomMbrNo(roomMbrNo);
+	}
+	public RoomMbr setRoomMbrSt(String roomMbrSt) {
+		return (RoomMbr) super.setRoomMbrSt(roomMbrSt);
+	}
+	public RoomMbr setRelFrndPhoneNo(String relFrndPhoneNo) {
+		return (RoomMbr) super.setRelFrndPhoneNo(relFrndPhoneNo);
+	}
+	public RoomMbr setRelFrndName(String relFrndName) {
+		return (RoomMbr) super.setRelFrndName(relFrndName);
+	}
+	public RoomMbr setRelFrndSt(String relFrndSt) {
+		return (RoomMbr) super.setRelFrndSt(relFrndSt);
+	}
+	public RoomMbr setRoomMbrRank(int roomMbrRank) {
+		return (RoomMbr) super.setRoomMbrRank(roomMbrRank);
+	}
+	
 	
 /*	//====================== AS-IS =======================//
  	

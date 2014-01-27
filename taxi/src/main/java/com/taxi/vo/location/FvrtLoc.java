@@ -11,6 +11,36 @@ import com.taxi.vo.location.base.BaseFvrtLoc;
 public class FvrtLoc extends BaseFvrtLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/* Base 변수
+	 * 
+	 * protected int 		fvrtLocNo;
+	 * protected int 		mbrNo;
+	 * protected String 	fvrtLocName;
+	 * protected double 	fvrtLocLat;
+	 * protected double 	fvrtLocLng;
+	 * protected int 		fvrtLocRank;
+	 */
+	
+	// protected int 		추가되는 변수;
+	
+	public FvrtLoc setFvrtLocNo(int fvrtLocNo) {
+		return (FvrtLoc)super.setFvrtLocNo(fvrtLocNo);
+	}
+	public FvrtLoc setMbrNo(int mbrNo) {
+		return (FvrtLoc)super.setMbrNo(mbrNo);
+	}
+	public FvrtLoc setFvrtLocRank(int fvrtLocRank) {
+		return (FvrtLoc)super.setFvrtLocRank(fvrtLocRank);
+	}
+	public FvrtLoc setFvrtLocName(String fvrtLocName) {
+		return (FvrtLoc)super.setFvrtLocName(fvrtLocName);
+	}
+	public FvrtLoc setFvrtLocLat(double fvrtLocLat) {
+		return (FvrtLoc)super.setFvrtLocLat(fvrtLocLat);
+	}
+	public FvrtLoc setFvrtLocLng(double fvrtLocLng) {
+		return (FvrtLoc)super.setFvrtLocLng(fvrtLocLng);
+	}
 	
 /*	//====================== AS-IS =======================//
  	

@@ -11,6 +11,41 @@ import com.taxi.vo.location.base.BaseRcntLoc;
 public class RcntLoc extends BaseRcntLoc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	/* Base 변수
+	 * 
+	 * protected int 		rcntLocNo;
+	 * protected int 		mbrNo;
+	 * protected String 	rcntLocName;
+	 * protected String 	rcntLocSt;
+	 * protected double 	rcntLocLat;
+	 * protected double 	rcntLocLng;
+	 * protected Date 		rcntLocRegDate;
+	 */
+	
+	// protected int 		추가되는 변수;
+	
+	public RcntLoc setRcntlocNo(int rcntlocNo) {
+		return (RcntLoc) super.setRcntlocNo(rcntlocNo);
+	}
+	public RcntLoc setMbrNo(int mbrNo) {
+		return (RcntLoc) super.setMbrNo(mbrNo);
+	}
+	public RcntLoc setRcntLocName(String rcntLocName) {
+		return (RcntLoc) super.setRcntLocName(rcntLocName);
+	}
+	public RcntLoc setRcntLocSt(String rcntLocSt) {
+		return (RcntLoc) super.setRcntLocSt(rcntLocSt);
+	}
+	public RcntLoc setRcntLocLat(double rcntLocLat) {
+		return (RcntLoc) super.setRcntLocLat(rcntLocLat);
+	}
+	public RcntLoc setRcntLocLng(double rcntLocLng) {
+		return (RcntLoc) super.setRcntLocLng(rcntLocLng);
+	}
+	public RcntLoc setRcntLocRegDate(Date rcntLocRegDate) {
+		return (RcntLoc) super.setRcntLocRegDate(rcntLocRegDate);
+	}
+	
 	
 /*	//====================== AS-IS =======================//
  	

@@ -12,10 +12,21 @@ public class Keyword extends BaseKeyword implements Serializable {
 
 	/* Base 변수
 	 * 
-	 * 
+	 * protected int 		keywordNo;
+	 * protected String 	keywordName;
+	 * protected String 	keywordSt;
 	 */
 	
 	// protected int 		추가되는 변수;
 	
+	public Keyword setKeywordNo(int keywordNo) {
+		return (Keyword) super.setKeywordNo(keywordNo);
+	}
+	public Keyword setKeywordName(String keywordName) {
+		return (Keyword) super.setKeywordName(keywordName);
+	}
+	public Keyword setKeywordSt(String keywordSt) {
+		return (Keyword) super.setKeywordSt(keywordSt);
+	}
 		
 }
