@@ -17,7 +17,7 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	 * protected String 	roomMbrSt;
 	 * protected String 	relFrndPhoneNo;
 	 * protected String 	relFrndName;
-	 * protected String 	relFrndSt;
+	 * protected String 	mutualYn;
 	 * protected int		roomMbrRank;
 	 */
 	
@@ -44,8 +44,8 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	public RoomMbr setRelFrndName(String relFrndName) {
 		return (RoomMbr) super.setRelFrndName(relFrndName);
 	}
-	public RoomMbr setRelFrndSt(String relFrndSt) {
-		return (RoomMbr) super.setRelFrndSt(relFrndSt);
+	public RoomMbr setMutualYn(String mutualYn) {
+		return (RoomMbr) super.setMutualYn(mutualYn);
 	}
 	public RoomMbr setRoomMbrRank(int roomMbrRank) {
 		return (RoomMbr) super.setRoomMbrRank(roomMbrRank);
