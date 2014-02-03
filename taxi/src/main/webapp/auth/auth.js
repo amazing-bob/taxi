@@ -11,27 +11,41 @@ $(document).ready(function() {
 	/* 임시 사용자 로그인 */
 	console.log("tempLogin()...........");
 	console.log(rootPath);
-	$.ajax( rootPath + "/auth/login.do", {
-		type: "POST",
-		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
-		dataType: "json",
-		contentType: "application/json",
-		success: function(result) {
-			if(result.status == "success") {
-//				console.log(result.data);
-				setSessionItem("loginInfo", result.data);
-				console.log(getSessionItem("loginInfo"));
-
-				goHomeOrRoom(result.data);
-//				$.mobile.changePage("../home/home.html");
-//				changeHref("../home/home.html");
-			} else {
-				alert("회원정보가 맞지 않습니다.");
-			}
-		}
-	});
 	
-	/*
+	var myInfo = {
+			mbrNo: 1
+	};
+	
+	// 홈가기
+	changeHref("../home/home.html");
+	// 방가기
+	changeHref("../room/room.html", { roomNo : 1 });
+	
+	// 홈or 방 가기
+//	goHomeOrRoom(myInfo);
+	
+	
+//	$.ajax( rootPath + "/auth/login.do", {
+//		type: "POST",
+//		data: JSON.stringify( {mbrId: 10000001, friendList: [{}]} ),
+//		dataType: "json",
+//		contentType: "application/json",
+//		success: function(result) {
+//			if(result.status == "success") {
+////				console.log(result.data);
+//				setSessionItem("loginInfo", result.data);
+//				console.log(getSessionItem("loginInfo"));
+//
+//				goHomeOrRoom(result.data);
+////				$.mobile.changePage("../home/home.html");
+////				changeHref("../home/home.html");
+//			} else {
+//				alert("회원정보가 맞지 않습니다.");
+//			}
+//		}
+//	});
+	
+	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
 	contentHeight = $(window).height();
@@ -84,7 +98,7 @@ $(document).ready(function() {
     });
 
 	$("#btnPhoneNo").on('click', clickSignupBtn);
-	*/
+	
 }); //reday()
 
 /**

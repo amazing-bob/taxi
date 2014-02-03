@@ -98,25 +98,25 @@ var getCurrentHtmlPath = function() {
 /**
  * 로그인 체크
  */
-var authCheck = function () {
-	console.log("authCheck()");
-	var hrefArr = window.location.href.split("/auth/");
-	var curHtml = hrefArr[hrefArr.length-1];
-
-	if ( curHtml != "auth.html" ) {
-		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
-			if (result.status == "success") {
-				setSessionItem("loginInfo", result.data);
-
-			} else {
-				alert("사용자 인증 실패!");
-				window.location.href = "../auth/auth.html";
-
-			}
-		});
-	}
-};
-authCheck();
+//var authCheck = function () {
+//	console.log("authCheck()");
+//	var hrefArr = window.location.href.split("/auth/");
+//	var curHtml = hrefArr[hrefArr.length-1];
+//
+//	if ( curHtml != "auth.html" ) {
+//		$.getJSON( rootPath + "/auth/loginInfo.do", function(result) {
+//			if (result.status == "success") {
+//				setSessionItem("loginInfo", result.data);
+//
+//			} else {
+//				alert("사용자 인증 실패!");
+//				window.location.href = "../auth/auth.html";
+//
+//			}
+//		});
+//	}
+//};
+//authCheck();
 
 /**
  * 방 참여 여부
