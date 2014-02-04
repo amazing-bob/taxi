@@ -22,10 +22,12 @@ $(document).ready(function() {
 	
 	// 세션스토리지에 저장
 	setSessionItem("myInfo", myInfo);
-		
-	// 홈가기 1
-	changeHref("../home/home.html");
-	// 방가기 2
+
+	// 홈가기 101
+//	changeHref("../home/home.html");
+	// 방가기 100
+
+
 	changeHref("../room/room.html", { roomNo : 1 });
 	
 	// 홈or 방 가기
