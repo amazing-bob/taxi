@@ -26,7 +26,7 @@ $(document).ready(function() {
 	// 홈가기
 	changeHref("../home/home.html");
 	// 방가기
-//	changeHref("../room/room.html", { roomNo : 1 });
+	changeHref("../room/room.html", { roomNo : 1 });
 	
 	// 홈or 방 가기
 //	goHomeOrRoom(myInfo);
