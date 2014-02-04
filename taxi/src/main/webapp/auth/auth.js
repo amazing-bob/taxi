@@ -24,7 +24,7 @@ $(document).ready(function() {
 	setSessionItem("myInfo", myInfo);
 		
 	// 홈가기
-	changeHref("../home/home.html");
+//	changeHref("../home/home.html");
 	// 방가기
 	changeHref("../room/room.html", { roomNo : 1 });
 	
