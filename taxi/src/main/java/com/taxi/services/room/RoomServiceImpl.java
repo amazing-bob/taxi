@@ -30,6 +30,18 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired RoomPathDao roomPathDao;
 	
+	public Room getRoomInfo( int roomNo ) throws Exception {
+		Room roomInfo = roomDao.getRoomInfo(roomNo);
+		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrDetailList( roomInfo.getRoomNo() );
+		roomInfo.setRoomMbrCount( roomMbrInfo.size() );
+		List<RoomPath> roomPathInfo = roomPathDao.getRoomPathList( roomInfo.getRoomNo() );
+		roomInfo.setRoomMbrList(roomMbrInfo);
+		roomInfo.setRoomPathList(roomPathInfo);
+		
+		return roomInfo;
+		
+	}
+	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;

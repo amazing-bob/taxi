@@ -7,6 +7,7 @@ import com.taxi.vo.feed.Feed;
 
 public interface FeedService {
 
+	List<Feed> getFeedList(int roomNo) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  	

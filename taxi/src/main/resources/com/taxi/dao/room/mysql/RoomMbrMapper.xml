@@ -4,6 +4,95 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomMbrDao">
 
+    <select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
+	    SELECT
+	              c.ROOM_NO 			as roomNo  
+	            , c.MBR_NO				as mbrNo 
+	            , c.MBR_NAME 			as mbrName
+                , c.MBR_PHONE_NO		as mbrPhoneNo
+                , c.MBR_PHOTO_URL 		as mbrPhotoUrl
+                , c.GCM_REG_ID			as gcmRegId 
+	            , c.REL_FRND_PHONE_NO 	as relFrndPhoneNo
+	            , c.ROOM_MBR_NO 		as roomMbrNo 
+	            , c.ROOM_MBR_NAME 		as roomMbrName
+	            , d.REL_FRND_NAME  		as relFrndName 
+			  	, c.ROOM_MBR_RANK 		as roomMbrRank 
+	     FROM (
+	        select
+				     a.ROOM_NO
+				,    a.MBR_NO
+				,    a.MBR_NAME
+				,    a.MBR_PHONE_NO
+				,    b.ROOM_MBR_NO
+				,    b.ROOM_MBR_NAME
+				,    a.REL_FRND_PHONE_NO
+				,    a.ROOM_MBR_RANK
+                ,    a.GCM_REG_ID
+                ,    a.MBR_PHOTO_URL
+	              from  (
+	                     select
+	                            a.ROOM_NO,
+	                            a.MBR_NO,
+	                            b.MBR_NAME,
+	                            b.MBR_PHONE_NO,
+	                            a.ROOM_MBR_NO,
+	                            a.REL_FRND_PHONE_NO,
+	                            a.ROOM_MBR_RANK,
+                                a.GCM_REG_ID,
+                                b.MBR_PHOTO_URL
+	                       from
+	                            ROOM_MBR a, MBR b
+	                      where
+	                            a.MBR_NO = b.MBR_NO
+	                             AND a.ROOM_NO = #{value}
+	                   ) a
+	                        left outer join
+	                   (
+	                     select
+	                        a.room_no,
+	                            a.ROOM_MBR_NO,
+	                            b.MBR_NAME AS  ROOM_MBR_NAME,
+	                          
+                                a.GCM_REG_ID
+	                       from
+	                            ROOM_MBR a, MBR b
+	                      where
+	                            a.ROOM_MBR_NO = b.MBR_NO
+	                         and
+	                            a.ROOM_NO = #{value}
+	                    group by a.room_MBR_NO
+	                   ) b
+
+	               on
+	                  a.ROOM_MBR_NO = b.ROOM_MBR_NO
+	                                      ) c
+	                    left outer join
+	                (
+	                 select
+	                        a.ROOM_NO,
+	                        a.MBR_NO,
+	                        b.FRND_NAME,
+	                        b.FRND_PHONE_NO,
+	                        a.REL_FRND_NAME
+	                   from
+	                        ROOM_MBR a, FRND b
+	                  where
+	                        a.REL_FRND_PHONE_NO = b.FRND_PHONE_NO
+	                           and
+	                              a.ROOM_NO = #{value}
+	                           group by  a.mbr_NO
+
+	                                      ) d
+	                                            on
+	                                               1=1
+	                                           and
+	                                               c.ROOM_NO = d.ROOM_NO
+	                                           and
+	                                               c.MBR_NO = d.mbr_NO
+	    WHERE  c.ROOM_NO =  #{value}
+	    ORDER BY c.ROOM_MBR_RANK
+	</select>
+    
     
 <!-- //====================== AS-IS =======================// -->
 <!-- 

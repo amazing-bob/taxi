@@ -25,7 +25,8 @@ $(document).ready(function(){
 
 	var params = getHrefParams();
 	console.log(params);
-	var roomNo = params.roomNo;
+	//var roomNo = params.roomNo;  --선진
+	var roomNo = 1;
 	var contentHeight = $(window).height();
 	console.log(contentHeight);
 	console.log($("#mainHeader").outerHeight());
@@ -104,7 +105,7 @@ $(document).ready(function(){
 	 $("#outRoom").on("click", function(event){
 		 event.stopPropagation();
 
-		 var mbrId = getSessionItem("loginInfo").mbrId;
+		 var mbrId = getSessionItem("loginInfo").mbrNo;
 		 var roomNo = $("#roomNo").attr("data-roomNo");
 		 outRoom(mbrId, roomNo);
 		 
@@ -471,15 +472,14 @@ var outRoom = function (mbrId, roomNo) {
 
 var getRoomInfo = function(roomNo) {
 	console.log("getRoomInfo()");
-
 	$.getJSON( rootPath + "/room/getRoomInfo.do?roomNo=" + roomNo,
 								function(result) {
+		console.log(result);
 	var roomInfo = result.data;
-	console.log(roomInfo)
-;	if(result.status == "success") {
-
+	console.log(roomInfo);	
+	if(result.status == "success") {
+	
 		console.log("init()	- getRoomInfo()");
-
 		var startLat = roomInfo.roomPathList[0].pathLat;
 		var startLng = roomInfo.roomPathList[0].pathLng;
 		var endLat = roomInfo.roomPathList[1].pathLat;
@@ -612,12 +612,15 @@ var showRelationInfo = function(roomInfo, idx) {
 
 
 var getFeedList = function(roomNo){
+	
 	$.getJSON( rootPath + "/feed/feedList.do?roomNo="
 									+ roomNo, function(result) {
 
 		if(result.status == "success") {
-
+	
 			var feedList = result.data;
+			console.log("피드");
+			console.log(feedList);
 			var mbrId = getSessionItem("loginInfo").mbrId;
 			var ul = $(".listViewUl");
 
@@ -678,7 +681,8 @@ var addFeed = function(mbrId, feedContent, roomNo) {
 			},
 			function(result) {
 				if(result.status == "success") {
-					getFeedList(roomNo);
+					//getFeedList(roomNo);
+					console.log("성공!!! 방정보 받기");
 
 				} else {
 					alert("실행중 오류발생!");

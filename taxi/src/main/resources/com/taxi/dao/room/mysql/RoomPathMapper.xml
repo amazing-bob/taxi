@@ -4,6 +4,23 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomPathDao">
 
+    	
+	<select id="getRoomPathList" parameterType="int" resultType="RoomPath">
+	    SELECT
+		    	room_no		AS roomNO,
+		    	path_rank	AS pathRank,
+		    	path_name	AS pathName,
+		    	path_lat	AS pathLat,
+		    	path_lng	AS pathLng
+	    FROM
+	    		ROOM_PATH
+	    WHERE
+	    		1 = 1
+   			AND	room_no = #{value}
+		ORDER BY 
+				path_rank   			
+	</select>
+    
 
 <!-- //====================== AS-IS =======================// -->
 <!-- 

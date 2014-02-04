@@ -8,6 +8,7 @@ import com.taxi.vo.feed.Feed;
 
 public interface FeedDao {
 
+	List<Feed> getFeedList(int roomNo) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  	

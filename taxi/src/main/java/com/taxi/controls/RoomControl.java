@@ -27,8 +27,27 @@ public class RoomControl {
 	@Autowired ServletContext sc;
 	@Autowired RoomService roomService;	
 	
-	
-	
+    @RequestMapping("/getRoomInfo")
+    @ResponseBody
+    public Object getRoomInfo( int roomNo ) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+
+        try {
+            jsonResult.setStatus("success");
+            jsonResult.setData( roomService.getRoomInfo(roomNo) );
+
+        } catch (Throwable e) {
+        	e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+
+        return jsonResult;
+    }
+
 	
 //	@RequestMapping(value="/setLocationSession")
 //	@ResponseBody
@@ -273,12 +292,11 @@ public class RoomControl {
 
     @RequestMapping("/getMyRoom")
     @ResponseBody
-    public Object getMyRoom( HttpSession session ) throws Exception {
+    public Object getMyRoom( int mbrNo , int roomNo) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-        	LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
 
-        	Room myRoom = roomService.getMyRoom( loginInfo.getMbrId() );
+        	Room myRoom = roomService.getMyRoom( mbrNo );
 
         	if ( myRoom != null ) {
         		jsonResult.setStatus("success");
@@ -298,7 +316,7 @@ public class RoomControl {
 
         return jsonResult;
     }
-
+/*
   @RequestMapping("/outRoom")
   @ResponseBody
   public Object outRoom( String mbrId, int roomNo ) throws Exception {

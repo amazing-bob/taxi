@@ -22,6 +22,12 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	 */
 	
 	// protected int 		추가되는 변수;
+	protected String MbrPhotoUrl;
+	protected String MbrPhoneNo;
+	protected String MbrName;
+	
+	
+	
 	
 	public RoomMbr setRoomNo(int roomNo) {
 		return (RoomMbr) super.setRoomNo(roomNo);

@@ -17,5 +17,6 @@ public interface RoomPathDao {
 
 	void deleteRoomPath(Map<String, Object> paramMap) throws Exception;
 */
+	List<RoomPath> getRoomPathList(int roomNo) throws Exception;
 	
 }

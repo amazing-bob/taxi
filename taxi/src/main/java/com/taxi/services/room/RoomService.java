@@ -29,5 +29,6 @@ public interface RoomService {
 	
 	void removeRoom() throws Exception;
 */
+	Room getRoomInfo(int roomNo) throws Exception;
 	
 }

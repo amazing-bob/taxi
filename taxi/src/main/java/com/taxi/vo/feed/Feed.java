@@ -21,7 +21,16 @@ public class Feed extends BaseFeed implements Serializable {
 	 */
 	
 	// protected int 		추가되는 변수;
+	protected String mbrPhotoUrl;
 	
+	
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public Feed setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
+		return this;
+	}
 	public Feed setFeedNo(int feedNo) {
 		return (Feed) super.setFeedNo(feedNo);
 	}

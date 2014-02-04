@@ -4,7 +4,44 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.taxi.dao.feed.FeedDao">
-    
+    	<select id="getFeedList"
+		parameterType="int" 
+		resultType="Feed">
+				select  a.FEED_NO 			as feedNo
+					,	a.FEED_CONTENT 		as feedContent
+					,	a.MBR_NO 			as mbrNo
+					,	a.FEED_REG_DATE 	as feedRegDate
+					,	a.ROOM_NO			as roomNo
+					,	c.mbr_name			as mbrName
+					,	c.mbr_photo_url		as mbrPhotoUrl
+				from 	FEED a
+					,	MBR c
+			   where 	1 = 1
+			   	and 	a.MBR_No = c.MBR_NO
+			   	and 	a.ROOM_NO = #{value}
+			   order by FEED_REG_DATE desc
+	</select> 
+	
+	<select id="getFeedInfo"
+		parameterType="Feed" 
+		resultType="Feed">
+				select  a.FEED_NO 			as feedNo
+					,	a.FEED_CONTENT 		as feedContent
+					,	a.MBR_ID 			as mbrId
+					,	a.FEED_REG_DATE 	as feedRegDate
+					,	a.ROOM_NO			as roomNo
+					,	c.mbr_name			as mbrName
+					,	c.mbr_photo_url		as mbrPhotoUrl
+				from 	FEED a
+					, 	ROOM_MBR b
+					,	MBR c
+			   where 	1 = 1
+			   	and 	a.ROOM_NO = b.ROOM_NO
+			   	and 	a.MBR_ID = b.MBR_ID
+			   	and 	b.MBR_ID = c.MBR_ID
+			   	and 	a.FEED_NO = #{feedNo}
+			   order by FEED_REG_DATE desc
+	</select> 
     
 <!-- //====================== AS-IS =======================// -->
 <!-- 

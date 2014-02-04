@@ -25,5 +25,6 @@ public interface RoomDao {
 
 	void deleteRoom(Map<String, Object> paramMap) throws Exception;
 */
+	Room getRoomInfo(int roomNo) throws Exception ;
 	
 }

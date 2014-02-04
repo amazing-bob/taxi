@@ -21,6 +21,10 @@ import com.taxi.vo.feed.Feed;
 public class FeedServiceImpl implements FeedService {
 	@Autowired FeedDao feedDao;	
 	
+	public List<Feed> getFeedList(int roomNo) throws Exception {
+		return feedDao.getFeedList(roomNo);
+	}
+
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;

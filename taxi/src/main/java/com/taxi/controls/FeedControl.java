@@ -22,6 +22,29 @@ public class FeedControl {
 	@Autowired ServletContext sc;
 	@Autowired FeedService feedService;	
 	
+	@RequestMapping("/feedList")
+	@ResponseBody
+	public Object getFeedList( int roomNo ) throws Exception {
+		
+		System.out.println("roomNo: " + roomNo);
+		JsonResult jsonResult = new JsonResult();
+	
+		try {
+			jsonResult.setStatus("success")
+					   .setData(feedService.getFeedList(roomNo));
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+			StringWriter out = new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData(out.toString());
+		}
+	
+	return jsonResult;
+}
+	
 /*  //====================== AS-IS =======================//
  	
 	@RequestMapping("/feedList")
