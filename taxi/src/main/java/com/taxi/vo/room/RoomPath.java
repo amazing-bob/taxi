@@ -12,7 +12,7 @@ public class RoomPath extends BaseRoomPath implements Serializable {
 	 * 
 	 * protected int 		roomNo;
 	 * protected int		pathRank;
-	 * protected String	pathName;
+	 * protected String		pathName;
 	 * protected double 	pathLat;
 	 * protected double 	pathLng;
 	 */

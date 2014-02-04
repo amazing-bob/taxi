@@ -4,10 +4,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomDao">
     
-
-<!-- //====================== AS-IS =======================// -->
-<!-- 
-    <resultMap id="roomResultMap" type="Room">
+	<resultMap id="roomResultMap" type="Room">
 	    <result 	property="roomNo" 			column="room_no"/>
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
 	    <result 	property="roomDistance" 	column="room_distance"/>
@@ -98,7 +95,10 @@
 
  		]]>
 	</select>
+    
 
+<!-- //====================== AS-IS =======================// -->
+<!-- 
 
 	<insert id="addRoom" parameterType="Room">
         insert into ROOM ( ROOM_START_TIME, ROOM_DISTANCE, ROOM_FARE, ROOM_REG_DATE )

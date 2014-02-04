@@ -2,6 +2,7 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -28,7 +29,38 @@ public class RoomControl {
 	@Autowired RoomService roomService;	
 	
 	
-	
+	@RequestMapping("/searchRooms")
+	@ResponseBody
+	public JsonResult searchRooms( int mbrNo,
+			String startLat	, String startLng	, int startRange,
+			String endLat	, String endLng		, int endRange ) throws Exception {
+		
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			List<Room> roomList = roomService.searchRooms( 
+													mbrNo,
+													Double.parseDouble(startLat),
+													Double.parseDouble(startLng),
+													startRange,
+													Double.parseDouble(endLat),
+													Double.parseDouble(endLng),
+													endRange );
+			
+			jsonResult.setData( roomList );
+			jsonResult.setStatus("success");
+
+		} catch (Throwable e) {
+			e.printStackTrace();
+			StringWriter out =  new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+
+			jsonResult.setStatus("fail");
+			jsonResult.setData(out.toString());
+		}
+
+		return jsonResult;
+	}
 	
 //	@RequestMapping(value="/setLocationSession")
 //	@ResponseBody
@@ -103,37 +135,6 @@ public class RoomControl {
 	
 /*	//====================== AS-IS =======================//
  	
-	@RequestMapping("/searchRooms")
-	@ResponseBody
-	public JsonResult searchRooms(String startTime,
-			String startLat, String startLng, int startRange,
-			String endLat, String endLng, int endRange,
-			HttpSession session ) throws Exception {
-		JsonResult jsonResult = new JsonResult();
-		try {
-			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-			jsonResult.setData( roomService.searchRooms( loginInfo.getMbrId(),
-																			Double.parseDouble(startLat),
-																			Double.parseDouble(startLng),
-																			startRange,
-																			Double.parseDouble(endLat),
-																			Double.parseDouble(endLng),
-																			endRange ) );
-			jsonResult.setStatus("success");
-
-		} catch (Throwable e) {
-			e.printStackTrace();
-			StringWriter out =  new StringWriter();
-			e.printStackTrace(new PrintWriter(out));
-
-			jsonResult.setStatus("fail");
-			jsonResult.setData(out.toString());
-		}
-
-		return jsonResult;
-	}
-
-
     @RequestMapping("/isRoomMbr")
     @ResponseBody
     public JsonResult isRoomMbr(HttpSession session) throws Exception {

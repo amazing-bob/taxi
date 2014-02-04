@@ -7,11 +7,10 @@ import com.taxi.vo.room.Room;
 
 
 public interface RoomDao {
-	
-	
-/*	//====================== AS-IS =======================//
 
 	List<Room> getRoomList(Map<String, Object> paramMap) throws Exception;
+	
+/*	//====================== AS-IS =======================//
 
 	int addRoom(Room room) throws Exception;
 

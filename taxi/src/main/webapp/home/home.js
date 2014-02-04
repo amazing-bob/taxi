@@ -21,7 +21,6 @@ var contentHeight;
 
 
 $(document).ready(function() {
-	alert(myInfo);
 	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -420,7 +419,7 @@ var init = function() {
 var checkStartLocation = function() {
 	console.log("checkStartLocation()");
 	
-	var locationSession = getSessionItem("startSession");
+	var locationSession = getSessionItem("locationSession");
 
 	if ( locationSession && locationSession != null &&
 			locationSession.startName && locationSession.startName != null && locationSession.startName != "" &&
@@ -439,9 +438,11 @@ var checkStartLocation = function() {
 				function () {
 		    		checkStartLocation();
 		    	} );
-
+		
 	}
+	
 };
+
 
 /**
  * 출발지 설정
@@ -487,14 +488,11 @@ var setStartLocation = function (x, y, locName, prefix) {
 var checkEndLocation = function() {
 	console.log("checkEndLocation()");
 	
-	var locationSession = getSessionItem("endSession");
+	var locationSession = getSessionItem("locationSession");
 	if ( locationSession && locationSession != null &&
 			locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
 			locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
 			locationSession.endY && locationSession.endY != null && locationSession.endY != "" ) {
-		
-//		console.log(getSessionItem("startSession"));
-//		console.log(getSessionItem("endSession"));
 		
 		setEndLocation(
 				locationSession.endX,
@@ -502,7 +500,6 @@ var checkEndLocation = function() {
 				locationSession.endName,
 				locationSession.endPrefix );
 
-//		setSessionItem("locationSession", locationSession);
 		searchRooms();
 
 	} else {
@@ -510,9 +507,11 @@ var checkEndLocation = function() {
 		var param = {
 			mbrNo: myInfo.mbrNo
 		};
+		
 		$.getJSON( rootPath + "/location/getRecentDestination.do", param, function(result) {
 			if (result.status === "success") {
 				var recentDestinationList = result.data;
+				
 				if ( recentDestinationList.length > 0 ) {
 					setEndLocationSession(
 							recentDestinationList[0].fvrtLocLng,
@@ -522,6 +521,7 @@ var checkEndLocation = function() {
 							function() {
 								checkEndLocation();
 							} );
+					
 				} else {
 					$("#btnAddViewRoom").css("visibility","hidden");
 					$("<li>")
@@ -537,10 +537,12 @@ var checkEndLocation = function() {
 					myScroll.disable();
 				}
 			}
+			
 		});
 
 	}
 };
+
 
 /**
  * 목적지 설정
@@ -635,18 +637,20 @@ var searchRooms = function() {
 	console.log("searchRooms()");
 
 	var locationSession = getSessionItem("locationSession");
-	var startSession = getSessionItem("startSession");
-	var endSession = getSessionItem("endSession");
+
+	var params = {
+		mbrNo		: myInfo.mbrNo,
+		startLat 	: locationSession.startY,
+		startLng 	: locationSession.startX,
+		startRange 	: myInfo.startRange,
+		endLat 		: locationSession.endY,
+		endLng 		: locationSession.endX,
+		endRange 	: myInfo.endRange
+	};
 	
 	$.post( rootPath + "/room/searchRooms.do"
-			, {
-				startLat 	: locationSession.startY,
-				startLng 	: locationSession.startX,
-				startRange 	: myInfo.startRange,
-				endLat 		: locationSession.endY,
-				endLng 		: locationSession.endX,
-				endRange 	: myInfo.endRange
-			}, function(result) {
+			, params
+			, function(result) {
 				if (result.status == "success") {
 					initRoute();
 

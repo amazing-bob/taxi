@@ -20,7 +20,7 @@ $(document).ready(function() {
 	
 	// 세션스토리지에 저장
 	setSessionItem("myInfo", myInfo);
-	
+		
 	// 홈가기
 	changeHref("../home/home.html");
 	// 방가기

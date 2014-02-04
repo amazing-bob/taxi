@@ -30,6 +30,25 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired RoomPathDao roomPathDao;
 	
+	
+	public List<Room> searchRooms( int mbrNo,
+			double startLat	, double startLng	, int startRange,
+			double endLat	, double endLng		, int endRange ) throws Exception {
+		
+		Map<String, Object> paramMap  = new HashMap<String, Object>();
+		paramMap.put("mbrNo", mbrNo);
+		paramMap.put("startLat", startLat);
+		paramMap.put("startLng", startLng);
+		paramMap.put("startRange", startRange);
+		paramMap.put("endLat", endLat);
+		paramMap.put("endLng", endLng);
+		paramMap.put("endRange", endRange);
+
+		List<Room> searchRoomList = roomDao.getRoomList(paramMap);
+		
+		return searchRoomList;
+	}
+	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
@@ -37,31 +56,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired FeedDao feedDao;
 	@Autowired PlatformTransactionManager txManager;
 	
-	public List<Room> searchRooms( String mbrId,
-			double startLat, double startLng, int startRange,
-			double endLat, double endLng, int endRange
-			) throws Exception {
-		
-		Map<String, Object> paramMap  = new HashMap<String, Object>();
-		paramMap.put("mbrId", mbrId);
-		paramMap.put("startLat", startLat);
-		paramMap.put("startLng", startLng);
-		paramMap.put("startRange", startRange);
-		paramMap.put("endLat", endLat);
-		paramMap.put("endLng", endLng);
-		paramMap.put("endRange", endRange);
-		
-		List<Room> searchRoomList = roomDao.getRoomList(paramMap);
-		
-//		for( int i = 0; i < searchRoomList.size(); i++ ) {
-//			searchRoomList.get(i).setPathLocList( 
-//					pathLocDao.getPathLocList(searchRoomList.get(i).getRoomNo()) );
-//			searchRoomList.get(i).setRoomMbrList( 
-//					roomMbrDao.getRoomMbrList(searchRoomList.get(i).getRoomNo()) );
-//		}
 
-		return searchRoomList;
-	}
 	
 	
 	public boolean isRoomMbr(String memberId) throws Exception {

@@ -185,7 +185,9 @@ var setStartLocationSession = function(x, y, locName, prefix, callbackFunc) {
 	};
 
 	if ( locName && locName != null && locName.length > 0 ) {
-		setSessionItem("startSesssion", startSession);
+		var locationSession = mergeLocationSession(startSession);
+		setSessionItem("locationSession", locationSession);
+		
 		callbackFunc();
 		
 	} else {
@@ -209,7 +211,9 @@ var setStartLocationSession = function(x, y, locName, prefix, callbackFunc) {
 				startSession.startX		= infoArr[0].x;
 				startSession.startY 	= infoArr[0].y;
 				
-				setSessionItem("startSession", startSession);
+				var locationSession = mergeLocationSession(startSession);
+				setSessionItem("locationSession", locationSession);
+				
 				callbackFunc();
 			}
 		};
@@ -241,7 +245,9 @@ var setEndLocationSession = function(x, y, locName, prefix, callbackFunc) {
 	};
 	
 	if ( locName && locName != null && locName.length > 0 ) {
-		setSessionItem("endSession", endSession);
+		var locationSession = mergeLocationSession(endSession);
+		setSessionItem("locationSession", locationSession);
+		
 		callbackFunc();
 
 	} else {
@@ -264,7 +270,9 @@ var setEndLocationSession = function(x, y, locName, prefix, callbackFunc) {
 				endSession.endX = infoArr[0].x;
 				endSession.endY = infoArr[0].y;
 			
-				setSessionItem("endSession", endSession);
+				var locationSession = mergeLocationSession(endSession);
+				setSessionItem("locationSession", locationSession);
+				
 				callbackFunc();
 			}
 		};
@@ -274,11 +282,33 @@ var setEndLocationSession = function(x, y, locName, prefix, callbackFunc) {
 
 
 /**
+ * locationSession 객체 머징
+ */
+var mergeLocationSession = function( startEndSession ) {
+	console.log("mergeLocationSession(startEndSession)");
+//	console.log(startEndSession);
+	
+	var locationSession = getSessionItem("locationSession");
+	
+	if ( !locationSession || locationSession == null ) {
+		locationSession = {};
+	}
+	
+	$.extend(true, locationSession, startEndSession);
+	
+	return locationSession;
+};
+
+
+/**
  * 거리에 따라 보여지는 형식 변경
  * 1000m 이하: m
  * 1000m 이상: km
  */
 var changeDistanceUnit = function(distance) {
+	console.log("changeDistanceUnit(distance)");
+//	console.log(distance);
+	
 	if ( distance < 1000 ) {
 		return distance + "m";
 	} else {
@@ -292,6 +322,8 @@ var changeDistanceUnit = function(distance) {
  * 택시요금 계산
  */
 var calcTaxiFare = function(distance) {
+	console.log("calcTaxiFare(distance)");
+//	console.log(distance);
 
 	var distanceFare = (distance / 142) * 100;
 
