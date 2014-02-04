@@ -15,7 +15,6 @@ public class Login extends BaseLogin implements Serializable {
 	 * protected int 		loginNo;
 	 * protected int 		mbrNo;
 	 * protected String 	loginEmail;
-	 * protected String 	loginEmail;
 	 * protected String 	loginSt;
 	 * protected String 	loginPassword;
 	 */

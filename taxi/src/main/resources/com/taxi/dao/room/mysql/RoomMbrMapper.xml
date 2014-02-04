@@ -4,8 +4,8 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomMbrDao">
 
-    <select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
-	    SELECT
+<select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
+	    select
 	              c.ROOM_NO 			as roomNo  
 	            , c.MBR_NO				as mbrNo 
 	            , c.MBR_NAME 			as mbrName
@@ -17,57 +17,54 @@
 	            , c.ROOM_MBR_NAME 		as roomMbrName
 	            , d.REL_FRND_NAME  		as relFrndName 
 			  	, c.ROOM_MBR_RANK 		as roomMbrRank 
-	     FROM (
-	        select
-				     a.ROOM_NO
-				,    a.MBR_NO
-				,    a.MBR_NAME
-				,    a.MBR_PHONE_NO
-				,    b.ROOM_MBR_NO
-				,    b.ROOM_MBR_NAME
-				,    a.REL_FRND_PHONE_NO
-				,    a.ROOM_MBR_RANK
-                ,    a.GCM_REG_ID
-                ,    a.MBR_PHOTO_URL
-	              from  (
-	                     select
-	                            a.ROOM_NO,
-	                            a.MBR_NO,
-	                            b.MBR_NAME,
-	                            b.MBR_PHONE_NO,
-	                            a.ROOM_MBR_NO,
-	                            a.REL_FRND_PHONE_NO,
-	                            a.ROOM_MBR_RANK,
-                                a.GCM_REG_ID,
-                                b.MBR_PHOTO_URL
-	                       from
-	                            ROOM_MBR a, MBR b
-	                      where
-	                            a.MBR_NO = b.MBR_NO
-	                             AND a.ROOM_NO = #{value}
-	                   ) a
-	                        left outer join
-	                   (
-	                     select
-	                        a.room_no,
-	                            a.ROOM_MBR_NO,
-	                            b.MBR_NAME AS  ROOM_MBR_NAME,
-	                          
-                                a.GCM_REG_ID
-	                       from
-	                            ROOM_MBR a, MBR b
-	                      where
-	                            a.ROOM_MBR_NO = b.MBR_NO
-	                         and
-	                            a.ROOM_NO = #{value}
-	                    group by a.room_MBR_NO
-	                   ) b
-
-	               on
-	                  a.ROOM_MBR_NO = b.ROOM_MBR_NO
-	                                      ) c
-	                    left outer join
-	                (
+	     from (
+		        select
+					     a.ROOM_NO
+					,    a.MBR_NO
+					,    a.MBR_NAME
+					,    a.MBR_PHONE_NO
+					,    b.ROOM_MBR_NO
+					,    b.ROOM_MBR_NAME
+					,    a.REL_FRND_PHONE_NO
+					,    a.ROOM_MBR_RANK
+	                ,    a.GCM_REG_ID
+	                ,    a.MBR_PHOTO_URL
+		              from  (
+		                     select
+		                            a.ROOM_NO,
+		                            a.MBR_NO,
+		                            b.MBR_NAME,
+		                            b.MBR_PHONE_NO,
+		                            a.ROOM_MBR_NO,
+		                            a.REL_FRND_PHONE_NO,
+		                            a.ROOM_MBR_RANK,
+	                                a.GCM_REG_ID,
+	                                b.MBR_PHOTO_URL
+		                       from
+		                            ROOM_MBR a, MBR b
+		                      where 1 = 1
+								and a.MBR_NO = b.MBR_NO
+								and a.ROOM_NO = #{value}
+		                   ) a
+						left outer join
+		                   (
+		                     select
+									a.room_no,
+		                        	a.ROOM_MBR_NO,
+		                        	b.MBR_NAME AS  ROOM_MBR_NAME,
+	                                a.GCM_REG_ID
+		                       from
+		                            ROOM_MBR a, MBR b
+		                      where 1 = 1
+		                      	and a.ROOM_MBR_NO = b.MBR_NO
+								and a.ROOM_NO = #{value}
+		                    group by 
+		                    		a.room_MBR_NO
+		                   ) b
+		               on a.ROOM_MBR_NO = b.ROOM_MBR_NO
+				) c
+			left outer join
+                (
 	                 select
 	                        a.ROOM_NO,
 	                        a.MBR_NO,
@@ -76,23 +73,19 @@
 	                        a.REL_FRND_NAME
 	                   from
 	                        ROOM_MBR a, FRND b
-	                  where
-	                        a.REL_FRND_PHONE_NO = b.FRND_PHONE_NO
-	                           and
-	                              a.ROOM_NO = #{value}
-	                           group by  a.mbr_NO
-
-	                                      ) d
-	                                            on
-	                                               1=1
-	                                           and
-	                                               c.ROOM_NO = d.ROOM_NO
-	                                           and
-	                                               c.MBR_NO = d.mbr_NO
-	    WHERE  c.ROOM_NO =  #{value}
-	    ORDER BY c.ROOM_MBR_RANK
+	                  where 1 = 1
+						and a.REL_FRND_PHONE_NO = b.FRND_PHONE_NO
+						and a.ROOM_NO = #{value}
+					group by  
+							a.mbr_NO
+				) d
+			 on c.ROOM_NO = d.ROOM_NO
+			and c.MBR_NO = d.mbr_NO
+		  where 1 = 1
+			and c.ROOM_NO =  #{value}
+	    order by 
+	    	c.ROOM_MBR_RANK
 	</select>
-    
     
 <!-- //====================== AS-IS =======================// -->
 <!-- 
@@ -139,97 +132,6 @@
 			AND	a.ROOM_NO = #{roomNo}
 			AND	a.MBR_ID = #{mbrId}
 	</select> 
-
-
-	<select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
-	    SELECT
-	              c.ROOM_NO 		as roomNo
-	            , c.MBR_ID 			as mbrId
-	            , c.MBR_NAME 		as mbrName
-	            , c.MBR_PHONE_NO 	as mbrPhoneNo
-	            , c.MBR_PHOTO_URL 	as mbrPhotoUrl
-	            , c.ROOM_MBR_ID 	as roomMbrId
-	            , c.ROOM_MBR_NAME 	as roomMbrName
-	            , c.ROOM_MBR_PHOTO_URL as roomMbrPhotoUrl
-	            , c.FRND_REL_ID 	as frndRelId
-	            , d.FRND_NAME  		as frndRelName
-			  	, c.ROOM_MBR_RANK 	as roomMbrRank
-                , c.GCM_REG_ID		as gcmRegId
-	     FROM (
-	        select
-				     a.ROOM_NO
-				,    a.MBR_ID
-				,    a.MBR_NAME
-				,    a.MBR_PHONE_NO
-				,    a.MBR_PHOTO_URL
-				,    b.ROOM_MBR_ID
-				,    b.ROOM_MBR_NAME
-				,    b.ROOM_MBR_PHOTO_URL
-				,    a.FRND_REL_ID
-				,    a.ROOM_MBR_RANK
-                    ,    a.GCM_REG_ID
-	              from  (
-	                     select
-	                            a.ROOM_NO,
-	                            a.MBR_ID,
-	                            b.MBR_NAME,
-	                            b.MBR_PHONE_NO,
-	                            b.MBR_PHOTO_URL,
-	                            a.ROOM_MBR_ID,
-	                            a.FRND_REL_ID,
-	                            a.ROOM_MBR_RANK,
-                                 a.GCM_REG_ID
-	                       from
-	                            ROOM_MBR a, MBR b
-	                      where
-	                            a.MBR_ID = b.MBR_ID
-	                             AND a.ROOM_NO = #{value}
-	                   ) a
-	                        left outer join
-	                   (
-	                     select
-	                        a.room_no,
-	                            a.ROOM_MBR_ID,
-	                            b.MBR_NAME AS  ROOM_MBR_NAME,
-	                            b.MBR_PHOTO_URL AS ROOM_MBR_PHOTO_URL,
-                                 a.GCM_REG_ID
-	                       from
-	                            ROOM_MBR a, MBR b
-	                      where
-	                            a.ROOM_MBR_ID = b.MBR_ID
-	                         and
-	                            a.ROOM_NO = #{value}
-	                    group by a.room_MBR_ID
-	                   ) b
-
-	               on
-	                  a.ROOM_MBR_ID = b.ROOM_MBR_ID
-	                                      ) c
-	                    left outer join
-	                (
-	                 select
-	                        a.ROOM_NO,
-	                        a.MBR_ID,
-	                        b.FRND_NAME,
-	                        b.FRND_ID
-	                   from
-	                        ROOM_MBR a, FRND b
-	                  where
-	                        a.FRND_REL_ID = b.FRND_ID
-	                           and
-	                              a.ROOM_NO = #{value}
-	                           group by  a.mbr_id
-
-	                                      ) d
-	                                            on
-	                                               1=1
-	                                           and
-	                                               c.ROOM_NO = d.ROOM_NO
-	                                           and
-	                                               c.MBR_ID = d.mbr_id
-	    WHERE  c.ROOM_NO =  #{value}
-	    ORDER BY c.ROOM_MBR_RANK
-	</select>
 
 
 	<select id="isRoomMbr" parameterType="String" resultType="int">

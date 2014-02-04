@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.taxi.dao.room.RoomDao">
+<mapper namespace="com.taxi.dao.room.RoomDao">    
 
 	 <resultMap id="roomResultMap" type="Room">
 	    <result 	property="roomNo" 			column="room_no"/>
@@ -29,22 +29,7 @@
 		where  	1 = 1
 			and	ROOM_NO = #{value}
 	</select>
-
-<!-- //====================== AS-IS =======================// -->
-<!-- 
-    <resultMap id="roomResultMap" type="Room">
-	    <result 	property="roomNo" 			column="room_no"/>
-	    <result 	property="roomStartTime" 	column="room_start_time"/>
-	    <result 	property="roomDistance" 	column="room_distance"/>
-	    <result 	property="roomFare" 		column="room_fare"/>
-	    <result 	property="roomRegDate" 		column="room_reg_date"/>
-	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
-	    <result 	property="differenceTime" 	column="differenceTime"/>
-	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
-	        select="com.taxi.dao.room.RoomPathDao.getRoomPathList"/>
-	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
-	        select="com.taxi.dao.room.RoomMbrDao.getRoomMbrDetailList"/>
-	</resultMap>
+	
 
 	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
 	    <![CDATA[
@@ -123,7 +108,10 @@
 
  		]]>
 	</select>
+    
 
+<!-- //====================== AS-IS =======================// -->
+<!-- 
 
 	<insert id="addRoom" parameterType="Room">
         insert into ROOM ( ROOM_START_TIME, ROOM_DISTANCE, ROOM_FARE, ROOM_REG_DATE )

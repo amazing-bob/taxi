@@ -20,12 +20,10 @@ public class Room extends BaseRoom implements Serializable {
 	 * protected int		roomMbrNumLimit;
 	 * protected Date		roomRegDate;
 	 */
+	protected int 			roomMbrCount;
+	protected List<RoomMbr>	roomMbrList;
+	protected List<RoomPath> roomPathList;
 	
-	// protected int 		추가되는 변수;
-	
-	protected int				roomMbrCount;
-	protected List<RoomMbr>		roomMbrList;
-	protected List<RoomPath> 	roomPathList;
 	
 	public Room setRoomNo(int roomNo) {
 		return (Room) super.setRoomNo(roomNo);
@@ -39,26 +37,27 @@ public class Room extends BaseRoom implements Serializable {
 	public Room setRoomRegDate(Date roomRegDate) {
 		return (Room) super.setRoomRegDate(roomRegDate);
 	}
+	
+	public int getRoomMbrCount() {
+		return roomMbrCount;
+	}
 	public Room setRoomMbrCount(int roomMbrCount) {
 		this.roomMbrCount = roomMbrCount;
 		return this;
+	}
+	public List<RoomMbr> getRoomMbrList() {
+		return roomMbrList;
 	}
 	public Room setRoomMbrList(List<RoomMbr> roomMbrList) {
 		this.roomMbrList = roomMbrList;
 		return this;
 	}
+	public List<RoomPath> getRoomPathList() {
+		return roomPathList;
+	}
 	public Room setRoomPathList(List<RoomPath> roomPathList) {
 		this.roomPathList = roomPathList;
 		return this;
-	}
-	public int getRoomMbrCount() {
-		return roomMbrCount;
-	}
-	public List<RoomMbr> getRoomMbrList() {
-		return roomMbrList;
-	}
-	public List<RoomPath> getRoomPathList() {
-		return roomPathList;
 	}
 	
 	

@@ -10,11 +10,12 @@ import com.taxi.vo.room.RoomPath;
 
 public interface RoomService {
 
+	List<Room> searchRooms(int mbrNo, double startLat, double startLng, int startRange, double endLat, double endLng, int endRange) throws Exception;
+	
+	Room getRoomInfo(int roomNo) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  
-	List<Room> searchRooms(String mbrId, double startLat, double startLng, int startRange, double endLat, double endLng, int endRange) throws Exception;
-
 	int addRoom(Room room, RoomPath startPath, RoomPath endPath, RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception;
 	
 	boolean isRoomMbr(String memberId) throws Exception;
@@ -29,6 +30,5 @@ public interface RoomService {
 	
 	void removeRoom() throws Exception;
 */
-	Room getRoomInfo(int roomNo) throws Exception;
 	
 }

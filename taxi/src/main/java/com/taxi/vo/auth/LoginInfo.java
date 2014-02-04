@@ -9,6 +9,18 @@ import com.taxi.vo.friend.Frnd;
 public class LoginInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	//////////////////////////////////////////////////////////
+	// # LoginInfo 는 사용 하지 않는다!!!
+	// # LoginInfo 대신에 MyInfo를 사용한다!!
+	// # LoginInfo는 As-Is 버전에서 사용하던 Session 객체이이고
+	// # To-Be 버전에서는 로그인을 Session으로 관리 하지 않고, 
+	// # 나중에 Login VO객체와 혼동이 있을 것 같아서 
+	// # LoginInfo 대신 MyInfo로 대신 사용한다.
+	//
+	// ## 1차개발 끝나면 지울 VO객체임!!
+	//////////////////////////////////////////////////////////
+	
+	
 	
 /*	//====================== AS-IS =======================//
  	

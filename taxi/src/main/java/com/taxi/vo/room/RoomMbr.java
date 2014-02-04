@@ -20,14 +20,10 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	 * protected String 	mutualYn;
 	 * protected int		roomMbrRank;
 	 */
-	
-	// protected int 		추가되는 변수;
-	protected String MbrPhotoUrl;
-	protected String MbrPhoneNo;
-	protected String MbrName;
-	
-	
-	
+	protected String 	mbrName;
+	protected String 	mbrPhoneNo;
+	protected String 	mbrPhotoUrl;
+
 	
 	public RoomMbr setRoomNo(int roomNo) {
 		return (RoomMbr) super.setRoomNo(roomNo);
@@ -55,6 +51,28 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	}
 	public RoomMbr setRoomMbrRank(int roomMbrRank) {
 		return (RoomMbr) super.setRoomMbrRank(roomMbrRank);
+	}
+	
+	public String getMbrName() {
+		return mbrName;
+	}
+	public RoomMbr setMbrName(String mbrName) {
+		this.mbrName = mbrName;
+		return this;
+	}
+	public String getMbrPhoneNo() {
+		return mbrPhoneNo;
+	}
+	public RoomMbr setMbrPhoneNo(String mbrPhoneNo) {
+		this.mbrPhoneNo = mbrPhoneNo;
+		return this;
+	}
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public RoomMbr setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
+		return this;
 	}
 	
 	
