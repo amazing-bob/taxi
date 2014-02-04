@@ -14,6 +14,8 @@ $(document).ready(function() {
 	
 	var myInfo = {
 		mbrNo: 1,
+		mbrName:"회원001",
+		mbrPhotoUrl: "../images/photo/m01.jpg",
 		startRange: 500,
 		endRange: 1000
 	};
@@ -22,9 +24,9 @@ $(document).ready(function() {
 	setSessionItem("myInfo", myInfo);
 		
 	// 홈가기
-	changeHref("../home/home.html");
+	//changeHref("../home/home.html");
 	// 방가기
-//	changeHref("../room/room.html", { roomNo : 1 });
+	changeHref("../room/room.html", { roomNo : 1 });
 	
 	// 홈or 방 가기
 //	goHomeOrRoom(myInfo);

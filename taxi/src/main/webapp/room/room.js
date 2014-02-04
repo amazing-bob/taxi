@@ -512,8 +512,8 @@ var getRoomInfo = function(roomNo) {
 
 		$("#roomStartTime").text( hour +":"+ minute );
 		$("#roomStartDay").text("출발");
-		$("#imgMbrPhoto").attr( "src", getSessionItem("loginInfo").mbrPhotoUrl );
-		$("#mbrName").text( getSessionItem("loginInfo").mbrName );
+		$("#imgMbrPhoto").attr( "src", myInfo.mbrPhotoUrl );
+		$("#mbrName").text( myInfo.mbrName );
 		$("#roomNo").attr("data-roomNo", roomInfo.roomNo);
 
 		var idx = 0;
@@ -619,9 +619,8 @@ var getFeedList = function(roomNo){
 		if(result.status == "success") {
 	
 			var feedList = result.data;
-			console.log("피드");
 			console.log(feedList);
-			var mbrId = getSessionItem("loginInfo").mbrId;
+			var mbrNo = myInfo.mbrNo;
 			var ul = $(".listViewUl");
 
 			$(".listViewUl .feedList").remove();
@@ -638,7 +637,7 @@ var getFeedList = function(roomNo){
 							.append( $("<h2>")
 								.text(feedList[i].mbrName) );
 
-					if(feedList[i].mbrId === mbrId){
+					if(feedList[i].mbrNo === mbrNo){
 								 	li.append( $("<p>")
 								 			.append( $("<strong>").text(feedList[i].feedContent) )
 								 			.append( $("<a>")
@@ -646,7 +645,7 @@ var getFeedList = function(roomNo){
 								 						.attr("data-inline", "true")
 														.attr("data-roomNo", feedList[i].roomNo)
 														.attr("data-feedNo", feedList[i].feedNo)
-														.attr("data-mbrId", feedList[i].mbrId)
+														.attr("data-mbrNo", feedList[i].mbrNo)
 														.append(
 																$("<img>").attr("src", "../images/common/button/deletefeedx.png")
 																		  .addClass("deleteFeed"))
