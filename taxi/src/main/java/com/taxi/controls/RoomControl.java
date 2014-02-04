@@ -27,80 +27,82 @@ public class RoomControl {
 	@Autowired ServletContext sc;
 	@Autowired RoomService roomService;	
 	
+	
+	
+	
+//	@RequestMapping(value="/setLocationSession")
+//	@ResponseBody
+//	public Object setLocationSession(
+//			LocationSession paramLocation,
+//			HttpSession session ) throws Exception {
+//		JsonResult jsonResult = null;
+//		LocationSession locationSession = (LocationSession) session.getAttribute("locationSession");
+//
+//		if ( locationSession == null ) {
+//			locationSession = paramLocation;
+//		} else {
+//			if ( paramLocation.getStartName() != null && !"".equals(paramLocation.getStartName()) ) {
+//				locationSession.setStartName(paramLocation.getStartName());
+//			}
+//			if ( paramLocation.getStartX() != 0 ) {
+//				locationSession.setStartX(paramLocation.getStartX());
+//			}
+//			if ( paramLocation.getStartY() != 0 ) {
+//				locationSession.setStartY(paramLocation.getStartY());
+//			}
+//			if ( paramLocation.getStartPrefix() != null ) {
+//				locationSession.setStartPrefix(paramLocation.getStartPrefix());
+//			}
+//			if ( paramLocation.getEndName() != null && !"".equals(paramLocation.getEndName()) ) {
+//				locationSession.setEndName(paramLocation.getEndName());
+//			}
+//			if ( paramLocation.getEndX() != 0 ) {
+//				locationSession.setEndX(paramLocation.getEndX());
+//			}
+//			if ( paramLocation.getEndY() != 0 ) {
+//				locationSession.setEndY(paramLocation.getEndY());
+//			}
+//			if ( paramLocation.getEndPrefix() != null ) {
+//				locationSession.setEndPrefix(paramLocation.getEndPrefix());
+//			}
+//		}
+//
+//		session.setAttribute("locationSession", locationSession);
+//
+//
+//		if (locationSession != null) {
+//			jsonResult = new JsonResult()
+//										.setStatus("success")
+//										.setData(locationSession);
+//		} else {
+//			jsonResult = new JsonResult()
+//										.setStatus("fail")
+//										.setData(null);
+//		}
+//
+//		return jsonResult;
+//	}
+	
+	
+//	@RequestMapping(value="/getLocationSession")
+//	@ResponseBody
+//	public Object getLocationSession( HttpSession session) throws Exception {
+//		JsonResult jsonResult = null;
+//
+//		LocationSession locationSession = (LocationSession) session.getAttribute("locationSession");
+//
+//		if (locationSession != null) {
+//			jsonResult = new JsonResult().setStatus("success")
+//										 .setData(locationSession);
+//		} else {
+//			jsonResult = new JsonResult().setStatus("fail");
+//		}
+//
+//		return jsonResult;
+//	}
+	
 /*	//====================== AS-IS =======================//
  	
-	@RequestMapping(value="/setLocationSession")
-	@ResponseBody
-	public Object setLocationSession(
-			LocationSession paramLocation,
-			HttpSession session ) throws Exception {
-		JsonResult jsonResult = null;
-		LocationSession locationSession = (LocationSession) session.getAttribute("locationSession");
-
-		if ( locationSession == null ) {
-			locationSession = paramLocation;
-		} else {
-			if ( paramLocation.getStartName() != null && !"".equals(paramLocation.getStartName()) ) {
-				locationSession.setStartName(paramLocation.getStartName());
-			}
-			if ( paramLocation.getStartX() != 0 ) {
-				locationSession.setStartX(paramLocation.getStartX());
-			}
-			if ( paramLocation.getStartY() != 0 ) {
-				locationSession.setStartY(paramLocation.getStartY());
-			}
-			if ( paramLocation.getStartPrefix() != null ) {
-				locationSession.setStartPrefix(paramLocation.getStartPrefix());
-			}
-			if ( paramLocation.getEndName() != null && !"".equals(paramLocation.getEndName()) ) {
-				locationSession.setEndName(paramLocation.getEndName());
-			}
-			if ( paramLocation.getEndX() != 0 ) {
-				locationSession.setEndX(paramLocation.getEndX());
-			}
-			if ( paramLocation.getEndY() != 0 ) {
-				locationSession.setEndY(paramLocation.getEndY());
-			}
-			if ( paramLocation.getEndPrefix() != null ) {
-				locationSession.setEndPrefix(paramLocation.getEndPrefix());
-			}
-		}
-
-		session.setAttribute("locationSession", locationSession);
-
-
-		if (locationSession != null) {
-			jsonResult = new JsonResult()
-										.setStatus("success")
-										.setData(locationSession);
-		} else {
-			jsonResult = new JsonResult()
-										.setStatus("fail")
-										.setData(null);
-		}
-
-		return jsonResult;
-	}
-
-
-	@RequestMapping(value="/getLocationSession")
-	@ResponseBody
-	public Object getLocationSession( HttpSession session) throws Exception {
-		JsonResult jsonResult = null;
-
-		LocationSession locationSession = (LocationSession) session.getAttribute("locationSession");
-
-		if (locationSession != null) {
-			jsonResult = new JsonResult().setStatus("success")
-										 .setData(locationSession);
-		} else {
-			jsonResult = new JsonResult().setStatus("fail");
-		}
-
-		return jsonResult;
-	}
-
-
 	@RequestMapping("/searchRooms")
 	@ResponseBody
 	public JsonResult searchRooms(String startTime,

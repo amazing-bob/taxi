@@ -227,7 +227,7 @@ var createLocationList = function(locations, page) {
                                         .click(function(event) { 
                                             event.stopPropagation(); 
                                             var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx"); 
-                                            setStartSession( 
+                                            setStartLocationSession( 
                                                     locations[liIdx].X,  
                                                     locations[liIdx].Y,  
                                                     locations[liIdx].NAME,  
@@ -246,7 +246,7 @@ var createLocationList = function(locations, page) {
                                         .click(function(event) { 
                                             event.stopPropagation(); 
                                             var liIdx =  $(this).parents(".locationStartAndEnd").attr("data-idx"); 
-                                            setEndSession( 
+                                            setEndLocationSession( 
                                                     locations[liIdx].X,  
                                                     locations[liIdx].Y,  
                                                     locations[liIdx].NAME,  

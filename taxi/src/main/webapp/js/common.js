@@ -3,6 +3,8 @@ console.log("commonjs...");
 //var rootPath = "http://buru1020.cafe24.com/taxi";	//호스팅
 var rootPath = "http://localhost:9999/taxi";		//로컬
 
+var myInfo;
+
 /**
  * ajax 로딩 초기설정
  */
@@ -25,7 +27,7 @@ var initAjaxLoading = function() {
  * sessionStorage 에 값 설정하기
  */
 var setSessionItem = function (key, value) {
-	console.log("setSessionItem(", key,", ", value+")");
+	console.log("setSessionItem(key, value)");
 //	console.log(key, value);
 	sessionStorage.setItem(key, JSON.stringify(value));
 };
@@ -62,9 +64,11 @@ setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 var changeHref = function (url, jsonObject) {
 	console.log("changeHref(url, jsonObjec)");
 //	console.log(url, jsonObject));
+	
 	if (jsonObject) {
 		setSessionItem("hrefParams", jsonObject);
 	}
+	
 	window.location.href = url;
 };
 
@@ -93,7 +97,22 @@ var getCurrentHtmlPath = function() {
 	else 
 		return undefined;
 	 
-}
+};
+
+
+/**
+ * 내정보 가져오기
+ */
+var getMyInfo = function() {
+	console.log("getMyInfo{()");
+	var hrefArr = window.location.href.split("/auth/");
+	var curHtml = hrefArr[hrefArr.length-1];
+
+	if ( curHtml != "auth.html" ) {
+		myInfo = getSessionItem("myInfo");
+	}
+}();
+
 
 /**
  * 로그인 체크
@@ -142,117 +161,111 @@ var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
 
 
 /**
- * 출발지 HttpSession에 등록
+ * 출발지 SessionStorage에 저장
  * params (
  * 		x 			: 지도의 x좌표,
  * 		y 			: 지도의 y좌표,
- * 		locName	: 지명
+ * 		locName		: 지명
  * 		prefix		: 앞에 수식될 문구
- * 		startSession_callback : 세션등록후 처리될 콜백 함수
+ * 		callbackFunc : 세션등록후 처리될 콜백 함수
  */
-var setStartSession = function(x, y, locName, prefix, startSession_callback) {
-	console.log("setSessionStart(x, y, locName, prefix, startSession_callback)");
-//	console.log(x, y, locName, prefix, startSession_callback);
+var setStartLocationSession = function(x, y, locName, prefix, callbackFunc) {
+	console.log("setSessionStart(x, y, locName, prefix, callbackFunc)");
+//	console.log(x, y, locName, prefix, callbackFunc);
 
 	if ( !prefix ) {
 		prefix = "";
 	}
+	
+	var startSession = {
+		startName	: locName,
+		startX 		: x,
+		startY 		: y,
+		startPrefix 	:  prefix
+	};
 
 	if ( locName && locName != null && locName.length > 0 ) {
-		$.getJSON( rootPath + "/room/setLocationSession.do",{
-			startName : locName,
-			startX : x,
-			startY : y,
-			startPrefix :  prefix
-		}, function(result) {
-			startSession_callback();
-		});
-
+		setSessionItem("startSesssion", startSession);
+		callbackFunc();
+		
 	} else {
+		// 맵api에서 주소 조회
 	  	geocoder.geocode(
 				{
-			  		type: 1,
-			  		isJibun: 1,
-			  		x: x,
-			  		y: y
+			  		type 	: 1,
+			  		isJibun : 1,
+			  		x 		: x,
+			  		y 		: y
 				},
-				"setStartSession_callback");
-	  	setStartSession_callback = function(data) {
-	  		console.log("setStartSession_callback(data)");
+				"setStartLocationSession_callback");
+	  	setStartLocationSession_callback = function(data) {
+	  		console.log("setStartLocationSession_callback(data)");
 //	  		console.log(data);
 
 			var geocoderResult = geocoder.parseGeocode(data);
-			if(geocoderResult["count"] != "0") {
+			if ( geocoderResult && parseInt(geocoderResult["count"]) > 0 ) {
 				var infoArr = geocoderResult["infoarr"];
-				for(var i=0; i<infoArr.length; i++){
-					$.getJSON( rootPath + "/room/setLocationSession.do",{
-						startName : infoArr[i].address,
-						startX : infoArr[i].x,
-						startY : infoArr[i].y,
-						startPrefix :  prefix
-					}, function(result) {
-						startSession_callback();
-					});
-				}
+				startSession.startName 	= infoArr[0].address;
+				startSession.startX		= infoArr[0].x;
+				startSession.startY 	= infoArr[0].y;
+				
+				setSessionItem("startSession", startSession);
+				callbackFunc();
 			}
 		};
-
 	}
 };
 
 /**
- * 목적지 HttpSession에 등록
+ * 목적지 SessionStorage에 저장
  * params (
  * 		x 			: 지도의 x좌표,
  * 		y 			: 지도의 y좌표,
- * 		locName	: 지명
+ * 		locName		: 지명
  * 		prefix		: 앞에 수식될 문구
- * 		endSession_callback : 세션등록후 처리될 콜백 함수
+ * 		callbackFunc : 세션등록후 처리될 콜백 함수
  */
-var setEndSession = function(x, y, locName, prefix, endSession_callback) {
-	console.log("setEndSession(x, y, locName, prefix, startSession_callback)");
-//	console.log(x, y, locName, prefix, startSession_callback);
+var setEndLocationSession = function(x, y, locName, prefix, callbackFunc) {
+	console.log("setEndLocationSession(x, y, locName, prefix, callbackFunc)");
+//	console.log(x, y, locName, prefix, callbackFunc);
 
 	if ( !prefix ) {
 		prefix = "";
 	}
-
+	
+	var endSession = {
+		endName : locName,
+		endX 	: x,
+		endY 	: y,
+		endPrefix :  prefix	
+	};
+	
 	if ( locName && locName != null && locName.length > 0 ) {
-		$.getJSON( rootPath + "/room/setLocationSession.do",{
-			endName : locName,
-			endX : x,
-			endY : y,
-			endPrefix :  prefix
-		}, function(result) {
-			endSession_callback();
-		});
+		setSessionItem("endSession", endSession);
+		callbackFunc();
 
 	} else {
 	  	geocoder.geocode(
 				{
-			  		type: 1,
-			  		isJibun: 1,
-			  		x: x,
-			  		y: y
+			  		type 	: 1,
+			  		isJibun : 1,
+			  		x 		: x,
+			  		y 		: y
 				},
-				"setEndSession_callback");
-	  	setEndSession_callback = function(data) {
-	  		console.log("setEndSession_callback(data)");
+				"setEndLocationSession_callback");
+	  	setEndLocationSession_callback = function(data) {
+	  		console.log("setEndLocationSession_callback(data)");
 //	  		console.log(data);
 
 			var geocoderResult = geocoder.parseGeocode(data);
-			if(geocoderResult["count"] != "0") {
+			if ( geocoderResult && parseInt(geocoderResult["count"]) > 0 ) {
 				var infoArr = geocoderResult["infoarr"];
-				for(var i=0; i<infoArr.length; i++){
-					$.getJSON( rootPath + "/room/setLocationSession.do",{
-						endName : infoArr[i].address,
-						endX : infoArr[i].x,
-						endY : infoArr[i].y,
-						endPrefix :  prefix
-					}, function(result) {
-						endSession_callback();
-					});
-				}
+				endSession.endName = infoArr[0].address;
+				endSession.endX = infoArr[0].x;
+				endSession.endY = infoArr[0].y;
+			
+				setSessionItem("endSession", endSession);
+				callbackFunc();
 			}
 		};
 
@@ -292,6 +305,7 @@ var calcTaxiFare = function(distance) {
 
 	return totalFare;
 } ;
+
 
 /**
  * 푸쉬 관련 객체

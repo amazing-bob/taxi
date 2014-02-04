@@ -176,28 +176,6 @@ public class MemberControl {
     }
     
     
-    @RequestMapping("/getRecentDestination")
-    @ResponseBody
-    public Object getRecentDestination( HttpSession session ) throws Exception {
-        JsonResult jsonResult = new JsonResult();
-        try {
-	        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-	        System.out.println("loginInfo :" + loginInfo.getMbrId());
-         
-            jsonResult.setStatus("success");
-            jsonResult.setData( memberService.getRecentDestination(loginInfo.getMbrId()) );
-             
-        } catch (Throwable e) {
-        	e.printStackTrace();
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-             
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-        return jsonResult;          
-    }
-
     @RequestMapping(value="/frndRefresh", method=RequestMethod.POST)
     @ResponseBody
     public <T> Object frndRefresh(@RequestBody String json, 

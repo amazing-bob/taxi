@@ -13,13 +13,18 @@ $(document).ready(function() {
 	console.log(rootPath);
 	
 	var myInfo = {
-			mbrNo: 1
+		mbrNo: 1,
+		startRange: 500,
+		endRange: 1000
 	};
+	
+	// 세션스토리지에 저장
+	setSessionItem("myInfo", myInfo);
 	
 	// 홈가기
 	changeHref("../home/home.html");
 	// 방가기
-	changeHref("../room/room.html", { roomNo : 1 });
+//	changeHref("../room/room.html", { roomNo : 1 });
 	
 	// 홈or 방 가기
 //	goHomeOrRoom(myInfo);

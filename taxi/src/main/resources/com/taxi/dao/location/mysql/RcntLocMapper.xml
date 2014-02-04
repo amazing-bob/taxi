@@ -4,28 +4,27 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.location.RcntLocDao">
 
-
+	<select id="getRecentDestination"
+			parameterType="Map" 
+            resultType="RcntLoc"> 
+		select 
+				RCNT_LOC_NO
+			,	MBR_NO
+			,	RCNT_LOC_NAME
+			, 	RCNT_LOC_LAT
+			, 	RCNT_LOC_LNG
+			, 	RCNT_LOC_REG_DATE
+			, 	RCNT_LOC_ST
+		from 	
+				RCNT_LOC
+		where 	
+				1 = 1
+			and MBR_NO = #{mbrNo}
+		order by 
+				RCNT_LOC_REG_DATE desc
+    </select>
 <!-- //====================== AS-IS =======================// -->
 <!--
-	<select id="getFvrtLoc"
-            parameterType="Map" 
-            resultType="FvrtLoc"> 
-                select  
-                        FVRT_LOC_NO 	as fvrtLocNo  
-                     ,  MBR_ID 				as mbrId  
-                     ,  FVRT_LOC_NAME as fvrtLocName 
-                     ,  FVRT_LOC_LAT 	as fvrtLocLat  
-                     ,  FVRT_LOC_LNG 	as fvrtLocLng  
-                   	 ,	FVRT_LOC_REG_DATE	as fvrtLocRegDate	 
-                     ,  FVRT_LOC_RANK 	as fvrtLocRank  
-                     ,  FVRT_LOC_STATUS as fvrtLocStatus 
-                from  	FVRT_LOC
-                where 	1 = 1
-               		and	MBR_ID = #{mbrId}
-               		and 	FVRT_LOC_STATUS = #{fvrtLocStatus}
-				order by	FVRT_LOC_RANK
-    </select>  
-    
 	
 	<select id="getFvrtLocRank"
 	    	parameterType="string"

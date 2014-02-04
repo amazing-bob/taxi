@@ -8,12 +8,10 @@ import com.taxi.vo.location.FvrtLoc;
 
 public interface RcntLocDao {
 
-	
+	List<FvrtLoc> getRecentDestination(Map<String, Object> paramsMap) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  	
-	List<FvrtLoc> getFvrtLoc(Map<String, String> paramsMap) throws Exception;
-	 
     int addFvrtLoc(FvrtLoc fvrtLoc);
     
     int deleteFvrtLoc(String mbrId) throws Exception;

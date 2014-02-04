@@ -21,6 +21,7 @@ var contentHeight;
 
 
 $(document).ready(function() {
+	alert(myInfo);
 	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -49,7 +50,7 @@ $(document).ready(function() {
 	$("#btnCurrentLoc").click(function(event) {
 		event.stopPropagation();
     	map.moveTo(curCoord);
-    	setStartSession(
+    	setStartLocationSession(
     			curCoord.getX(),
     			curCoord.getY(),
     			null,
@@ -365,11 +366,13 @@ var init = function() {
 	// 현재위치 조회
 	navigator.geolocation.getCurrentPosition(function(position) {
 		var curPoint = new olleh.maps.Point( position.coords.longitude, position.coords.latitude );
-
 		var srcproj = new olleh.maps.Projection('WGS84');
 		var destproj = new olleh.maps.Projection('UTM_K');
 		olleh.maps.Projection.transform(curPoint, srcproj, destproj);
 		curCoord = new olleh.maps.Coord(curPoint.getX(), curPoint.getY());
+		curCoord = new olleh.maps.Coord("958238.8608608943", "1944407.0290863856");// 강남역	958238.8608608943, 1944407.0290863856	37.49798,  127.02755
+//		curCoord = new olleh.maps.Coord("949576.8370300145", "1942923.1597472064");// 신림역	949576.8370300145, 1942923.1597472064	37.484173, 126.929661
+//		curCoord = new olleh.maps.Coord("956019.1205096169", "1953794.6490542048");// 대학로	956019.1205096169, 1953794.6490542048	37.58249,  127.001876
 
 		geocoder = new olleh.maps.Geocoder("KEY");
 		directionsService = new olleh.maps.DirectionsService('frKMcOKXS*l9iO5g');
@@ -396,47 +399,48 @@ var init = function() {
 			zIndex : 1
 	  	});
 
-		checkLocations();
+		
+		// 출발지 & 목적지 테스트 데이터 세팅 ///////////////////////////////////
+		// 출발지
+		setStartLocationSession("958238.8608608943", "1944407.0290863856", "강남역", null, function() {});// 강남역	958238.8608608943, 1944407.0290863856	37.49798,  127.02755	
+//		setStartLocationSession("949576.8370300145", "1942923.1597472064", "신림역", null, function() {});// 신림역	949576.8370300145, 1942923.1597472064	37.484173, 126.929661
+		// 목적지
+		setEndLocationSession("956019.1205096169", "1953794.6490542048", "대학로", null, function() {});// 대학로	956019.1205096169, 1953794.6490542048	37.58249,  127.001876
+		////////////////////////////////////
+		
+		checkStartLocation();
 
 	});
 };
 
-/**
- * 출발지/목적지 검사
- */
-var checkLocations = function() {
-	console.log("checkLocations()");
-	checkStartLocation();
-};
 
 /**
  * 출발지 검사
  */
 var checkStartLocation = function() {
 	console.log("checkStartLocation()");
-	$.getJSON( rootPath + "/room/getLocationSession.do", function(result) {
-		var locationSession = result.data;
+	
+	var locationSession = getSessionItem("startSession");
 
-		if ( locationSession && locationSession != null &&
-				locationSession.startName && locationSession.startName != null && locationSession.startName != "" &&
-				locationSession.startX && locationSession.startX != null && locationSession.startX != "" &&
-				locationSession.startY && locationSession.startY != null && locationSession.startY != "" ) {
-			setStartLocation(locationSession.startX, locationSession.startY, locationSession.startName, locationSession.startPrefix);
+	if ( locationSession && locationSession != null &&
+			locationSession.startName && locationSession.startName != null && locationSession.startName != "" &&
+			locationSession.startX && locationSession.startX != null && locationSession.startX != "" &&
+			locationSession.startY && locationSession.startY != null && locationSession.startY != "" ) {
+		setStartLocation(locationSession.startX, locationSession.startY, locationSession.startName, locationSession.startPrefix);
 
-			checkEndLocation();
+		checkEndLocation();
 
-		} else {
-			setStartSession(
-					curCoord.getX(),
-					curCoord.getY(),
-					null,
-					"내위치: ",
-					function () {
-			    		checkStartLocation();
-			    	} );
+	} else {
+		setStartLocationSession(
+				curCoord.getX(),
+				curCoord.getY(),
+				null,
+				"내위치: ",
+				function () {
+		    		checkStartLocation();
+		    	} );
 
-		}
-	});
+	}
 };
 
 /**
@@ -473,62 +477,69 @@ var setStartLocation = function (x, y, locName, prefix) {
 			title : '출발지',
 			zIndex : 1
 	  	});
-	var loginInfo = getSessionItem("loginInfo");
-	startCircle = setCircle( coord, "#00ffff", loginInfo.startRange );
+	startCircle = setCircle( coord, "#00ffff", myInfo.startRange );
 };
+
 
 /**
  * 목적지 검사
  */
 var checkEndLocation = function() {
 	console.log("checkEndLocation()");
-	$.getJSON( rootPath + "/room/getLocationSession.do", function(result) {
-		var locationSession = result.data;
-		if ( locationSession && locationSession != null &&
-				locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
-				locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
-				locationSession.endY && locationSession.endY != null && locationSession.endY != "" ) {
-			setEndLocation(
-					locationSession.endX,
-					locationSession.endY,
-					locationSession.endName,
-					locationSession.endPrefix );
+	
+	var locationSession = getSessionItem("endSession");
+	if ( locationSession && locationSession != null &&
+			locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
+			locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
+			locationSession.endY && locationSession.endY != null && locationSession.endY != "" ) {
+		
+//		console.log(getSessionItem("startSession"));
+//		console.log(getSessionItem("endSession"));
+		
+		setEndLocation(
+				locationSession.endX,
+				locationSession.endY,
+				locationSession.endName,
+				locationSession.endPrefix );
 
-			setSessionItem("locationSession", locationSession);
-			searchRooms();
+//		setSessionItem("locationSession", locationSession);
+		searchRooms();
 
-		} else {
-			$.getJSON( rootPath + "/member/getRecentDestination.do", function(result) {
-				if (result.status === "success") {
-					var recentDestinationList = result.data;
-					if ( recentDestinationList.length > 0 ) {
-						setEndSession(
-								recentDestinationList[0].fvrtLocLng,
-								recentDestinationList[0].fvrtLocLat,
-								recentDestinationList[0].fvrtLocName,
-								"최근목적지: ",
-								function() {
-									checkEndLocation();
-								} );
-					} else {
-						$("#btnAddViewRoom").css("visibility","hidden");
-						$("<li>")
-						.width(contentWidth +"px")
-						.append(
-								$("<div>")
-								.addClass("divMsgArea")
-								.css("padding-top","14px")
-								.append(
-										$("<h1>")
-											.html("출발지와 도착지를<br>검색해주세요") ) )
-						.appendTo( $("#ulRoomList") );
-						myScroll.disable();
-					}
+	} else {
+		// 최근 목적지 조회 & 목적지로 설정
+		var param = {
+			mbrNo: myInfo.mbrNo
+		};
+		$.getJSON( rootPath + "/location/getRecentDestination.do", param, function(result) {
+			if (result.status === "success") {
+				var recentDestinationList = result.data;
+				if ( recentDestinationList.length > 0 ) {
+					setEndLocationSession(
+							recentDestinationList[0].fvrtLocLng,
+							recentDestinationList[0].fvrtLocLat,
+							recentDestinationList[0].fvrtLocName,
+							"최근목적지: ",
+							function() {
+								checkEndLocation();
+							} );
+				} else {
+					$("#btnAddViewRoom").css("visibility","hidden");
+					$("<li>")
+					.width(contentWidth +"px")
+					.append(
+							$("<div>")
+							.addClass("divMsgArea")
+							.css("padding-top","14px")
+							.append(
+									$("<h1>")
+										.html("출발지와 도착지를<br>검색해주세요") ) )
+					.appendTo( $("#ulRoomList") );
+					myScroll.disable();
 				}
-			});
+			}
+		});
 
-		}
-	});
+	}
 };
 
 /**
@@ -570,7 +581,7 @@ var setEndLocation = function (x, y, locName, prefix) {
 		zIndex : 1
   	});
 	var loginInfo = getSessionItem("loginInfo");
-	endCircle = setCircle( coord, "#00ffff", loginInfo.endRange );
+	endCircle = setCircle( coord, "#00ffff", myInfo.endRange );
 };
 
 /**
@@ -578,7 +589,7 @@ var setEndLocation = function (x, y, locName, prefix) {
  */
 var setCircle = function( coord, color, radius ) {
 	console.log("setCircle(coord, color, radius)");
-	console.log(coord, color, radius);
+//	console.log(coord, color, radius);
 	
 	var circle = new olleh.maps.Circle({
 		center: coord,
@@ -624,27 +635,17 @@ var searchRooms = function() {
 	console.log("searchRooms()");
 
 	var locationSession = getSessionItem("locationSession");
-	var loginInfo = getSessionItem("loginInfo");
+	var startSession = getSessionItem("startSession");
+	var endSession = getSessionItem("endSession");
 	
-//	isRoomMbr(
-//			function() {
-//				$("#btnAddViewRoom > img").attr("src", "../images/common/button/into_room.png");
-//				$("#btnAddViewRoom").data("status", "intoMyRoomBtn");
-//				$("#divRoomList").data("isRoomMbr", "true");
-//			},
-//			function() {
-//				$("#btnAddViewRoom > img").attr("src", "../images/common/button/add_btn.png");
-//				$("#btnAddViewRoom").data("status", "addRoomBtn");
-//				$("#divRoomList").data("isRoomMbr", "false");
-//			} );
 	$.post( rootPath + "/room/searchRooms.do"
 			, {
 				startLat 	: locationSession.startY,
 				startLng 	: locationSession.startX,
-				startRange 	: loginInfo.startRange,
+				startRange 	: myInfo.startRange,
 				endLat 		: locationSession.endY,
 				endLng 		: locationSession.endX,
-				endRange 	: loginInfo.endRange
+				endRange 	: myInfo.endRange
 			}, function(result) {
 				if (result.status == "success") {
 					initRoute();
@@ -1214,7 +1215,7 @@ var favoriteList = function() {
                     .data("locName", fvrtLoc[i].fvrtLocName)
 //                    .on("touchend", function(event) {
                     .click( function(event){
-                     	setEndSession(
+                    	setEndLocationSession(
                      			$(this).data("endX"),
                      			$(this).data("endY"),
                      			$(this).data("locName"),

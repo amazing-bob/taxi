@@ -96,13 +96,6 @@ public class MemberServiceImpl implements MemberService {
     }
   
 
-	public Object getRecentDestination(String mbrId) throws Exception {
-    	Map<String, String> paramsMap = new HashMap<String, String>();
-    	paramsMap.put("mbrId", mbrId);
-    	paramsMap.put("fvrtLocStatus", "R");
-    	return fvrtLocDao.getFvrtLoc(paramsMap); 
-    } 
-	
 	@Transactional(
             propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
 	public void frndRefresh(Mbr mbr) throws Exception {

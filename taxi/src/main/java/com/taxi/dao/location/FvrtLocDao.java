@@ -12,8 +12,6 @@ public interface FvrtLocDao {
 	
 /*	//====================== AS-IS =======================//
  	
-	List<FvrtLoc> getFvrtLoc(Map<String, String> paramsMap) throws Exception;
-	 
     int addFvrtLoc(FvrtLoc fvrtLoc);
     
     int deleteFvrtLoc(String mbrId) throws Exception;
