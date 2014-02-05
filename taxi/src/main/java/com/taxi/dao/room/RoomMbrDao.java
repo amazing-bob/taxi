@@ -8,6 +8,11 @@ import com.taxi.vo.room.RoomMbr;
 
 public interface RoomMbrDao {
 
+	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
+	
+	List<Map<String, Object>> getGcmTargetMapList(Map<String, Object> paramMap) throws Exception;
+	
+	int outRoom(Map<String, Object> paramMap) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  
@@ -29,5 +34,4 @@ public interface RoomMbrDao {
 	
 	List<RoomMbr> getAlramGcmTargetRoomMbrList(int roomNo) throws Exception;
 */
-	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
 }

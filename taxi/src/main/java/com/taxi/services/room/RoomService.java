@@ -14,6 +14,8 @@ public interface RoomService {
 	
 	Room getRoomInfo(int roomNo) throws Exception;
 	
+	void outRoom(int mbrNo, int roomNo) throws Exception;
+	
 /*	//====================== AS-IS =======================//
  
 	int addRoom(Room room, RoomPath startPath, RoomPath endPath, RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception;
