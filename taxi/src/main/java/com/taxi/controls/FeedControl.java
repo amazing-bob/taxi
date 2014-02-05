@@ -43,7 +43,51 @@ public class FeedControl {
 		}
 	
 	return jsonResult;
-}
+	}
+	@RequestMapping(value="/addFeed", method=RequestMethod.POST)
+	@ResponseBody
+	public Object addFeed(Feed feed) throws Exception {
+		System.out.println("피드 :" + feed.getMbrNo());
+		
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			jsonResult.setStatus("success")
+					   .setData(feedService.addFeed(feed));
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			StringWriter out = new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData(out.toString());
+		}
+	
+	return jsonResult;
+	}
+	@RequestMapping("/deleteFeed")
+	@ResponseBody
+	public Object delete(Feed feed) throws Exception {
+		
+		feedService.deleteFeed(feed);
+
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			jsonResult.setStatus("success");
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			StringWriter out = new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData(out.toString());
+		}
+	
+	return jsonResult;
+	}
 	
 /*  //====================== AS-IS =======================//
  	

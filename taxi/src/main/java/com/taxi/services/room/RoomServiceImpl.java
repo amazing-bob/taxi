@@ -61,6 +61,40 @@ public class RoomServiceImpl implements RoomService {
 		return searchRoomList;
 	}
 	
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public void outRoom(int mbrNo, int roomNo) throws Exception {
+		try{
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("roomNo", roomNo);
+			paramMap.put("mbrNo", mbrNo);
+			//RoomMbr roomMbr = roomMbrDao.getRoomMbrInfo(paramMap);
+			
+			int count = roomMbrDao.outRoom(paramMap);
+			
+//			if(count > 0){
+//				paramMap.put("roomNo", roomMbr.getRoomNo());
+//				paramMap.put("mbrId", roomMbr.getMbrId());
+//				
+//				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+//				for (Map<String, String> map : gcmTargetMapList) {
+//					map.put("roomAction", "outRoom" );
+//					map.put("roomNo", roomMbr.getRoomNo()+"" );
+//					map.put("mbrId", roomMbr.getMbrId() );
+//					map.put("mbrName", roomMbr.getMbrName() );
+//					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
+//					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
+//				}
+//				
+//				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
+//				
+//			}
+			
+		} catch(Exception e ) {
+			throw e;
+		}
+	}
+	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;

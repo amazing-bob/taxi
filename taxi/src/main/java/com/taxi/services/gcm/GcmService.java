@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface GcmService {
 
+	//void asyncSend(List<Map<String, Object>> gcmTargetMapList, Class<?> clazz) throws IOException, EOFException;
 /*	//====================== AS-IS =======================//
  	
     abstract void performService() throws Exception;

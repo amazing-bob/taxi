@@ -12,6 +12,8 @@ public interface RoomDao {
 	
 	Room getRoomInfo(int roomNo) throws Exception ;
 	
+	List<Room> getAlramGcmTargetRoomList(String criteriaTime) throws Exception;
+	
 /*	//====================== AS-IS =======================//
 
 	int addRoom(Room room) throws Exception;
