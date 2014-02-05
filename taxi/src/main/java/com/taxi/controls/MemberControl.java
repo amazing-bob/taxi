@@ -2,29 +2,17 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.taxi.services.member.MemberService;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.auth.LoginInfo;
-import com.taxi.vo.friend.Frnd;
-import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.member.Mbr;
 
 
@@ -208,5 +196,30 @@ public class MemberControl {
     	return jsonResult;
     }
 */
+	
+	@RequestMapping("/leaveMember")
+    @ResponseBody
+    public Object leaveMember(MyInfo myInfo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+         
+        try {
+        	
+        	
+        	
+        	memberService.leaveMember(myInfo.getMbrNo());
+        	jsonResult.setStatus("success");
+             
+             
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+             
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+         
+        return jsonResult;
+    }
 	
 }

@@ -157,4 +157,5 @@ public class MyInfo extends Mbr implements Serializable {
 		return this;
 	}
 	
+	
 }

@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 	$("#btnSettings").click(function(event) {
 //		event.stopPropagation();
-		changeHref("../setting/settings.html");
+		changeHref("../settings/settings.html");
 		return false;
 	});
 

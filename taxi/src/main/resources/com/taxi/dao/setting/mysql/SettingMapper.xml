@@ -40,6 +40,11 @@
         
     </update>
  -->	
+ 
+ 	<delete id="deleteSetting" parameterType="int"> 
+        delete from SETTING  
+        where MBR_NO=#{value}  
+    </delete> 
 
 </mapper>
 

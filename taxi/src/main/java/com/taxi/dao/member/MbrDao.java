@@ -1,11 +1,11 @@
 package com.taxi.dao.member;
 
-import com.taxi.vo.auth.LoginInfo;
-import com.taxi.vo.member.Mbr;
 
 
 
 public interface MbrDao {
+
+	void deleteMbr(int mbrNo);
 	
 	
 /*	//====================== AS-IS =======================//

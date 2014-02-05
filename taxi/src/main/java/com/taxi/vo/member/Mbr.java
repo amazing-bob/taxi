@@ -56,6 +56,7 @@ public class Mbr extends BaseMbr implements Serializable {
 		return (Mbr) super.setMbrUpdateDate(mbrUpdateDate);
 	}
 	
+
 /*	//====================== AS-IS =======================//
  	
 	protected String			mbrId;

@@ -19,5 +19,11 @@
         delete from FRND  
         where MBR_ID=#{value}  
     </delete> 
+    
  -->
+ 
+ 	<delete id="deleteFrnd" parameterType="int"> 
+        delete from FRND  
+        where MBR_NO=#{value}  
+    </delete> 
 </mapper>

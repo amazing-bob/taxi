@@ -23,6 +23,11 @@
 		order by 
 				RCNT_LOC_REG_DATE desc
     </select>
+    
+	<delete id="deleteRcntLocList" parameterType="int"> 
+        delete from RCNT_LOC  
+        where MBR_NO=#{value}  
+    </delete> 
 <!-- //====================== AS-IS =======================// -->
 <!--
 	

@@ -30,4 +30,6 @@ public interface RoomMbrDao {
 	List<RoomMbr> getAlramGcmTargetRoomMbrList(int roomNo) throws Exception;
 */
 	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
+
+	void deleteRoomMbr(int mbrNo);
 }
