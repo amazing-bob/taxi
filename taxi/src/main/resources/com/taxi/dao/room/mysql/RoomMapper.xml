@@ -3,22 +3,22 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomDao">    
-
 	 <resultMap id="roomResultMap" type="Room">
 	    <result 	property="roomNo" 			column="room_no"/>
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
-	    <result 	property="roomDistance" 	column="room_distance"/>
-	    <result 	property="roomFare" 		column="room_fare"/>
+	    <result 	property="roomMbrNumLimit" 	column="room_mbr_num_limit"/>
 	    <result 	property="roomRegDate" 		column="room_reg_date"/>
 	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
-	    <result 	property="differenceTime" 	column="differenceTime"/>
 	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
 	        select="com.taxi.dao.room.RoomPathDao.getRoomPathList"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
 	        select="com.taxi.dao.room.RoomMbrDao.getRoomMbrDetailList"/>
 	</resultMap>    
 	
-	 
+	 <!-- 
+		* 설  명: 
+		* 작성자: 
+	 -->
 	 <select id="getRoomInfo" parameterType="int" resultType="Room">
 		select
 				ROOM_NO 		as roomNo
@@ -30,83 +30,113 @@
 			and	ROOM_NO = #{value}
 	</select>
 	
-
+	
+	<!-- 
+		* 설  명: 방 목록 조회
+		* 작성자: 김상헌
+	 -->
 	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
 	    <![CDATA[
-		SELECT
-				a.room_no
-		    , 	a.room_start_time
-		    , 	a.room_distance
-		    , 	a.room_fare
-		    , 	a.room_reg_date
-		    ,	count( b.mbr_id ) as roomMbrCount
-		FROM
-				ROOM a, ROOM_MBR b
-		WHERE
-				1 = 1
-			AND	a.room_no = b.room_no
-		    AND a.room_start_time > NOW()
-		    AND a.room_no IN (
-		    					SELECT
-		    							x1.room_no
-		    					FROM
+		select
+				A.ROOM_NO
+		    , 	A.ROOM_START_TIME
+		    , 	A.ROOM_MBR_NUM_LIMIT
+		    , 	A.ROOM_REG_DATE
+		    ,	count( B.MBR_NO ) as roomMbrCount
+		from
+				ROOM A
+			, 	ROOM_MBR B
+		where   
+                1 = 1
+		and	    A.ROOM_NO = B.ROOM_NO
+        and     A.ROOM_START_TIME > now()
+        and     A.ROOM_NO in (
+		    					-- 출발지 & 목적지 조건
+		    					select
+		    							X1.ROOM_NO
+		    					from
 		    							(
-					                        SELECT
-					                                x1.room_no
-					                        FROM
-					                                ROOM_PATH x1
-					                        WHERE
+					                        select
+					                                X1.ROOM_NO
+					                        from
+					                                ROOM_PATH X1
+					                        where
 					                                1 = 1
-					                            AND x1.path_rank = 0
-					                            AND SQRT(POW(#{startLat} - x1.path_lat, 2) + POW(#{startLng} - x1.path_lng, 2)) <= #{startRange}
-		    							) x1,
+					                            and X1.PATH_RANK = 0
+					                            and sqrt(pow(#{startLat} - X1.PATH_LAT, 2) + pow(#{startLng} - X1.PATH_LNG, 2)) <= #{startRange}
+		    							) X1,
 		    							(
-				                            SELECT
-					                                x2.room_no
-					                        FROM
-					                                ROOM_PATH x2
-					                        WHERE
+				                            select
+					                                X2.ROOM_NO
+					                        from
+					                                ROOM_PATH X2
+					                        where
 					                                1 = 1
-					                            AND x2.path_rank = 99
-					                            AND SQRT(POW(#{endLat} - x2.path_lat, 2) + POW(#{endLng} - x2.path_lng, 2)) <= #{endRange}
-		    							) x2
-    							WHERE
+                                            and     X2.PATH_RANK = 99
+                                            and     sqrt(pow(#{endLat} - X2.PATH_LAT, 2) + pow(#{endLng} - X2.PATH_LNG, 2)) <= #{endRange}
+		    							) X2
+    							where
     									1 = 1
-   									AND	x1.room_no = x2.room_no
+								and	    X1.ROOM_NO = X2.ROOM_NO
 							)
-		    AND EXISTS (
-		                SELECT  1
-		                FROM
-		                        ROOM_MBR x1
-		                    ,   FRND x2
-		                WHERE
-		                        1 = 1
-		                    AND x1.room_no = a.room_no
-		                    AND x1.mbr_id = x2.frnd_id
-		                    AND x2.mbr_id = #{mbrId}
-
-		                UNION ALL
-
-		                SELECT  1
-		                FROM
-		                        ROOM_MBR x1
-		                    ,   FRND x2
-		                    ,   FRND x3
-		                WHERE
-		                        1 = 1
-		                    AND a.room_no = x1.room_no
-		                    AND x2.frnd_id = x3.frnd_id
-		                    AND x2.mbr_id = x1.mbr_id
-		                    AND x3.mbr_id = #{mbrId}
-		                )
-		GROUP BY
-				a.room_no, a.room_start_time, a.room_distance, a.room_fare, a.room_reg_date
-		HAVING
-				count( b.mbr_id ) < 4
-		ORDER BY
-				a.room_start_time
-
+	    and     A.ROOM_NO in (
+	                            -- 친구 관계 조건
+	    		                select  ROOM_NO
+	    		                from
+	    		                        ROOM_MBR X
+	    		                    ,   MBR Y
+	                                ,   FRND Z
+	    		                where   
+	                                    1 = 1
+	    	                    and     Y.MBR_PHONE_NO = Z.FRND_PHONE_NO
+	                            and     Y.MBR_NO = X.MBR_NO
+	                            and     Z.MBR_NO =  #{mbrNo}
+	
+	    		                union all
+	                            
+	                            -- 친구의 친구 관계 조건
+	    		                select  ROOM_NO
+	    		                from
+	    		                        ROOM_MBR X
+	    		                    ,   FRND Y
+	    		                    ,   FRND Z
+	    		                where   
+	                                    1 = 1
+	                            and     Y.FRND_PHONE_NO = Z.FRND_PHONE_NO
+	                            and     Y.MBR_NO = X.MBR_NO
+	                            and     Z.MBR_NO =  #{mbrNo}			                
+			                )
+		group by
+				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
+		having
+				count( B.MBR_NO ) < A.ROOM_MBR_NUM_LIMIT
+		order by
+				A.ROOM_START_TIME
  		]]>
+	</select>
+	
+	
+	<!--
+	* 설  명: 참여하고 있는 방 조회
+	* 작성자: 김상헌
+	-->
+	<select id="hasRooom" parameterType="int" resultMap="roomResultMap">
+		select 	
+				A.ROOM_NO
+		    , 	A.ROOM_START_TIME
+		    , 	A.ROOM_MBR_NUM_LIMIT
+		    , 	A.ROOM_REG_DATE
+		    ,	count( B.MBR_NO ) as roomMbrCount
+		from 	
+				ROOM A
+			, 	ROOM_MBR B
+		where 	
+				1 = 1
+		and	    A.ROOM_NO = B.ROOM_NO
+        and     A.ROOM_START_TIME > now()
+		and 	B.MBR_NO = #{value}
+		group by
+				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
 	</select>
     
 

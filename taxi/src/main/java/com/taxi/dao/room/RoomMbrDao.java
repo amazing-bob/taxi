@@ -7,7 +7,6 @@ import com.taxi.vo.room.RoomMbr;
 
 
 public interface RoomMbrDao {
-
 	
 /*	//====================== AS-IS =======================//
  
@@ -18,8 +17,6 @@ public interface RoomMbrDao {
 	RoomMbr getRoomMbrInfo(Map<String, Object> paramMap) throws Exception;
 	
 	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
-
-	int isRoomMbr(String mbrrId) throws Exception;
 
 	RoomMbr getVirtualRoomMbr(RoomMbr roomMbr) throws Exception;
 

@@ -40,7 +40,7 @@ public class MapControl {
 			System.out.println("url :: " + url);
 			
 			HttpGet get = new HttpGet(url);
-			get.setHeader("authorization", "Basic ODEwMDFFRkE6VDc3REVGRjhCMUQzMzA=");
+			get.setHeader("authorization", "Basic VThnQjRtU3ZPUHlUQkxKWVMzeU1HaVpkM2ljQ1RNNWQ3Y0JXT05wc2IyZTB2QlByOFk6dUNvYm9tbHROMUZQR0NCVjB1SnZyZngxQ1dhb3JkV21DY1U4Rm0wZkJKelhqQlN6VkE=");
 			
 			responseGet = new DefaultHttpClient().execute(get);
 			resEntity = responseGet.getEntity();

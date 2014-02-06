@@ -5,8 +5,10 @@ var rootPath = "http://localhost:9999/taxi";		//로컬
 
 var myInfo;
 
+
 /**
- * ajax 로딩 초기설정
+ * 설  명: ajax 로딩이미지 초기설정
+ * 작성자: 김상헌
  */
 var initAjaxLoading = function() {
 	$( document ).ajaxStart(function() {
@@ -23,8 +25,13 @@ var initAjaxLoading = function() {
 	});
 };
 
+
 /**
- * sessionStorage 에 값 설정하기
+ * 설  명: sessionStorage 에 값 설정하기
+ * 작성자: 김상헌
+ * param:
+ * 		key 	: SessionStorage에 저장할 key값
+ * 		value 	: 저장 할 Json객체
  */
 var setSessionItem = function (key, value) {
 	console.log("setSessionItem(key, value)");
@@ -32,8 +39,12 @@ var setSessionItem = function (key, value) {
 	sessionStorage.setItem(key, JSON.stringify(value));
 };
 
+
 /**
- * sessoinStorage 값 가져오기
+ * 설  명: sessoinStorage 값 가져오기
+ * 작성자: 김상헌
+ * param:
+ * 		key 	: SessionStorage에 저장 한 key값
  */
 var getSessionItem = function (key) {
 	console.log("getSessionItem(key)");
@@ -41,16 +52,22 @@ var getSessionItem = function (key) {
 	return JSON.parse(sessionStorage.getItem(key));
 };
 
+
 /**
- * sesisonStorage 에서 아이템 제거
+ * 설  명: sesisonStorage 에서 아이템 제거
+ * 작성자: 김상헌
+ * param:
+ * 		key 	: SessionStorage에 저장 한 key값
  */
 var removeSessionItem = function (key) {
 	console.log("removeSessionItem(key)");
 	sessionStorage.removeItem(key);
 };
 
+
 /**
- * sessionStorage 비우기
+ * 설  명: sessionStorage 에 등록된것 전부 지우기
+ * 작성자: 김상헌
  */
 var clearSession = function () {
 	console.log("clearSession()");
@@ -58,8 +75,10 @@ var clearSession = function () {
 };
 setSessionItem("rootPath", "/" + window.location.pathname.split("/")[1]);
 
+
 /**
- * location.href를 이용해서 화면 이동
+ * 설  명: location.href를 이용해서 화면 이동
+ * 작성자: 김상헌
  */
 var changeHref = function (url, jsonObject) {
 	console.log("changeHref(url, jsonObjec)");
@@ -72,8 +91,11 @@ var changeHref = function (url, jsonObject) {
 	window.location.href = url;
 };
 
+
 /**
- * 파라미터 가져오기
+ * 설  명: 파라미터 가져오기
+ * 작성자: 김상헌
+ * 
  */
 var getHrefParams = function () {
 	console.log("getHrefParams()");
@@ -84,7 +106,8 @@ var getHrefParams = function () {
 };
 
 /**
- * 현재 html 경로 가져오기
+ * 설  명: 현재 html 경로 가져오기
+ * 작성자: 김상헌
  */
 var getCurrentHtmlPath = function() {
 	console.log("getCurrentHtmlPath()");
@@ -101,7 +124,8 @@ var getCurrentHtmlPath = function() {
 
 
 /**
- * 내정보 가져오기
+ * 설  명: 내정보 가져오기
+ * 작성자: 김상헌
  */
 var getMyInfo = function() {
 	console.log("getMyInfo{()");
@@ -115,7 +139,8 @@ var getMyInfo = function() {
 
 
 /**
- * 로그인 체크
+ * 설  명: 로그인 체크
+ * 작성자: 김상헌
  */
 //var authCheck = function () {
 //	console.log("authCheck()");
@@ -138,31 +163,35 @@ var getMyInfo = function() {
 //authCheck();
 
 /**
- * 방 참여 여부
+ * 설  명: 방 참여 여부
+ * 작성자: 김상헌
  */
 var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
-	console.log("isRoomMbr()");
-	$.getJSON( rootPath + "/room/isRoomMbr.do", function(result) {
-		if (result.status == "success") {
-//			console.log(result.data);
-			setSessionItem("isRoomMbr", result.data);
-
-			if (result.data === true) {
-				isRoomMbrTrue();
-        	} else {
-        		isRoomMbrFalse();
-        	}
-
-		} else {
-			alert("요청 처리중 오류 발생");
-		}
+	console.log("isRoomMbr(isRoomMbrTrue, isRoomMbrFalse)");
+	
+	$.getJSON( rootPath + "/room/isRoomMbr.do"
+			, myInfo
+			, function(result) {
+				if (result.status == "success") {
+					setSessionItem("isRoomMbr", result.data);
+		
+					if (result.data === true) {
+						isRoomMbrTrue();
+		        	} else {
+		        		isRoomMbrFalse();
+		        	}
+		
+				} else {
+					alert("요청 처리중 오류 발생");
+				}
 	});
 };
 
 
 /**
- * 출발지 SessionStorage에 저장
- * params (
+ * 설  명: 출발지 SessionStorage에 저장
+ * 작성자: 김상헌
+ * param: 
  * 		x 			: 지도의 x좌표,
  * 		y 			: 지도의 y좌표,
  * 		locName		: 지명
@@ -221,8 +250,9 @@ var setStartLocationSession = function(x, y, locName, prefix, callbackFunc) {
 };
 
 /**
- * 목적지 SessionStorage에 저장
- * params (
+ * 설  명: 목적지 SessionStorage에 저장
+ * 작성자: 김상헌
+ * param:
  * 		x 			: 지도의 x좌표,
  * 		y 			: 지도의 y좌표,
  * 		locName		: 지명
@@ -282,7 +312,8 @@ var setEndLocationSession = function(x, y, locName, prefix, callbackFunc) {
 
 
 /**
- * locationSession 객체 머징
+ * 설  명: locationSession 객체 머징
+ * 작성자: 김상헌
  */
 var mergeLocationSession = function( startEndSession ) {
 	console.log("mergeLocationSession(startEndSession)");
@@ -301,9 +332,10 @@ var mergeLocationSession = function( startEndSession ) {
 
 
 /**
- * 거리에 따라 보여지는 형식 변경
- * 1000m 이하: m
- * 1000m 이상: km
+ * 설  명: 거리에 따라 보여지는 형식 변경
+ * 		1000m 이하: m
+ * 		1000m 이상: km
+ * 작성자: 김상헌
  */
 var changeDistanceUnit = function(distance) {
 	console.log("changeDistanceUnit(distance)");
@@ -319,7 +351,8 @@ var changeDistanceUnit = function(distance) {
 };
 
 /**
- * 택시요금 계산
+ * 설  명: 택시요금 계산
+ * 작성자: 김상헌
  */
 var calcTaxiFare = function(distance) {
 	console.log("calcTaxiFare(distance)");
@@ -340,7 +373,8 @@ var calcTaxiFare = function(distance) {
 
 
 /**
- * 푸쉬 관련 객체
+ * 설  명: 푸쉬 관련 객체
+ * 작성자: 김상헌
  */
 var push = {
 	registerAction: undefined,
@@ -493,7 +527,8 @@ var push = {
 
 
 /**
- * swipe up & down
+ * 설  명: swipe up & down
+ * 작성자: 김상헌
  */
 (function() {
     var supportTouch = $.support.touch,

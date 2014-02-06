@@ -4,9 +4,13 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomPathDao">
     
+    <!-- 
+		* 설  명: 출발지 & 목적지 & 경유지 조회
+		* 작성자: 김상헌
+	 -->
 	<select id="getRoomPathList" parameterType="int" resultType="RoomPath">
 	    SELECT
-		    	room_no		AS roomNO,
+		    	room_no		AS roomNo,
 		    	path_rank	AS pathRank,
 		    	path_name	AS pathName,
 		    	path_lat	AS pathLat,

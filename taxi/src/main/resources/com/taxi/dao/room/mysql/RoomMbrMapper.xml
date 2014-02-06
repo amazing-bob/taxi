@@ -4,7 +4,11 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomMbrDao">
 
-<select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
+    <!-- 
+		* 설  명: 
+		* 작성자: 
+	 -->
+	<select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
 	    select
 	              c.ROOM_NO 			as roomNo  
 	            , c.MBR_NO				as mbrNo 
@@ -86,6 +90,8 @@
 	    order by 
 	    	c.ROOM_MBR_RANK
 	</select>
+	
+	
     
 <!-- //====================== AS-IS =======================// -->
 <!-- 
@@ -132,16 +138,6 @@
 			AND	a.ROOM_NO = #{roomNo}
 			AND	a.MBR_ID = #{mbrId}
 	</select> 
-
-
-	<select id="isRoomMbr" parameterType="String" resultType="int">
-		SELECT 	count(*)
-		FROM 	ROOM a, ROOM_MBR b
-		WHERE 	1 = 1
-			AND	a.room_no = b.room_no
-			AND b.mbr_id = #{value}
-			AND a.room_start_time > now()
-	</select>
 
 
 	<select id="getVirtualRoomMbr" parameterType="roomMbr" resultType="roomMbr">

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taxi.services.room.RoomService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.LoginInfo;
+import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.LocationSession;
 import com.taxi.vo.room.Room;
@@ -49,7 +50,10 @@ public class RoomControl {
         return jsonResult;
     }
 
-	
+	/**
+	 * 설  명: 방 목록 조회
+	 * 작성자: 김상헌 
+	 */
 	@RequestMapping("/searchRooms")
 	@ResponseBody
 	public JsonResult searchRooms( int mbrNo,
@@ -82,6 +86,35 @@ public class RoomControl {
 
 		return jsonResult;
 	}
+	
+	/**
+	 * 설  명: 방 참여 여무 조회
+	 * 작성자: 김상헌 
+	 */
+    @RequestMapping("/isRoomMbr")
+    @ResponseBody
+    public JsonResult isRoomMbr( MyInfo myInfo ) throws Exception {
+
+    	JsonResult jsonResult = new JsonResult();
+    	
+    	try {
+	    	boolean isRoomMbr = roomService.isRoomMbr( myInfo.getMbrNo() );
+	    	
+    		jsonResult.setData(isRoomMbr);
+    		jsonResult.setStatus("success");
+	    	
+    	} catch (Throwable e) {
+    		e.printStackTrace();
+    		StringWriter out = new StringWriter();
+    		e.printStackTrace(new PrintWriter(out));
+
+    		jsonResult.setStatus("fail");
+    		jsonResult.setData(out.toString());
+    	}
+    	return jsonResult;
+    }
+	
+	
 //	@RequestMapping(value="/setLocationSession")
 //	@ResponseBody
 //	public Object setLocationSession(
@@ -154,30 +187,6 @@ public class RoomControl {
 //	}
 	
 /*	//====================== AS-IS =======================//
- 	
-    @RequestMapping("/isRoomMbr")
-    @ResponseBody
-    public JsonResult isRoomMbr(HttpSession session) throws Exception {
-
-    	JsonResult jsonResult = new JsonResult();
-    	try {
-	    	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-
-	    	boolean result = roomService.isRoomMbr(loginInfo.getMbrId());
-    		jsonResult.setStatus("success");
-    		jsonResult.setData(result);
-	    	
-    	} catch (Throwable e) {
-    		e.printStackTrace();
-    		StringWriter out = new StringWriter();
-    		e.printStackTrace(new PrintWriter(out));
-
-    		jsonResult.setStatus("fail");
-    		jsonResult.setData(out.toString());
-    	}
-    	return jsonResult;
-    }
-
 
     @RequestMapping("/addRoom")
     @ResponseBody

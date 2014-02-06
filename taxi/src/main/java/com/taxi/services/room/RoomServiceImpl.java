@@ -30,6 +30,10 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomMbrDao roomMbrDao;
 	@Autowired RoomPathDao roomPathDao;
 	
+	/**
+	 * 설  명:  
+	 * 작성자: 
+	 */
 	public Room getRoomInfo( int roomNo ) throws Exception {
 		Room roomInfo = roomDao.getRoomInfo(roomNo);
 		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrDetailList( roomInfo.getRoomNo() );
@@ -42,23 +46,42 @@ public class RoomServiceImpl implements RoomService {
 		
 	}
 	
-	
+	/**
+	 * 설  명: 방 목록 조회
+	 * 작성자: 김상헌
+	 */
 	public List<Room> searchRooms( int mbrNo,
 			double startLat	, double startLng	, int startRange,
 			double endLat	, double endLng		, int endRange ) throws Exception {
 		
 		Map<String, Object> paramMap  = new HashMap<String, Object>();
-		paramMap.put("mbrNo", mbrNo);
-		paramMap.put("startLat", startLat);
-		paramMap.put("startLng", startLng);
-		paramMap.put("startRange", startRange);
-		paramMap.put("endLat", endLat);
-		paramMap.put("endLng", endLng);
-		paramMap.put("endRange", endRange);
+		paramMap.put("mbrNo"		, mbrNo);
+		paramMap.put("startLat"		, startLat);
+		paramMap.put("startLng"		, startLng);
+		paramMap.put("startRange"	, startRange);
+		paramMap.put("endLat"		, endLat);
+		paramMap.put("endLng"		, endLng);
+		paramMap.put("endRange"		, endRange);
 
 		List<Room> searchRoomList = roomDao.getRoomList(paramMap);
 		
 		return searchRoomList;
+	}
+	
+	
+	/**
+	 * 설  명: 방에 참여 여부 조회
+	 * 작성자: 김상헌
+	 */
+	public boolean isRoomMbr(int mbrNo) throws Exception {
+		
+		Room myRoom = roomDao.hasRooom(mbrNo);
+
+		if ( myRoom == null || myRoom.getRoomNo() == 0 ) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 /*	//====================== AS-IS =======================//
@@ -67,24 +90,6 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired FvrtLocDao fvrtLocDao;  
 	@Autowired FeedDao feedDao;
 	@Autowired PlatformTransactionManager txManager;
-	
-
-	
-	
-	public boolean isRoomMbr(String memberId) throws Exception {
-		try {
-			int count = roomMbrDao.isRoomMbr(memberId);
-
-			if (count > 0) {
-				return true;
-			} else {
-				return false;
-			}
-			
-		} catch (Exception e) {
-			throw e;
-		}
-	}
 	
 	
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 

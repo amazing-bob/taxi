@@ -8,9 +8,23 @@ import com.taxi.vo.room.Room;
 
 public interface RoomDao {
 
+	/**
+	 *  설  명: 참여하고 있는 방 조회
+	 *  작성자: 김상헌
+	 */
 	List<Room> getRoomList(Map<String, Object> paramMap) throws Exception;
 	
+	/**
+	 * 설  명: 
+	 * 작성자: 
+	 */
 	Room getRoomInfo(int roomNo) throws Exception ;
+	
+	/**
+	 *  설  명: 참여하고 있는 방 조회
+	 *  작성자: 김상헌
+	 */
+	Room hasRooom(int mbrNo) throws Exception;
 	
 /*	//====================== AS-IS =======================//
 

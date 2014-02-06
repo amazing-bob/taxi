@@ -42,7 +42,7 @@ $(document).ready(function() {
 
 	$("#btnSettings").click(function(event) {
 //		event.stopPropagation();
-		changeHref("../setting/settings.html");
+		changeHref("../settings/settings.html");
 		return false;
 	});
 
@@ -243,8 +243,10 @@ $(document).ready(function() {
 	
 }); //ready()
 
+
 /**
- * deviceready 이벤트
+ * 설  명: deviceready 이벤트
+ * 작성자: 김상헌
  */
 var onDeviceReady = function() {
 	console.log("onDeviceReady()");
@@ -254,8 +256,10 @@ var onDeviceReady = function() {
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);	
 };
 
+
 /**
- * 방 만들기 출발시간 초기화
+ * 설  명: 방 만들기 출발시간 초기화
+ * 작성자: 김상헌
  */
 var initStartTime = function() {
 	console.log()
@@ -316,7 +320,8 @@ var initStartTime = function() {
 };
 
 /**
- * 방목록 iScroll 로딩
+ * 설  명: 방목록 iScroll 로딩
+ * 작성자: 김상헌
  */
 function loaded() {
 	console.log("loadRoomScroll()");
@@ -358,7 +363,8 @@ document.addEventListener('touchmove', function (e) { e.preventDefault(); }, fal
 document.addEventListener('DOMContentLoaded', loaded, false);
 
 /**
- * 초기화
+ * 설  명: 초기화
+ * 작성자: 김상헌
  */
 var init = function() {
 	console.log("init()");
@@ -414,7 +420,8 @@ var init = function() {
 
 
 /**
- * 출발지 검사
+ * 설  명: 출발지 검사
+ * 작성자: 김상헌
  */
 var checkStartLocation = function() {
 	console.log("checkStartLocation()");
@@ -445,7 +452,8 @@ var checkStartLocation = function() {
 
 
 /**
- * 출발지 설정
+ * 설  명: 출발지 설정
+ * 작성자: 김상헌
  */
 var setStartLocation = function (x, y, locName, prefix) {
 	console.log("setStartLocation()");
@@ -483,7 +491,8 @@ var setStartLocation = function (x, y, locName, prefix) {
 
 
 /**
- * 목적지 검사
+ * 설  명: 목적지 검사
+ * 작성자: 김상헌
  */
 var checkEndLocation = function() {
 	console.log("checkEndLocation()");
@@ -545,7 +554,8 @@ var checkEndLocation = function() {
 
 
 /**
- * 목적지 설정
+ * 설  명: 목적지 설정
+ * 작성자: 김상헌
  */
 var setEndLocation = function (x, y, locName, prefix) {
 	console.log("setEndLocation()");
@@ -587,7 +597,8 @@ var setEndLocation = function (x, y, locName, prefix) {
 };
 
 /**
- * 지도에 반경 표시
+ * 설  명: 지도에 반경 표시
+ * 작성자: 김상헌
  */
 var setCircle = function( coord, color, radius ) {
 	console.log("setCircle(coord, color, radius)");
@@ -608,7 +619,8 @@ var setCircle = function( coord, color, radius ) {
 };
 
 /**
- * 위치 검색
+ * 설  명: 위치 검색
+ * 작성자: 김상헌
  */
 var searchLocation = function( target ) {
     console.log("searchLocation()");
@@ -631,7 +643,8 @@ var searchLocation = function( target ) {
 };
 
 /**
- * 방 목록 조회
+ * 설  명: 방 목록 조회
+ * 작성자: 김상헌
  */
 var searchRooms = function() {
 	console.log("searchRooms()");
@@ -653,17 +666,16 @@ var searchRooms = function() {
 			, function(result) {
 				if (result.status == "success") {
 					initRoute();
-
+					
 					var searchRoomList = result.data;
 
-					var roomPathList = null;
-					var roomMbrList = null;
-					var startInfo = null;
-					var endInfo = null;
-					var waypoints = [];
-					var startTime = null;
-					var isMyRoom = "false";
-					var loginInfo = getSessionItem("loginInfo");
+					var roomPathList 	= null;
+					var roomMbrList 	= null;
+					var startInfo 		= null;
+					var endInfo 		= null;
+					var waypoints 		= [];
+					var startTime 		= null;
+					var isMyRoom 		= "false";
 
 					var roomList = [];
 
@@ -678,13 +690,9 @@ var searchRooms = function() {
 						startTime = new Date(searchRoomList[i].roomStartTime);
 						startTime = startTime.toTimeString().substr(0, 5);
 
-						isMyRoom = "false";
-						for ( var j in roomMbrList ) {
-							if ( roomMbrList[j].mbrId == loginInfo.mbrId ) {
-								isMyRoom = "true";
-							}
-						}
+						isMyRoom = isIRoomMember( roomMbrList, myInfo.mbrNo );
 
+						// 출발지 & 목적지 & 경유지 설정
 						for ( var j in roomPathList) {
 							if ( roomPathList[j].pathRank == 0 ) {
 								startInfo = roomPathList[j];
@@ -697,24 +705,25 @@ var searchRooms = function() {
 
 							}
 						}
-
+ 
 						roomList[i] = {
-							roomNo : searchRoomList[i].roomNo,
-							startTime : startTime,
+							roomNo 		: searchRoomList[i].roomNo,
+							startTime 	: startTime,
 							roomDistance: searchRoomList[i].roomDistance,
-							startX : startInfo.pathLng,
-							startY : startInfo.pathLat,
-							endX : endInfo.pathLng,
-							endY: endInfo.pathLat,
-							roomMbrCount : searchRoomList[i].roomMbrCount,
-							isMyRoom : isMyRoom,
-							waypoints : waypoints,
+							startX 		: startInfo.pathLng,
+							startY 		: startInfo.pathLat,
+							endX 		: endInfo.pathLng,
+							endY 		: endInfo.pathLat,
+							roomMbrCount: searchRoomList[i].roomMbrCount,
+							isMyRoom 	: isMyRoom,
+							waypoints 	: waypoints,
 							roomMbrList : roomMbrList,
-							roomPathList : roomPathList
+							roomPathList: roomPathList
 						};
 
 					}
 
+					// 내방 여부에 따른 화면 세팅
 					isRoomMbr( function() { // isRoomMbrTrue
 						$("#btnAddViewRoom > img").attr("src", "../images/common/button/into_room.png");
 						$("#btnAddViewRoom").data("status", "intoMyRoomBtn");
@@ -740,8 +749,30 @@ var searchRooms = function() {
 			}, "json");
 };
 
+
 /**
- * 방목록 그리기
+ * 설  명: 내가 참여하고 있는 방여부 판단
+ * 작성자: 김상헌
+ * param:
+ * 		roomMbrList : 방멤버리스트
+ * 		myInfo 		: 회원번호
+ */
+var isIRoomMember = function( roomMbrList, myMbrNo ) {
+	console.log("isMyRoom(roomMbrList)");
+//	console.log(roomMbrList);
+	
+	for ( var j in roomMbrList ) {
+		if ( roomMbrList[j].mbrNo == myMbrNo ) {
+			return "true";
+		}
+	}
+	return "false";
+};
+
+
+/**
+ * 설  명: 방목록 그리기
+ * 작성자: 김상헌
  */
 var createRoomList = function( roomList, isRoomMbr ) {
 	console.log("createRoomList( roomList, isRoomMbr )");
@@ -948,7 +979,8 @@ var createRoomList = function( roomList, isRoomMbr ) {
 };
 
 /**
- * 경로 초기화
+ * 설  명: 경로 초기화
+ * 작성자: 김상헌
  */
 var initRoute = function() {
 	if (directionsRenderer) {
@@ -963,7 +995,8 @@ var initRoute = function() {
 };
 
 /**
- * 방 만들기
+ * 설  명: 방 만들기
+ * 작성자: 김상헌
  */
 var addRoom = function(regId) {
 	console.log("addRoom()");
@@ -1023,7 +1056,8 @@ var addRoom = function(regId) {
 };
 
 /**
- * 경로 찾기
+ * 설  명: 경로 찾기
+ * 작성자: 김상헌
  */
 var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute(startX, startY, endX, endY, callbackFunc, waypoints)");
@@ -1087,7 +1121,8 @@ var directionsService_callback = function (data) {
 };
 
 /**
- * 경로 마커 표시
+ * 설  명: 경로 마커 표시
+ * 작성자: 김상헌
  */
 var setWaypointMarker = function( coord, imageUrl ) {
 	console.log("setWaypointMarker(coord, imageUrl)");
@@ -1113,7 +1148,8 @@ var setWaypointMarker = function( coord, imageUrl ) {
 
 
 /**
- * 방 만들기 & 내방가기 버튼 클릭
+ * 설  명: 방 만들기 & 내방가기 버튼 클릭
+ * 작성자: 김상헌
  */
 var clickAddViewRoom = function() {
 	if ($("#btnAddViewRoom").data("status") == "intoMyRoomBtn") {
@@ -1125,8 +1161,10 @@ var clickAddViewRoom = function() {
 	}	
 };
 
+
 /**
- * 내방가기
+ * 설  명: 내방가기
+ * 작성자: 김상헌
  */
 var goMyroom = function() {
 	console.log("goMyroom()");
@@ -1143,8 +1181,10 @@ var goMyroom = function() {
 	});
 };
 
+
 /**
- * 방 만들기 출발시간 설정 팝업 보이기
+ * 설  명: 방 만들기 출발시간 설정 팝업 보이기
+ * 작성자: 김상헌
  */
 var showAddRoomTimePicker = function() {
 	console.log("showAddRoomTimePicker()");
@@ -1162,8 +1202,10 @@ var showAddRoomTimePicker = function() {
     } );
 };
 
+
 /**
- * 방 참여하기
+ * 설  명: 방 참여하기
+ * 작성자: 김상헌
  */
 var joinRoom = function(regId, roomNo) {
 	console.log("joinRoom(regId, roomNo)");
@@ -1197,8 +1239,10 @@ var joinRoom = function(regId, roomNo) {
 		    });
 };
 
+
 /**
- * 즐겨찾기 목록
+ * 설  명: 즐겨찾기 목록
+ * 작성자: 김상헌
  */
 var favoriteList = function() {
     console.log("favoriteList()");
@@ -1256,8 +1300,10 @@ var favoriteList = function() {
     });
 };
 
+
 /**
- * 관계도 그리기
+ * 설  명: 관계도 그리기
+ * 작성자: 김상헌
  */
 var showRelationInfo = function(roomInfo, idx) {
 	console.log("showRelationInfo(roomInfo, idx)");
@@ -1275,8 +1321,10 @@ var showRelationInfo = function(roomInfo, idx) {
 
 };
 
+
 /**
- * 뒤로가기 버튼 처리
+ * 설  명: 뒤로가기 버튼 처리
+ * 작성자: 김상헌
  */
 var FINSH_INTERVAL_TIME = 2000;
 var backPressedTime = 0;
@@ -1300,8 +1348,10 @@ var touchBackBtnCallbackFunc = function() {
 	}
 };
 
+
 /**
- * background black 처리
+ * 설  명: background black 처리
+ * 작성자: 김상헌
  */
 var backgroundBlack = function() {
 	$("#blackImage").css("visibility","visible");
