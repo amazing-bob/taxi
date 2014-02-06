@@ -4,7 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.taxi.dao.keyword.KeywordRelDao">
-
+	<delete id="deleteKeywordRelData" parameterType="int"> 
+        delete from KEYWORD_REL  
+        where MBR_NO=#{value}  
+    </delete> 
  
 </mapper> 
 

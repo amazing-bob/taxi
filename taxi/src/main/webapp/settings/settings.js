@@ -46,7 +46,10 @@ $(document).ready(function() {
 		$(".btnRefresh").css("border-radius","40px");
 		frndRefresh();
 	});
-
+	
+	
+	
+	// 회원 탈퇴 버튼 눌럿을 때 일단 확인 팝업을 띄워 한번더 확인하는부분.
 	$("#btnLeave").click(function(){
 		leaveMember();
 	});
@@ -339,26 +342,27 @@ function frndRefresh() {
 };
 
 //회원탈퇴
+//초기 앱실행시 myinfo 객체에 개인정보가 셋팅 되어있기때문에 따로 서버에 가따올 필요가 없음.
+
 function leaveMember() {
-	$.getJSON(rootPath + "/auth/loginInfo.do", function(result) {
-		if(result.status == "success") {
-			var loginInfo=result.data;
-			$.post(rootPath + "/member/leaveMember.do",
-					{mbrId: loginInfo.mbrId},
-					function(result) {
-						if(result.status == "success") {
-							Toast.shortshow("탈퇴가 성공적으로 되었습니다.");
-							facebookLogout();
-						} else {
-							Toast.shortshow("실행중 오류발생!");
-							console.log(loginInfo);
-						}
-					},
-			"json");
-		} else {
-			console.log(result.data);
-		}
-	});
+	console.log(myInfo);
+	$.post(rootPath + "/member/leaveMember.do",
+			myInfo,
+			function(result) {
+				if(result.status == "success") {
+					
+					removeSessionItem("myInfo");
+					/*Toast.shortshow("탈퇴가 성공적으로 되었습니다.");*/
+					alert("회원탈퇴 성공");
+					changeHref("../auth/auth.html");
+					console.log("처리됨");
+//					facebookLogout();	//이 부분은 아직 나중에 처리 하고.
+				} else {
+					/*Toast.shortshow("실행중 오류발생!");*/
+					console.log(myInfo);
+				}
+			},
+	"json");
 }
 
 function deleteFvrtLoc() {

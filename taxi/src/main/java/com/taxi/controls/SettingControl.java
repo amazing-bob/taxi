@@ -25,6 +25,17 @@ public class SettingControl {
 	@Autowired ServletContext sc;
 	@Autowired SettingService settingService;
 	
+	
+	@RequestMapping("/logout")
+	@ResponseBody
+	public Object logout(SessionStatus status) throws Exception {
+		System.out.println("logout()");
+		status.setComplete();
+		JsonResult jsonResult = new JsonResult();
+		jsonResult.setStatus("success");
+
+		return jsonResult;
+	}
 /*	//====================== AS-IS =======================//
  
 	@RequestMapping(value="/getRange")

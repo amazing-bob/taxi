@@ -28,6 +28,8 @@ public interface RoomService {
 	 */
 	boolean isRoomMbr(int mbrNo) throws Exception;
 	
+	void outRoom(int mbrNo, int roomNo) throws Exception;
+	
 /*	//====================== AS-IS =======================//
  
 	int addRoom(Room room, RoomPath startPath, RoomPath endPath, RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception;

@@ -152,6 +152,9 @@ public class AuthControl {
 		return jsonResult;
 	}
 	
+	
+	// 111111111111111
+	 
 	// LoginInfo 세션 
 	@RequestMapping(value="/loginInfo")
 	@ResponseBody

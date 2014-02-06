@@ -35,6 +35,11 @@
         where MBR_ID=#{value}  
     </delete> 
  -->	
+ 
+ 	<delete id="deleteMbr" parameterType="int"> 
+        delete from MBR  
+        where MBR_NO=#{value}  
+    </delete> 
 </mapper>
 
 

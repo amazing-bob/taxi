@@ -20,11 +20,19 @@ public class Room extends BaseRoom implements Serializable {
 	 * protected int		roomMbrNumLimit;
 	 * protected Date		roomRegDate;
 	 */
-	protected int 			roomMbrCount;
-	protected List<RoomMbr>	roomMbrList;
-	protected List<RoomPath> roomPathList;
+	protected int 				roomMbrCount;
+	protected List<RoomMbr>		roomMbrList;
+	protected List<RoomPath> 	roomPathList;
+	protected int				differenceTime;
 	
 	
+	public int getDifferenceTime() {
+		return differenceTime;
+	}
+	public Room setDifferenceTime(int differenceTime) {
+		this.differenceTime = differenceTime;
+		return this;
+	}
 	public Room setRoomNo(int roomNo) {
 		return (Room) super.setRoomNo(roomNo);
 	}

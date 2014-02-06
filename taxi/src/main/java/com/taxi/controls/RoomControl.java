@@ -115,6 +115,27 @@ public class RoomControl {
     }
 	
 	
+	@RequestMapping("/outRoom")
+	  @ResponseBody
+	  public Object outRoom( int mbrNo, int roomNo ) throws Exception {
+	      JsonResult jsonResult = new JsonResult();
+
+	      System.out.println(mbrNo + roomNo);
+	      try {
+	          roomService.outRoom(mbrNo, roomNo);
+	          jsonResult.setStatus("success");
+
+	      } catch (Throwable e) {
+	          e.printStackTrace();
+	          StringWriter out = new StringWriter();
+	          e.printStackTrace(new PrintWriter(out));
+
+	          jsonResult.setStatus("fail");
+	          jsonResult.setData(out.toString());
+	      }
+	      return jsonResult;
+	  }
+	
 //	@RequestMapping(value="/setLocationSession")
 //	@ResponseBody
 //	public Object setLocationSession(

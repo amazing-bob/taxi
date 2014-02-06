@@ -7,6 +7,8 @@ import com.taxi.vo.friend.Frnd;
 
 public interface FrndDao {
 
+	void deleteFrnd(int mbrNo);
+
 	
 	
 /*	//====================== AS-IS =======================//

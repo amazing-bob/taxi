@@ -73,6 +73,11 @@
 	    where FVRT_LOC_NO = #{value} 
 	</delete> 
  -->	
+ 
+ 	<delete id="deleteAllFvrtLoc" parameterType="int"> 
+	    delete from FVRT_LOC  
+	    where MBR_NO=#{value}  
+	</delete>
 	
 </mapper>
 

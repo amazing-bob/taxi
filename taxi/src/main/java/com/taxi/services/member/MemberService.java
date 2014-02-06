@@ -9,6 +9,8 @@ import com.taxi.vo.member.Mbr;
 
 public interface MemberService {
 
+	void leaveMember(int mbrNo);
+
 	
 /*	//====================== AS-IS =======================//
  

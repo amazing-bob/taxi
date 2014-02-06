@@ -92,7 +92,78 @@
 	</select>
 	
 	
+	
+	<delete id="deleteRoomMbr" parameterType="int">
+        delete from ROOM_MBR
+        where 	1 = 1
+        	and	MBR_NO = #{value}
+    </delete>
     
+    <resultMap type="Map" id="getGcmTargetMapListResultMap">
+        <result property="roomNo" 		column="roomNo"			javaType="String"/>
+        <result property="mbrNo" 		column="mbrNo"			javaType="int"/>
+        <result property="gcmRegId" 	column="gcmRegId"		javaType="String"/>
+        <result property="mbrName" 		column="mbrName"		javaType="String"/>
+        <result property="mbrPhoneNo" 	column="mbrPhoneNo"		javaType="String"/>
+        <result property="mbrPhotoUrl" 	column="mbrPhotoUrl"	javaType="String"/>
+        <result property="roomMbrId" 	column="roomMbrId"		javaType="String"/>
+        <result property="frndRelId" 	column="frndRelId"		javaType="String"/>
+        <result property="roomMbrRank" 	column="roomMbrRank"	javaType="String"/>
+    </resultMap>
+	<select id="getGcmTargetMapList" parameterType="map" resultMap="getGcmTargetMapListResultMap">
+		SELECT	a.ROOM_NO 		as roomNo
+            , 	a.MBR_ID 		as mbrId
+            ,	a.GCM_REG_ID	as gcmRegId
+            , 	b.MBR_NAME 		as mbrName
+            , 	b.MBR_PHONE_NO 	as mbrPhoneNo
+            , 	b.MBR_PHOTO_URL as mbrPhotoUrl
+            , 	a.ROOM_MBR_ID 	as roomMbrId
+            , 	a.FRND_REL_ID 	as frndRelId
+            ,	a.ROOM_MBR_RANK	as roomMbrRank
+		FROM
+				ROOM_MBR a
+			,	MBR b
+		WHERE	1 = 1
+			AND	a.MBR_ID = b.MBR_ID
+			AND	a.ROOM_NO = #{roomNo}
+		    AND a.MBR_ID NOT LIKE #{mbrId}
+	</select>
+	
+	<select id="getAlramGcmTargetRoomMbrList" parameterType="int" resultType="RoomMbr">
+		SELECT	a.ROOM_NO 		as roomNo
+            ,	a.GCM_REG_ID	as gcmRegId
+		FROM
+				ROOM_MBR a
+		WHERE	1 = 1
+		<choose>
+		    <when test="value != null and value != 0">
+			AND	a.ROOM_NO = #{value}
+			</when>
+			<otherwise>
+			AND 1 = 0
+			</otherwise>
+		</choose>
+	</select>
+	
+		<delete id="outRoom" parameterType="map">
+		 delete from ROOM_MBR
+		<where>
+				<if test="mbrNo != null">
+					MBR_NO = #{mbrNo}
+				</if>
+
+				<if test="roomNo != null and roomNo != 0">
+					and ROOM_NO = #{roomNo}
+				</if>
+				
+				<if test="room != null">
+					and ROOM_NO in
+					<foreach collection="room" item="item" separator="," open=" (" close=")">
+						#{item.roomNo}
+					</foreach>
+				</if>
+		</where>
+	</delete>
 <!-- //====================== AS-IS =======================// -->
 <!-- 
     <select id="getRoomMbrCount" parameterType="int" resultType="int">

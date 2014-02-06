@@ -4,6 +4,8 @@ import com.taxi.vo.setting.Setting;
 
 
 public interface SettingDao {
+
+	void deleteSetting(int mbrNo);
 	
 	
 /*	//====================== AS-IS =======================//

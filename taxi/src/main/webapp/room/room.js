@@ -44,22 +44,24 @@ $(document).ready(function(){
 	$(document).on('keypress', '#reply', function(evt){
 
 	        var keyPressed = evt.which || evt.keyCode;
-	        var mbrId = getSessionItem("loginInfo").mbrId;
+	        var mbrNo = getSessionItem("myInfo").mbrNo;
 
 	        if (keyPressed == 13) {
 
 	        	var feedContent = $("#reply").val();
 	        	$("#reply").val("");
-	        	addFeed(mbrId, feedContent, roomNo);
+	        	addFeed(mbrNo, feedContent, roomNo);
 	        }
 	 });
 
 	 $(document).on("click", ".btnDelete", function(event){
 		 event.stopPropagation();
-		 var mbrId = $(this).attr("data-mbrId");
+		 var mbrNo = $(this).attr("data-mbrNo");
 		 var feedNo = $(this).attr("data-feedNo");
 		 var roomNo = $(this).attr("data-roomNo");
-		 deleteFeed(mbrId, feedNo, roomNo);
+		 console.log("=============&&&&&&&&&&&&");
+		 console.log(mbrNo +feedNo +roomNo );
+		 deleteFeed(mbrNo, feedNo, roomNo);
 		 
 		 return false;
 	 });
@@ -103,11 +105,12 @@ $(document).ready(function(){
 	 
 
 	 $("#outRoom").on("click", function(event){
+		
 		 event.stopPropagation();
 
-		 var mbrId = getSessionItem("loginInfo").mbrNo;
+		 var mbrNo = getSessionItem("myInfo").mbrNo;
 		 var roomNo = $("#roomNo").attr("data-roomNo");
-		 outRoom(mbrId, roomNo);
+		 outRoom(mbrNo, roomNo);
 		 
 		 return false;
 	 });
@@ -455,9 +458,9 @@ var setWaypointMarker = function( coord, imageUrl ) {
 };
 
 
-var outRoom = function (mbrId, roomNo) {
+var outRoom = function (mbrNo, roomNo) {
 
-	$.getJSON( rootPath + "/room/outRoom.do?mbrId=" + mbrId + "&roomNo=" + roomNo
+	$.getJSON( rootPath + "/room/outRoom.do?mbrNo=" + mbrNo + "&roomNo=" + roomNo
 											 , function(result) {
 				if(result.status == "success") {
 					changeHref("../home/home.html");
@@ -670,17 +673,17 @@ var getFeedList = function(roomNo){
 };
 
 
-var addFeed = function(mbrId, feedContent, roomNo) {
-	console.log("addFeed:" + mbrId, feedContent, roomNo);
+var addFeed = function(mbrNo, feedContent, roomNo) {
+	console.log("addFeed:" + mbrNo, feedContent, roomNo);
 	$.post( rootPath + "/feed/addFeed.do",
 			{
-					mbrId	:  mbrId,
+					mbrNo	:  mbrNo,
 					roomNo	:  roomNo,
 			  feedContent	:  feedContent
 			},
 			function(result) {
 				if(result.status == "success") {
-					//getFeedList(roomNo);
+					getFeedList(roomNo);
 					console.log("성공!!! 방정보 받기");
 
 				} else {
@@ -692,9 +695,9 @@ var addFeed = function(mbrId, feedContent, roomNo) {
 };
 
 
-var deleteFeed = function(mbrId, feedNo, roomNo){
+var deleteFeed = function(mbrNo, feedNo, roomNo){
 
-	$.getJSON( rootPath + "/feed/deleteFeed.do?mbrId=" + mbrId +
+	$.getJSON( rootPath + "/feed/deleteFeed.do?mbrNo=" + mbrNo +
 									"&feedNo=" + feedNo
 										, function(result) {
 
