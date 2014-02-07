@@ -1,24 +1,34 @@
 console.log("settings...");
 
 var that = this;
-var myInfo;
+
 
 $(document).ready(function() {
 	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
 
-//	로그인 하면 강제적으로 기본 셋팅값 설정 출발지 1000m 도착지 1000m를 변경
+	/**
+	 * 설명:거리반경 정보 localStorage에서 얻어오기
+	 * 작성자:김태경
+	 */
 	$("#seach").click(function() {
 		startRangeChk();
 		endRangeChk();
 		 $("#startRange").find("input[type='radio']").bind("change", function(){
       });
 	});
+	
+	/**
+	 * 내용:거리반경 정보 db update 및 localStorage 동기화
+	 * 작성자:김태경
+	 */
 	$(".rangeSave").click(function() {
 		addRange();
 	});
-	$.getJSON( rootPath + "/setting/getRange.do", function(result){
+	
+	
+	/*$.getJSON( rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 			var setting = result.data;
 			$("#startRange1").val(setting.startRange);
@@ -27,7 +37,7 @@ $(document).ready(function() {
 			Toast.shortshow("실행중 오류발생!");
 			console.log(result.data);
 		}
-	});
+	});*/
 
 	$("#btnLogoutAccept").click(function(){
 		logout();
@@ -49,7 +59,10 @@ $(document).ready(function() {
 	
 	
 	
-	// 회원 탈퇴 버튼 눌럿을 때 일단 확인 팝업을 띄워 한번더 확인하는부분.
+	/**
+	 * 내용:회원탈퇴부분
+	 * 작성자:김태경
+	 */
 	$("#btnLeave").click(function(){
 		leaveMember();
 	});
@@ -124,7 +137,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
             textonly: textonly,
             html: html
     });
-})
+});
 
 /**
  * deviceready 이벤트
@@ -242,11 +255,26 @@ var getFacebookMyInfo = function( callback, args ) {
 			});
 
 };
-
+/**
+ * 내용:출발지 거리 반경 정보 localStorage 에서 얻어서 화면에 checked 로 그리기
+ * 작성자:김태경
+ */
 
 function startRangeChk() {
-
-	$.getJSON(rootPath + "/setting/getRange.do", function(result){
+	
+	if(myInfo.startRange == "500"){
+		$("#radio-choice-h-2a").prop("checked", true);
+	}else if(myInfo.startRange =="1000"){
+		$("#radio-choice-h-2b").prop("checked", true);
+	}else if(myInfo.startRange =="2000"){
+		$("#radio-choice-h-2c").prop("checked", true);
+	}else if(myInfo.startRange =="3000"){
+		$("#radio-choice-h-2d").prop("checked", true);
+	}
+	
+	
+	
+	/*$.getJSON(rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 			if(setting.startRange == "500"){
@@ -258,18 +286,31 @@ function startRangeChk() {
 			}else if(setting.startRange =="3000"){
 				$("#radio-choice-h-2d").prop("checked", true).checkboxradio("refresh");
 			}
-		/*$("#startRange1").val(setting.startRange);
-		$("#endRange1").val(setting.endRange);*/
+		$("#startRange1").val(setting.startRange);
+		$("#endRange1").val(setting.endRange);
 		}else{
 			Toast.shortshow("실행중 오류발생!");
 			console.log(result.data);
 		}
-	});
+	});*/
  }
 
+/**
+ * 내용:도착지 거리 반경 정보 localStorage 에서 얻어서 화면에 checked 로 그리기
+ * 작성자:김태경
+ */
 function endRangeChk() {
 
-	$.getJSON(rootPath + "/setting/getRange.do", function(result){
+	if(myInfo.endRange == "500"){
+		$("#radio-choice-h-3a").prop("checked", true);
+	}else if(myInfo.endRange =="1000"){
+		$("#radio-choice-h-3b").prop("checked", true);
+	}else if(myInfo.endRange =="2000"){
+		$("#radio-choice-h-3c").prop("checked", true);
+	}else if(myInfo.endRange =="3000"){
+		$("#radio-choice-h-3d").prop("checked", true);
+	}
+	/*$.getJSON(rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 			if(setting.endRange == "500"){
@@ -285,7 +326,7 @@ function endRangeChk() {
 			Toast.shortshow("실행중 오류발생!");
 			console.log(result.data);
 		}
-	});
+	});*/
  }
 
 //로그아웃
@@ -341,11 +382,13 @@ function frndRefresh() {
 	});
 };
 
-//회원탈퇴
-//초기 앱실행시 myinfo 객체에 개인정보가 셋팅 되어있기때문에 따로 서버에 가따올 필요가 없음.
 
+/**
+ * 내용:해당 localStorage 객체 해당 하는 모든 db데이터삭제후 localStorage 삭제.
+ * 작성자:김태경
+ */
 function leaveMember() {
-	console.log(myInfo);
+	
 	$.post(rootPath + "/member/leaveMember.do",
 			myInfo,
 			function(result) {
@@ -359,11 +402,13 @@ function leaveMember() {
 //					facebookLogout();	//이 부분은 아직 나중에 처리 하고.
 				} else {
 					/*Toast.shortshow("실행중 오류발생!");*/
-					console.log(myInfo);
+					
 				}
 			},
 	"json");
-}
+};
+
+
 
 function deleteFvrtLoc() {
 	console.log("!!!@");
@@ -504,7 +549,7 @@ function rankUpdate() {
 			if(result.status == "success") {
     			console.log(result.data);
     			fvrtLocLists();
-    			Toast.shortshow("우선순위가 변경되었습니다.")
+    			Toast.shortshow("우선순위가 변경되었습니다.");
     			/*$("#sortable").listview('refresh');*/
             	location.href = "../setting/settings.html";
 			} else {
