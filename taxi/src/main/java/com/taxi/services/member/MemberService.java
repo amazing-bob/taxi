@@ -9,7 +9,7 @@ import com.taxi.vo.member.Mbr;
 
 public interface MemberService {
 
-	void leaveMember(int mbrNo) throws Exception;
+	void leaveMember(int mbrNo)throws Exception;
 
 	
 /*	//====================== AS-IS =======================//

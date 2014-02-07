@@ -198,8 +198,8 @@ var createLocationList = function(locations, page) {
                                         .attr("src", "../images/common/favorite-non-icon.png") 
                                         .attr("href","#") 
                                         .attr("data-status","false") ) 
-//                            .click(function(event) {
-                            .on("touchend", function(event) {
+                           .click(function(event) {
+ //                           .on("touchend", function(event) {
                                 event.stopPropagation(); 
                                 var liIdx = $(this).attr("data-idx"); 
                                 addAndDelFavoriteLocation(liIdx, locations);
@@ -314,7 +314,7 @@ var createLocationList = function(locations, page) {
 var getFavoriteLocation = function(execute) { 
     console.log("getFavoriteLocation()"); 
       
-    var url =  rootPath + "/member/getFavoritePlaces.do"; 
+    var url =  rootPath + "/location/getFavoriteList.do"; 
     $.getJSON(url 
             , function(result) { 
                 if (result.status == "success") { 
@@ -347,7 +347,7 @@ var addAndDelFavoriteLocation = function(idx, locations) {
             } 
               
             if (isFavoriteLocation == false) { 
-                $.post( rootPath + "/member/addFavoritePlace.do"
+                $.post( rootPath + "/location/addFavoriteLocation.do"
                         ,{
                             fvrtLocName : locations[idx].NAME, 
                             fvrtLocLng  : locations[idx].X, 
@@ -369,7 +369,7 @@ var addAndDelFavoriteLocation = function(idx, locations) {
                 if (favoriteLocationList[i].fvrtLocLat == locations[idx].Y &  
                         favoriteLocationList[i].fvrtLocLng == locations[idx].X &  
                         favoriteLocationList[i].fvrtLocName == locations[idx].NAME) { 
-                    var url = rootPath + "/member/deleteFavoritePlace.do"; 
+                    var url = rootPath + "/location/deleteFavoriteLocation.do"; 
                     $.post(url 
                             ,{ 
                                 fvrtLocNo : favoriteLocationList[i].fvrtLocNo 
