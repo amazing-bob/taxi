@@ -20,17 +20,8 @@
 				order by	FVRT_LOC_RANK
     </select>  
     
-	
+     <!-- 랭크 값은 충돌로 기존에 있던건 삭제함.  --> 	
 	<select id="getFvrtLocRank"
-	    	parameterType="int"
-	    	resultType="int">
-	    select count(FVRT_LOC_NO) + 1 
-	    from FVRT_LOC
-	    where MBR_NO = #{value};
-	</select>
-    
-     <!-- 기존 랭크 값은 충돌 우려가 있으므로, 다음으로 변경 예정.  --> 	
-	<select id="getFvrtLocRank2"
 	    	parameterType="int"
 	    	resultType="int">
 	    select FVRT_LOC_RANK + 1 
