@@ -1,12 +1,11 @@
 package com.taxi.services.setting;
 
-import java.util.List;
-
-import com.taxi.vo.location.FvrtLoc;
-import com.taxi.vo.setting.Setting;
+import com.taxi.vo.auth.MyInfo;
 
 
 public interface SettingService {
+
+	MyInfo updateRange(MyInfo myInfo) throws Exception;
 		
 	
 /*	//====================== AS-IS =======================//

@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.taxi.dao.auth.LoginDao;
 import com.taxi.dao.member.MbrDao;
-import com.taxi.services.member.MemberService;
-import com.taxi.vo.auth.LoginInfo;
 
 @Service
 public class AuthServiceImpl implements AuthService {

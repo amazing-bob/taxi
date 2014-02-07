@@ -1,6 +1,5 @@
 package com.taxi.services.auth;
 
-import com.taxi.vo.auth.LoginInfo;
 
 
 

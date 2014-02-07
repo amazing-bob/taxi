@@ -1,22 +1,33 @@
 package com.taxi.services.setting;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.taxi.dao.location.FvrtLocDao;
 import com.taxi.dao.setting.SettingDao;
-import com.taxi.vo.location.FvrtLoc;
-import com.taxi.vo.setting.Setting;
+import com.taxi.vo.auth.MyInfo;
 
 
 @Service
 public class SettingServiceImpl implements SettingService {
+	
+	@Autowired SettingDao settingDao;
+
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public MyInfo updateRange(MyInfo myInfo) throws Exception {
+		
+		/*Map<String, Object> paramsMap = new HashMap<String, Object>();
+    	paramsMap.put("mbrNo", myInfo.getMbrNo());
+    	paramsMap.put("startRange", myInfo.getStartRange());
+    	paramsMap.put("endRange", myInfo.getEndRange());*/
+    	
+    	
+		settingDao.updateRange(myInfo);
+		
+		return settingDao.getRange(myInfo.getMbrNo());
+	}
 	
 	
 /*	//====================== AS-IS =======================//
