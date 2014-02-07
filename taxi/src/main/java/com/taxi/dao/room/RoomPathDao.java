@@ -8,15 +8,22 @@ import com.taxi.vo.room.RoomPath;
 
 public interface RoomPathDao {
 
+	/**
+	 * 설  명: 방의 출발지&목적지 조회
+	 * 작성자: 김상헌
+	 */
+	List<RoomPath> getRoomPathList(int roomNo) throws Exception;
+	
+	/**
+	 * 설  명: 출발지 & 목적지 추가
+	 * 작성자: 김상헌
+	 */
+	void addRoomPathList(List<RoomPath> roomPathList) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  	
-	void addRoomPathList(List<RoomPath> roomPathList) throws Exception;
-
-	List<RoomPath> getRoomPathList(int roomNo) throws Exception;
 
 	void deleteRoomPath(Map<String, Object> paramMap) throws Exception;
 */
-	List<RoomPath> getRoomPathList(int roomNo) throws Exception;
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 
 
 public interface RcntLocDao {
@@ -12,9 +13,15 @@ public interface RcntLocDao {
 
 	void deleteRcntLocList(int mbrNo);
 	
+	/**
+	 * 설  명: 최근목적지 추가
+	 * 작성자: 김상헌
+	 */
+	int addRcntLoc(RcntLoc rcntLoc);
+	
+	
 /*	//====================== AS-IS =======================//
  	
-    int addFvrtLoc(FvrtLoc fvrtLoc);
     
     int deleteFvrtLoc(String mbrId) throws Exception;
 

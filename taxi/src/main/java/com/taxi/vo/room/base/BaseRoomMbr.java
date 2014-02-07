@@ -7,7 +7,7 @@ public class BaseRoomMbr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected int 		roomNo;
-	protected String 	mbrNo;
+	protected int	 	mbrNo;
 	protected String 	gcmRegId;
 	protected int 		roomMbrNo;
 	protected String 	roomMbrSt;
@@ -24,10 +24,10 @@ public class BaseRoomMbr implements Serializable {
 		this.roomNo = roomNo;
 		return this;
 	}
-	public String getMbrNo() {
+	public int getMbrNo() {
 		return mbrNo;
 	}
-	public BaseRoomMbr setMbrNo(String mbrNo) {
+	public BaseRoomMbr setMbrNo(int mbrNo) {
 		this.mbrNo = mbrNo;
 		return this;
 	}

@@ -3,6 +3,7 @@ package com.taxi.services.room;
 import java.util.List;
 
 import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.room.Room;
 import com.taxi.vo.room.RoomMbr;
 import com.taxi.vo.room.RoomPath;
@@ -17,8 +18,8 @@ public interface RoomService {
 	List<Room> searchRooms(int mbrNo, double startLat, double startLng, int startRange, double endLat, double endLng, int endRange) throws Exception;
 	
 	/**
-	 * 설  명:  
-	 * 작성자: 
+	 * 설  명: 방 정보 조회
+	 * 작성자: 김상헌
 	 */
 	Room getRoomInfo(int roomNo) throws Exception;
 	
@@ -28,12 +29,20 @@ public interface RoomService {
 	 */
 	boolean isRoomMbr(int mbrNo) throws Exception;
 	
+	/**
+	 * 설  명: 방 나가기
+	 * 작성자: 김상헌
+	 */
 	void outRoom(int mbrNo, int roomNo) throws Exception;
+	
+	/**
+	 * 설  명: 방 만들기
+	 * 작성자: 김상헌 
+	 */
+	int addRoom(Room room, RoomMbr roomMbr, RoomPath startPath, RoomPath endPath, RcntLoc rcntEndLoc) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  
-	int addRoom(Room room, RoomPath startPath, RoomPath endPath, RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception;
-	
 	void joinRoom(RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception; 
 	
 	Room getRoomInfo(int roomNo) throws Exception;
