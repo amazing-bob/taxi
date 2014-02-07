@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
-	public void leaveMember(int mbrNo) {
+	public void leaveMember(int mbrNo) throws Exception {
 		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
