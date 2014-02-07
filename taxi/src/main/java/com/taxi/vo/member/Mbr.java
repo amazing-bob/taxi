@@ -28,6 +28,12 @@ public class Mbr extends BaseMbr implements Serializable {
 	
 	// protected int 		추가되는 변수;
 	
+	
+	
+	
+	
+	
+	
 	public Mbr setMbrNo(int mbrNo) {
 		return (Mbr) super.setMbrNo(mbrNo);
 	}

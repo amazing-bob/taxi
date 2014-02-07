@@ -393,3 +393,4 @@ var goHomeOrRoom = function(loginInfo) {
 		    	changeHref("../home/home.html");
 		    });
 };
+
