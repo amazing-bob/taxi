@@ -4,6 +4,67 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.location.FvrtLocDao">
 
+    	<select id="getFvrtLoc"
+            parameterType="int" 
+            resultType="FvrtLoc"> 
+                select  
+                        FVRT_LOC_NO 	as fvrtLocNo  
+                     ,  MBR_NO 				as mbrNo  
+                     ,  FVRT_LOC_NAME as fvrtLocName 
+                     ,  FVRT_LOC_LAT 	as fvrtLocLat  
+                     ,  FVRT_LOC_LNG 	as fvrtLocLng   
+                     ,  FVRT_LOC_RANK 	as fvrtLocRank  
+                from  	FVRT_LOC
+                where 	1 = 1
+               		and	MBR_NO = #{mbrNo}
+				order by	FVRT_LOC_RANK
+    </select>  
+    
+	
+	<select id="getFvrtLocRank"
+	    	parameterType="int"
+	    	resultType="int">
+	    select count(FVRT_LOC_NO) + 1 
+	    from FVRT_LOC
+	    where MBR_NO = #{value};
+	</select>
+    
+     <!-- 기존 랭크 값은 충돌 우려가 있으므로, 다음으로 변경 예정.  --> 	
+	<select id="getFvrtLocRank2"
+	    	parameterType="int"
+	    	resultType="int">
+	    select FVRT_LOC_RANK + 1 
+	    from FVRT_LOC
+	    where MBR_NO = #{value} order by FVRT_LOC_RANK desc limit 1;
+	</select>
+		
+     <insert id="addFvrtLoc" 
+            parameterType="FvrtLoc"> 
+        insert into  
+                    FVRT_LOC(  
+                               MBR_NO  
+                             , FVRT_LOC_NAME  
+                             , FVRT_LOC_LAT  
+                             , FVRT_LOC_LNG 
+                             , FVRT_LOC_RANK  
+                            ) 
+        values       
+                    ( #{mbrNo}, #{fvrtLocName}, #{fvrtLocLat},  
+                      #{fvrtLocLng}, #{fvrtLocRank}
+                            )  
+    </insert> 
+    
+	<delete id="deleteFvrtLoc" parameterType="int"> 
+	    delete from FVRT_LOC  
+	    where FVRT_LOC_NO=#{value}
+	</delete>
+     
+     
+	<delete id="deleteAllFvrtLoc" parameterType="int"> 
+	    delete from FVRT_LOC  
+	    where MBR_NO=#{value}  
+	</delete>
+	
 
 <!-- //====================== AS-IS =======================// -->
 <!-- 
@@ -74,10 +135,6 @@
 	</delete> 
  -->	
  
- 	<delete id="deleteAllFvrtLoc" parameterType="int"> 
-	    delete from FVRT_LOC  
-	    where MBR_NO=#{value}  
-	</delete>
 	
 </mapper>
 

@@ -1247,7 +1247,7 @@ var joinRoom = function(regId, roomNo) {
 var favoriteList = function() {
     console.log("favoriteList()");
 
-    $.getJSON( rootPath + "/member/getFavoritePlaces.do", function(result) {
+    $.getJSON( rootPath + "/location/getFavoriteList.do", function(result) {
         if(result.status == "success") {
             var fvrtLoc = result.data;
             var ul = $("#favoriteUl");
