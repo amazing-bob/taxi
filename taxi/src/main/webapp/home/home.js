@@ -1073,7 +1073,7 @@ var addRoom = function( regId ) {
  */
 var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints ) {
 	console.log("searchRoute(startX, startY, endX, endY, callbackFunc, waypoints)");
-	console.log(startX, startY, endX, endY, callbackFunc, waypoints);
+//	console.log(startX, startY, endX, endY, callbackFunc, waypoints);
 	
 	var DirectionsRequest = {
 		origin 		: new olleh.maps.Coord( startX, startY ),
@@ -1088,7 +1088,7 @@ var searchRoute = function ( startX, startY, endX, endY, callbackFunc, waypoints
 };
 var directionsService_callback = function (data) {
 	console.log("directionsService_callback()");
-	console.log(data);
+//	console.log(data);
 	
 	var DirectionsResult  = directionsService.parseRoute(data);
 	
@@ -1181,16 +1181,23 @@ var clickAddViewRoom = function() {
 var goMyroom = function() {
 	console.log("goMyroom()");
 	
-	$.getJSON( rootPath + "/room/getMyRoom.do", function(result) {
-//		console.log(result);
-		if (result.status === "success") {
-			var room = result.data;
-			if ( room && room != null &&
-					room.roomNo && room.roomNo != null && room.roomNo != 0) {
-				changeHref("../room/room.html", { roomNo : room.roomNo });
-			}
-		}
-	});
+	var params = {
+			mbrNo : myInfo.mbrNo
+	};
+	
+	$.getJSON( rootPath + "/room/getMyRoom.do"
+			, params
+			, function(result) {
+				console.log(result);
+				if (result.status === "success") {
+					var room = result.data;
+					console.log(room);
+					if ( room && room != null &&
+							room.roomNo && room.roomNo != null && room.roomNo != 0) {
+						changeHref("../room/room.html", { roomNo : room.roomNo });
+					}
+				}
+			});
 };
 
 
@@ -1230,17 +1237,22 @@ var joinRoom = function(regId, roomNo) {
 		    function() { //isRoomMbrFalse
 
 		    	var locationSession = getSessionItem("locationSession");
-		    	console.log(rootPath);
+		    	
+		    	var params = {
+			    		roomNo 		: roomNo,
+			    		mbrNo		: myInfo.mbrNo,
+						endLocName 	: locationSession.endName,
+						endLocLat 	: locationSession.endY,
+						endLocLng 	: locationSession.endX,
+						gcmRegId 	: regId
+		    	};
+		    	
 		    	$.post( rootPath + "/room/joinRoom.do",
-		    			{
-			    		roomNo : roomNo,
-						endLocName : locationSession.endName,
-						endLocLat : locationSession.endY,
-						endLocLng : locationSession.endX,
-						gcmRegId : regId
-						},
+		    			params,
 						function(result) {
+		    		console.log(result);
 							if (result.status =="success") {
+								
 								changeHref("../room/room.html", { roomNo : roomNo});
 
 							} else {

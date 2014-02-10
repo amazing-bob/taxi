@@ -201,6 +201,73 @@ public class RoomControl {
         return jsonResult;
     }
 	
+    
+    /**
+	 * 설  명: 방 참여하기
+	 * 작성자: 김상헌 
+	 */
+    @RequestMapping("/joinRoom")
+    @ResponseBody
+    public JsonResult joinRoom( 
+    		RoomMbr roomMbr, String endLocName, double endLocLat, double endLocLng ) throws Exception {
+
+        JsonResult jsonResult = new JsonResult();
+        
+        try {
+        	RcntLoc recentEndLoc = new RcntLoc()
+											.setMbrNo( roomMbr.getMbrNo() )
+											.setRcntLocName( endLocName )
+											.setRcntLocLat( endLocLat )
+											.setRcntLocLng( endLocLng )
+											.setRcntLocSt("E");
+        	
+            roomService.joinRoom(roomMbr, recentEndLoc);
+            jsonResult.setStatus("success");
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+        return jsonResult;
+    }
+    
+    
+    /**
+     * 설  명: 내방 가져오기
+     * 작성자: 김상헌 
+     */
+    @RequestMapping("/getMyRoom")
+    @ResponseBody
+    public Object getMyRoom( int mbrNo ) throws Exception {
+        
+    	JsonResult jsonResult = new JsonResult();
+        
+    	try {
+
+        	Room myRoom = roomService.getMyRoom( mbrNo );
+
+        	if ( myRoom != null ) {
+        		jsonResult.setStatus("success");
+                jsonResult.setData( myRoom );
+        	} else {
+        		jsonResult.setStatus("fail");
+        	}
+
+        } catch (Throwable e) {
+        	e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+
+        return jsonResult;
+    }
 	
 	
 //	@RequestMapping(value="/setLocationSession")
@@ -276,43 +343,6 @@ public class RoomControl {
 	
 /*	//====================== AS-IS =======================//
 
-    @RequestMapping("/joinRoom")
-    @ResponseBody
-    public JsonResult joinRoom(
-    		RoomMbr roomMbr,
-    		String endLocName,
-    		double endLocLat,
-    		double endLocLng,
-    		HttpSession session ) throws Exception {
-
-        JsonResult jsonResult = new JsonResult();
-        try {
-        	LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
-        	roomMbr.setMbrId( loginInfo.getMbrId() );
-        	roomMbr.setMbrName( loginInfo.getMbrName() );
-        	roomMbr.setMbrPhoneNo( loginInfo.getMbrPhoneNo() );
-        	roomMbr.setMbrPhotoUrl( loginInfo.getMbrPhotoUrl() );
-        	FvrtLoc recentEndLoc = new FvrtLoc()
-	        									.setMbrId( loginInfo.getMbrId() )
-	        									.setFvrtLocName( endLocName )
-	        									.setFvrtLocLat( endLocLat )
-	        									.setFvrtLocLng( endLocLng )
-	        									.setFvrtLocStatus( "R" );
-            roomService.joinRoom(roomMbr, recentEndLoc);
-            jsonResult.setStatus("success");
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-        return jsonResult;
-    }
-
-
     @RequestMapping("/getRoomInfo")
     @ResponseBody
     public Object getRoomInfo( int roomNo ) throws Exception {
@@ -335,32 +365,6 @@ public class RoomControl {
     }
 
 
-    @RequestMapping("/getMyRoom")
-    @ResponseBody
-    public Object getMyRoom( int mbrNo , int roomNo) throws Exception {
-        JsonResult jsonResult = new JsonResult();
-        try {
-
-        	Room myRoom = roomService.getMyRoom( mbrNo );
-
-        	if ( myRoom != null ) {
-        		jsonResult.setStatus("success");
-                jsonResult.setData( myRoom );
-        	} else {
-        		jsonResult.setStatus("fail");
-        	}
-
-        } catch (Throwable e) {
-        	e.printStackTrace();
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-
-        return jsonResult;
-    }
 /*
   @RequestMapping("/outRoom")
   @ResponseBody

@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomMbrDao 	roomMbrDao;
 	@Autowired RoomPathDao 	roomPathDao;
 	@Autowired RcntLocDao	rcntLocDao;
-	
+
 	
 	/**
 	 * 설  명: 방 정보 조회
@@ -158,6 +158,55 @@ public class RoomServiceImpl implements RoomService {
     } 
 	
 	
+	/**
+	 * 설  명: 방 참여하기
+	 * 작성자: 김상헌 
+	 */
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
+	public void joinRoom( RoomMbr roomMbr, RcntLoc rcntLoc ) throws Exception { 
+        
+		try { 
+        	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
+        	
+        	int count =  roomMbrDao.addRoomMbr(roomMbr); 
+        	
+        	rcntLocDao.addRcntLoc( rcntLoc );
+        	
+        	// 아래의 주석 코드는 푸쉬 하게 되면 작업해야 하는 부분이다!!!
+        	
+//        	if(count > 0){
+//        		Map <String, Object> paramMap = new HashMap<String, Object>();
+//				paramMap.put("roomNo", roomMbr.getRoomNo());
+//				paramMap.put("mbrId", roomMbr.getMbrId());
+//				
+//				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+//				for (Map<String, String> map : gcmTargetMapList) {
+//					map.put("roomAction", "joinRoom" );
+//					map.put("roomNo", roomMbr.getRoomNo()+"" );
+//					map.put("mbrId", roomMbr.getMbrId() );
+//					map.put("mbrName", roomMbr.getMbrName() );
+//					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
+//					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
+//				}
+//				
+//				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
+//				
+//			}
+              
+        } catch (Exception e) { 
+            throw e; 
+        }  
+    }
+	
+	
+	/**
+	 * 설  명: 내방 가져오기
+	 * 작성자: 김상헌 
+	 */
+	public Room getMyRoom(int mbrNo) throws Exception {
+		return roomDao.getMyRoom(mbrNo);
+	}
+	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
@@ -166,37 +215,6 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired PlatformTransactionManager txManager;
 	
 	
-	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
-	public void joinRoom(RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception { 
-        try { 
-        	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
-        	int count =  roomMbrDao.addRoomMbr(roomMbr); 
-        	
-        	fvrtLocDao.addFvrtLoc( fvrtLoc );
-        	
-        	if(count > 0){
-        		Map <String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("roomNo", roomMbr.getRoomNo());
-				paramMap.put("mbrId", roomMbr.getMbrId());
-				
-				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
-				for (Map<String, String> map : gcmTargetMapList) {
-					map.put("roomAction", "joinRoom" );
-					map.put("roomNo", roomMbr.getRoomNo()+"" );
-					map.put("mbrId", roomMbr.getMbrId() );
-					map.put("mbrName", roomMbr.getMbrName() );
-					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
-					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
-				}
-				
-				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
-				
-			}
-              
-        } catch (Exception e) { 
-            throw e; 
-        }  
-    }
 	
 	
 	public Room getRoomInfo( int roomNo ) throws Exception {
@@ -212,10 +230,6 @@ public class RoomServiceImpl implements RoomService {
 		
 	}
 
-
-	public Room getMyRoom(String mbrId) throws Exception {
-		return roomDao.getMyRoom(mbrId);
-	}
 
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)

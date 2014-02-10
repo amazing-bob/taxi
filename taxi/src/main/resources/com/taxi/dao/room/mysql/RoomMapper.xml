@@ -27,7 +27,33 @@
 		from
 				ROOM
 		where  	1 = 1
-			and	ROOM_NO = #{value}
+		and		ROOM_NO = #{value}
+	</select>
+	
+	 
+	 <!-- 
+		 * 설  명: 내방 가져오기
+		 * 작성자: 김상헌 
+	-->
+	<select id="getMyRoom" parameterType="int" resultMap="roomResultMap">
+		select
+				A.ROOM_NO
+			,	A.ROOM_START_TIME
+	        ,	A.ROOM_REG_DATE
+	        ,	(	select 	count(X.MBR_NO) 
+	        		from	ROOM_MBR X
+		            where 	X.ROOM_NO = A.ROOM_NO )     AS roomMbrCount
+		from
+				ROOM A
+			, 	ROOM_MBR B
+		where  	
+				1 = 1
+		and		A.ROOM_NO = B.ROOM_NO
+		and 	A.ROOM_START_TIME > now()
+		and		B.MBR_NO = #{value}
+		order by
+				A.ROOM_START_TIME
+		limit 1
 	</select>
 	
 	
@@ -155,6 +181,9 @@
 	</insert>
 	
 	
+
+	
+	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
 
@@ -174,25 +203,7 @@
 			and	ROOM_NO = #{value}
 	</select>
 
-	<select id="getMyRoom" parameterType="string" resultMap="roomResultMap">
-		select
-				a.room_no
-			,	a.room_start_time
-		    ,   a.room_distance
-	        ,	a.room_fare
-	        ,	a.room_reg_date
-	        ,	(select count(x.mbr_id) from ROOM_MBR x
-		            where x.room_no = a.room_no)     AS roomMbrCount
-		from
-				ROOM a, ROOM_MBR b
-		where  	1 = 1
-			and	a.ROOM_NO = b.ROOM_NO
-			and a.ROOM_START_TIME > now()
-			and	b.MBR_ID = #{value}
-		order by
-				a.ROOM_START_TIME
-		limit 1
-	</select>
+
 	
 	
 	<resultMap id="alramGcmTargetRoomResultMap" type="Room">

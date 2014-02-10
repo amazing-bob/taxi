@@ -15,6 +15,12 @@ public interface RoomDao {
 	List<Room> getRoomList(Map<String, Object> paramMap) throws Exception;
 	
 	/**
+	 * 설  명: 내방 가져오기
+	 * 작성자: 김상헌 
+	 */
+	Room getMyRoom(int mbrNo) throws Exception ;
+	
+	/**
 	 * 설  명: 방 정보 조회
 	 * 작성자: 김상헌
 	 */
@@ -32,11 +38,10 @@ public interface RoomDao {
 	 */
 	int addRoom(Room room) throws Exception;
 	
+	
 /*	//====================== AS-IS =======================//
 
 	Room getRoomInfo(int roomNo) throws Exception ;
-
-	Room getMyRoom(String mbrId) throws Exception ;
 
 	List<Room> getAlramGcmTargetRoomList(String criteriaTime) throws Exception;
 	

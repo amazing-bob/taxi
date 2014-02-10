@@ -32,6 +32,12 @@ public interface RoomMbrDao {
 	 */
 	int addRoomMbr(RoomMbr roomDtl) throws Exception;
 	
+	/**
+	 * 설  명: 해당회원이 방에 참여한것을 가정한 정보 
+	 * 작성자: 김상헌 
+	 */
+	RoomMbr getVirtualRoomMbr(RoomMbr roomMbr) throws Exception;
+	
 	
 /*	//====================== AS-IS =======================//
  
@@ -42,7 +48,6 @@ public interface RoomMbrDao {
 	
 	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
 
-	RoomMbr getVirtualRoomMbr(RoomMbr roomMbr) throws Exception;
 
 	int outRoom(Map<String, Object> paramMap) throws Exception;
 	

@@ -25,8 +25,7 @@ $(document).ready(function(){
 
 	var params = getHrefParams();
 	console.log(params);
-	//var roomNo = params.roomNo;  --선진
-	var roomNo = 1;
+	var roomNo = params.roomNo;  
 	var contentHeight = $(window).height();
 	console.log(contentHeight);
 	console.log($("#mainHeader").outerHeight());
