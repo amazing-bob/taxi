@@ -28,6 +28,20 @@
         delete from RCNT_LOC  
         where MBR_NO=#{value}  
     </delete> 
+		
+		
+	<!-- 
+		 * 설  명: 최근목적지 추가
+		 * 작성자: 김상헌
+	-->
+	<insert id="addRcntLoc" parameterType="RcntLoc"> 
+        insert into RCNT_LOC
+        	( MBR_NO, RCNT_LOC_NAME, RCNT_LOC_LAT, RCNT_LOC_LNG, RCNT_LOC_REG_DATE, RCNT_LOC_ST ) 
+        values       
+			( #{mbrNo}, #{rcntLocName}, #{rcntLocLat}, #{rcntLocLng}, now(), #{rcntLocSt} )  
+    </insert> 
+    
+	     
 <!-- //====================== AS-IS =======================// -->
 <!--
 	
@@ -40,24 +54,6 @@
 	</select>
     
       
-     <insert id="addFvrtLoc" 
-            parameterType="FvrtLoc"> 
-        insert into  
-                    FVRT_LOC(  
-                               MBR_ID  
-                             , FVRT_LOC_NAME  
-                             , FVRT_LOC_LAT  
-                             , FVRT_LOC_LNG 
-                             , FVRT_LOC_REG_DATE  
-                             , FVRT_LOC_RANK  
-                             , FVRT_LOC_STATUS   
-                            ) 
-        values       
-                    ( #{mbrId}, #{fvrtLocName}, #{fvrtLocLat},  
-                      #{fvrtLocLng}, now(), #{fvrtLocRank},  
-                      #{fvrtLocStatus} )  
-    </insert> 
-    
 	<update id="updateFvrtLocRank" parameterType="FvrtLoc">
         update FVRT_LOC
 		set FVRT_LOC_RANK = #{fvrtLocRank}

@@ -13,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.dao.feed.FeedDao;
 import com.taxi.dao.location.FvrtLocDao;
+import com.taxi.dao.location.RcntLocDao;
 import com.taxi.dao.room.RoomDao;
 import com.taxi.dao.room.RoomMbrDao;
 import com.taxi.dao.room.RoomPathDao;
 import com.taxi.services.gcm.GcmService;
 import com.taxi.services.gcm.GcmServiceImpl;
 import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.room.Room;
 import com.taxi.vo.room.RoomMbr;
 import com.taxi.vo.room.RoomPath;
@@ -26,13 +28,15 @@ import com.taxi.vo.room.RoomPath;
 
 @Service
 public class RoomServiceImpl implements RoomService {
-	@Autowired RoomDao roomDao;
-	@Autowired RoomMbrDao roomMbrDao;
-	@Autowired RoomPathDao roomPathDao;
+	@Autowired RoomDao 		roomDao;
+	@Autowired RoomMbrDao 	roomMbrDao;
+	@Autowired RoomPathDao 	roomPathDao;
+	@Autowired RcntLocDao	rcntLocDao;
+	
 	
 	/**
-	 * 설  명:  
-	 * 작성자: 
+	 * 설  명: 방 정보 조회
+	 * 작성자: 김상헌
 	 */
 	public Room getRoomInfo( int roomNo ) throws Exception {
 		Room roomInfo = roomDao.getRoomInfo(roomNo);
@@ -84,8 +88,12 @@ public class RoomServiceImpl implements RoomService {
 		}
 	}
 	
-	@Transactional(
-			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	
+	/**
+	 * 설  명: 방 나가기
+	 * 작성자: 김상헌
+	 */
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
 	public void outRoom(int mbrNo, int roomNo) throws Exception {
 		try{
 			Map<String, Object> paramMap = new HashMap<String, Object>();
@@ -94,6 +102,9 @@ public class RoomServiceImpl implements RoomService {
 			//RoomMbr roomMbr = roomMbrDao.getRoomMbrInfo(paramMap);
 			
 			int count = roomMbrDao.outRoom(paramMap);
+			
+			
+			// 푸쉬 처리 할 때 아래 주석 부분 처리 해야함....!!!!
 			
 //			if(count > 0){
 //				paramMap.put("roomNo", roomMbr.getRoomNo());
@@ -118,43 +129,41 @@ public class RoomServiceImpl implements RoomService {
 		}
 	}
 	
+	
+	/**
+	 * 설  명: 방 만들기
+	 * 작성자: 김상헌 
+	 */
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
+	public int addRoom(
+			Room room			, RoomMbr roomMbr	,
+			RoomPath startPath	, RoomPath endPath	, RcntLoc rcntLoc ) throws Exception {
+        
+        roomDao.addRoom(room); 
+        int roomNo = room.getRoomNo(); 
+
+        roomMbr.setRoomNo(roomNo);
+        roomMbrDao.addRoomMbr( roomMbr );
+        
+        List<RoomPath> roomPathList = new ArrayList<RoomPath>();  
+        roomPathList.add( startPath.setRoomNo(roomNo) );
+        roomPathList.add( endPath.setRoomNo(roomNo) );
+        roomPathDao.addRoomPathList( roomPathList ); 
+        
+        rcntLocDao.addRcntLoc( rcntLoc );
+
+        
+        return roomNo;
+            
+    } 
+	
+	
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
 	@Autowired FvrtLocDao fvrtLocDao;  
 	@Autowired FeedDao feedDao;
 	@Autowired PlatformTransactionManager txManager;
-	
-	
-	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
-	public int addRoom(
-			Room room, 
-			RoomPath startPath, 
-			RoomPath endPath, 
-			RoomMbr roomMbr,
-			FvrtLoc fvrtLoc ) throws Exception {
-        try { 
-            roomDao.addRoom(room); 
-            int roomNo = room.getRoomNo(); 
-            
-            List<RoomPath> roomPathList = new ArrayList<RoomPath>();  
-            roomPathList.add( startPath.setRoomNo(roomNo) );
-            roomPathList.add( endPath.setRoomNo(roomNo) );
-            roomPathDao.addRoomPathList( roomPathList ); 
-            
-            roomMbr.setRoomNo(roomNo);
-            roomMbrDao.addRoomMbr( roomMbr );
-            
-            fvrtLocDao.addFvrtLoc( fvrtLoc );
-            
-            
-              
-            return roomNo;
-            
-        } catch (Exception e) { 
-            throw e; 
-        } 
-    } 
 	
 	
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 

@@ -11,7 +11,7 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	/* Base 변수
 	 * 
 	 * protected int 		roomNo;
-	 * protected String 	mbrNo;
+	 * protected int 		mbrNo;
 	 * protected String 	gcmRegId;
 	 * protected int		roomMbrNo;
 	 * protected String 	roomMbrSt;
@@ -28,7 +28,7 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	public RoomMbr setRoomNo(int roomNo) {
 		return (RoomMbr) super.setRoomNo(roomNo);
 	}
-	public RoomMbr setMbrNo(String mbrNo) {
+	public RoomMbr setMbrNo(int mbrNo) {
 		return (RoomMbr) super.setMbrNo(mbrNo);
 	}
 	public RoomMbr setGcmRegId(String gcmRegId) {

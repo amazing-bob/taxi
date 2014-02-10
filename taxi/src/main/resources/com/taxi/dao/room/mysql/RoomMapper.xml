@@ -16,8 +16,8 @@
 	</resultMap>    
 	
 	 <!-- 
-		* 설  명: 
-		* 작성자: 
+		 *  설  명: 참여하고 있는 방 조회
+		 *  작성자: 김상헌
 	 -->
 	 <select id="getRoomInfo" parameterType="int" resultType="Room">
 		select
@@ -117,8 +117,8 @@
 	
 	
 	<!--
-	* 설  명: 참여하고 있는 방 조회
-	* 작성자: 김상헌
+		* 설  명: 참여하고 있는 방 조회
+		* 작성자: 김상헌
 	-->
 	<select id="hasRooom" parameterType="int" resultMap="roomResultMap">
 		select 	
@@ -140,16 +140,25 @@
 	</select>
     
 
+	<!-- 
+		*  설  명: 방 추가
+		*  작성자: 김상헌
+	-->
+	<insert id="addRoom" parameterType="Room">
+		insert into ROOM 
+			( ROOM_START_TIME, ROOM_MBR_NUM_LIMIT, ROOM_REG_DATE )
+		values  
+			( #{roomStartTime}, #{roomMbrNumLimit}, now())
+		<selectKey resultType="int" keyProperty="roomNo">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
 
-	<insert id="addRoom" parameterType="Room">
-        insert into ROOM ( ROOM_START_TIME, ROOM_DISTANCE, ROOM_FARE, ROOM_REG_DATE )
-        values          ( #{roomStartTime}, #{roomDistance}, #{roomFare}, now())
-        <selectKey resultType="int" keyProperty="roomNo">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-    </insert>
+
 
 
 	<select id="getRoomInfo" parameterType="int" resultType="Room">

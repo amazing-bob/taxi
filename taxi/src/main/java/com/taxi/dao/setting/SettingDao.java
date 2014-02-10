@@ -1,11 +1,15 @@
 package com.taxi.dao.setting;
 
-import com.taxi.vo.setting.Setting;
+import com.taxi.vo.auth.MyInfo;
 
 
 public interface SettingDao {
 
 	void deleteSetting(int mbrNo);
+
+	void updateRange(MyInfo myInfo);
+
+	MyInfo getRange(int mbrNo);
 	
 	
 /*	//====================== AS-IS =======================//

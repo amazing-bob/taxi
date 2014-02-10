@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +14,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.taxi.services.setting.SettingService;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.auth.LoginInfo;
-import com.taxi.vo.setting.Setting;
+import com.taxi.vo.auth.MyInfo;
 
 
 @Controller
@@ -35,6 +33,32 @@ public class SettingControl {
 		jsonResult.setStatus("success");
 
 		return jsonResult;
+	}
+	
+	@RequestMapping(value="/updateRange",method=RequestMethod.POST)
+	@ResponseBody
+	public Object updateRange(MyInfo myInfo) throws Exception{
+
+		JsonResult jsonResult = new JsonResult();
+		
+		try{
+			
+			
+			jsonResult.setData(settingService.updateRange(myInfo));
+			System.out.println("변경된 시작 반경!!!!!"+settingService.updateRange(myInfo).getStartRange());
+			jsonResult.setStatus("success");
+			
+		}catch(Throwable e){
+			e.printStackTrace();
+			StringWriter out = new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+
+			jsonResult.setStatus("fail");
+			jsonResult.setData(out.toString());
+		}
+
+		return jsonResult;
+
 	}
 /*	//====================== AS-IS =======================//
  

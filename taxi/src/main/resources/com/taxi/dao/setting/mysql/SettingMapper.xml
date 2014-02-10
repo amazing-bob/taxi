@@ -3,7 +3,28 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.setting.SettingDao">
-
+	
+    
+    <update id="updateRange" parameterType="MyInfo">
+        update SETTING
+		<set>
+			<if test="startRange != null">START_RANGE=#{startRange},</if>
+	 		<if test="endRange != null">END_RANGE=#{endRange},</if>
+		</set>
+		where MBR_NO= #{mbrNo}
+        
+    </update>
+    
+    <select id="getRange" parameterType="Int" resultType="MyInfo">
+        select 
+   			 	MBR_NO as mbrNo 
+   			 ,  START_RANGE as startRange
+   			 ,  END_RANGE as endRange
+   		
+		from  SETTING           
+		where MBR_NO = #{value};
+		
+    </select>
     
 <!-- //====================== AS-IS =======================// -->
 <!-- 

@@ -8,10 +8,7 @@ $(document).ready(function() {
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
 
-	/**
-	 * 설명:거리반경 정보 localStorage에서 얻어오기
-	 * 작성자:김태경
-	 */
+	
 	$("#seach").click(function() {
 		startRangeChk();
 		endRangeChk();
@@ -19,10 +16,7 @@ $(document).ready(function() {
       });
 	});
 	
-	/**
-	 * 내용:거리반경 정보 db update 및 localStorage 동기화
-	 * 작성자:김태경
-	 */
+	
 	$(".rangeSave").click(function() {
 		addRange();
 	});
@@ -262,6 +256,8 @@ var getFacebookMyInfo = function( callback, args ) {
 
 function startRangeChk() {
 	
+	myInfo = getSessionItem("myInfo");
+
 	if(myInfo.startRange == "500"){
 		$("#radio-choice-h-2a").prop("checked", true);
 	}else if(myInfo.startRange =="1000"){
@@ -425,26 +421,43 @@ function deleteFvrtLoc() {
 		}
 	});
 }
-/*반경설정 변경*/
+/**
+ * 내용:거리반경 정보 db update 및 localStorage 동기화
+ * 작성자:김태경
+ */
 function addRange(){
 
 	$.post(rootPath + "/setting/updateRange.do",
 			{
+		mbrNo : myInfo.mbrNo,
 		startRange: $('input[name=radio-choice-h-2]:checked', '#updateRange').val(),
 		endRange: $('input[name=radio-choice-h-2]:checked', '#updateRange1').val(),
 
 			},
 			function(result) {
 				if(result.status == "success") {
-					Toast.shortshow("반경설정이 변경되었습니다.");
-					location.href = "../setting/settings.html";
+					
+					myInfo.startRange = result.data.startRange;
+					myInfo.endRange = result.data.endRange;
+					
+//					setSessionItem("myInfo",myInfo);
+					
+					/*Toast.shortshow("반경설정이 변경되었습니다.");*/
+					console.log("변경된 검색지 반경"+myInfo.startRange+"=========");
+					console.log("변경된 검색지 반경"+myInfo.endRange+"=========");
+					
+					setSessionItem("myInfo", myInfo);
+					
+					changeHref("../settings/settings.html");
+					/*location.href = "../settings/settings.html";*/
 				} else {
-					Toast.shortshow("실행중 오류발생!");
+					/*Toast.shortshow("실행중 오류발생!");*/
 					console.log(result.data);
 				}
 			},
 	"json");
-	$.getJSON(rootPath + "/setting/getRange.do", function(result){
+	
+	/*$.getJSON(rootPath + "/setting/getRange.do", function(result){
 		if(result.status == "success") {
 		var setting = result.data;
 		$("#startRange1").val(setting.startRange);
@@ -453,7 +466,7 @@ function addRange(){
 			Toast.shortshow("실행중 오류발생!");
 			console.log(result.data);
 		}
-	});
+	});*/
 }
 function selected(obj) {
 	// HTML로 부터 변경된 값 가져오는 함수
@@ -485,7 +498,7 @@ $(document).bind('pageinit', function() {
     $( "#sortable" ).listview('refresh');
   });*/
 function fvrtLocLists(){
-	$.getJSON(rootPath + "/member/getFavoritePlaces.do", function(result) {
+	$.getJSON(rootPath + "/location/getFavoriteList.do", function(result) {
 		if(result.status == "success") {
 			var FvrtLoc = result.data;
 			var ol = $("#sortable");

@@ -18,6 +18,7 @@ import com.taxi.vo.auth.LoginInfo;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.LocationSession;
+import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.room.Room;
 import com.taxi.vo.room.RoomMbr;
 import com.taxi.vo.room.RoomPath;
@@ -29,6 +30,11 @@ public class RoomControl {
 	@Autowired ServletContext sc;
 	@Autowired RoomService roomService;	
 	
+	
+	/**
+	 * 설  명: 방 정보 조회
+	 * 작성자: 김상헌
+	 */
     @RequestMapping("/getRoomInfo")
     @ResponseBody
     public Object getRoomInfo( int roomNo ) throws Exception {
@@ -50,6 +56,7 @@ public class RoomControl {
         return jsonResult;
     }
 
+    
 	/**
 	 * 설  명: 방 목록 조회
 	 * 작성자: 김상헌 
@@ -87,6 +94,7 @@ public class RoomControl {
 		return jsonResult;
 	}
 	
+	
 	/**
 	 * 설  명: 방 참여 여무 조회
 	 * 작성자: 김상헌 
@@ -114,27 +122,86 @@ public class RoomControl {
     	return jsonResult;
     }
 	
-	
+    /**
+	 * 설  명: 방 나가기
+	 * 작성자: 김상헌 
+	 */
 	@RequestMapping("/outRoom")
-	  @ResponseBody
-	  public Object outRoom( int mbrNo, int roomNo ) throws Exception {
-	      JsonResult jsonResult = new JsonResult();
+	@ResponseBody
+	public Object outRoom( int mbrNo, int roomNo ) throws Exception {
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			roomService.outRoom(mbrNo, roomNo);
+			jsonResult.setStatus("success");
 
-	      System.out.println(mbrNo + roomNo);
-	      try {
-	          roomService.outRoom(mbrNo, roomNo);
-	          jsonResult.setStatus("success");
+		} catch (Throwable e) {
+			e.printStackTrace();
+			StringWriter out = new StringWriter();
+			e.printStackTrace(new PrintWriter(out));
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData(out.toString());
+		}
+		return jsonResult;
+	}
+	
 
-	      } catch (Throwable e) {
-	          e.printStackTrace();
-	          StringWriter out = new StringWriter();
-	          e.printStackTrace(new PrintWriter(out));
+	/**
+	 * 설  명: 방 만들기
+	 * 작성자: 김상헌 
+	 */
+    @RequestMapping("/addRoom")
+    @ResponseBody
+    public JsonResult addRoom(
+    		MyInfo myInfo		, String gcmRegId	, Room room,
+    		String startLocName	, double startLocLat, double startLocLng, int startLocRank,
+    		String endLocName	, double endLocLat	, double endLocLng	, int endLocRank ) throws Exception {
 
-	          jsonResult.setStatus("fail");
-	          jsonResult.setData(out.toString());
-	      }
-	      return jsonResult;
-	  }
+        JsonResult jsonResult= new JsonResult();
+        
+        try {
+
+			RoomMbr roomMbr = new RoomMbr()
+											.setMbrNo( myInfo.getMbrNo() )
+											.setRoomMbrRank(0)
+											.setGcmRegId(gcmRegId);
+        	RoomPath startPath = new RoomPath()
+											.setPathRank(startLocRank)
+											.setPathName(startLocName)
+											.setPathLat(startLocLat)
+											.setPathLng(startLocLng);
+        	RoomPath endPath = new RoomPath()
+											.setPathRank(endLocRank)
+											.setPathName(endLocName)
+											.setPathLat(endLocLat)
+											.setPathLng(endLocLng);
+
+        	RcntLoc recentEndLoc = new RcntLoc()
+												.setMbrNo( myInfo.getMbrNo() )
+												.setRcntLocName( endPath.getPathName() )
+												.setRcntLocLat( endPath.getPathLat() )
+												.setRcntLocLng( endPath.getPathLng() )
+												.setRcntLocSt("E");
+
+			int roomNo = roomService.addRoom( room, roomMbr, startPath, endPath, recentEndLoc );
+
+			jsonResult.setData(roomNo);
+			jsonResult.setStatus("success");
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out =  new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+
+        return jsonResult;
+    }
+	
+	
 	
 //	@RequestMapping(value="/setLocationSession")
 //	@ResponseBody
@@ -208,60 +275,6 @@ public class RoomControl {
 //	}
 	
 /*	//====================== AS-IS =======================//
-
-    @RequestMapping("/addRoom")
-    @ResponseBody
-    public JsonResult addRoom(
-    		String gcmRegId,
-    		Room room,
-    		String startLocName, double startLocLat, double startLocLng, int startLocRank,
-    		String endLocName, double endLocLat, double endLocLng, int endLocRank,
-    		HttpSession session ) throws Exception {
-
-    	System.out.println("=======================addRoom()=================" + gcmRegId);
-        JsonResult jsonResult= new JsonResult();
-        try {
-
-        	LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-			RoomMbr roomMbr = new RoomMbr()
-											.setMbrId( loginInfo.getMbrId() )
-											.setRoomMbrRank(0)
-											.setGcmRegId(gcmRegId);
-        	RoomPath startPath = new RoomPath()
-											.setPathRank(startLocRank)
-											.setPathName(startLocName)
-											.setPathLat(startLocLat)
-											.setPathLng(startLocLng);
-        	RoomPath endPath = new RoomPath()
-											.setPathRank(endLocRank)
-											.setPathName(endLocName)
-											.setPathLat(endLocLat)
-											.setPathLng(endLocLng);
-
-        	FvrtLoc recentEndLoc = new FvrtLoc()
-												.setMbrId( loginInfo.getMbrId() )
-												.setFvrtLocName( endPath.getPathName() )
-												.setFvrtLocLat( endPath.getPathLat() )
-												.setFvrtLocLng( endPath.getPathLng() )
-												.setFvrtLocStatus( "R" );
-
-			int roomNo = roomService.addRoom( room, startPath, endPath, roomMbr, recentEndLoc );
-
-			jsonResult.setData(roomNo);
-			jsonResult.setStatus("success");
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-            StringWriter out =  new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-
-        return jsonResult;
-    }
-
 
     @RequestMapping("/joinRoom")
     @ResponseBody

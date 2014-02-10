@@ -5,8 +5,8 @@
 <mapper namespace="com.taxi.dao.room.RoomMbrDao">
 
     <!-- 
-		* 설  명: 
-		* 작성자: 
+		 * 설  명: 방 회원 리스트 조회
+		 * 작성자: 김상헌 
 	 -->
 	<select id="getRoomMbrDetailList" parameterType="int" resultType="RoomMbr">
 	    select
@@ -92,60 +92,11 @@
 	</select>
 	
 	
-	
-	<delete id="deleteRoomMbr" parameterType="int">
-        delete from ROOM_MBR
-        where 	1 = 1
-        	and	MBR_NO = #{value}
-    </delete>
-    
-    <resultMap type="Map" id="getGcmTargetMapListResultMap">
-        <result property="roomNo" 		column="roomNo"			javaType="String"/>
-        <result property="mbrNo" 		column="mbrNo"			javaType="int"/>
-        <result property="gcmRegId" 	column="gcmRegId"		javaType="String"/>
-        <result property="mbrName" 		column="mbrName"		javaType="String"/>
-        <result property="mbrPhoneNo" 	column="mbrPhoneNo"		javaType="String"/>
-        <result property="mbrPhotoUrl" 	column="mbrPhotoUrl"	javaType="String"/>
-        <result property="roomMbrId" 	column="roomMbrId"		javaType="String"/>
-        <result property="frndRelId" 	column="frndRelId"		javaType="String"/>
-        <result property="roomMbrRank" 	column="roomMbrRank"	javaType="String"/>
-    </resultMap>
-	<select id="getGcmTargetMapList" parameterType="map" resultMap="getGcmTargetMapListResultMap">
-		SELECT	a.ROOM_NO 		as roomNo
-            , 	a.MBR_ID 		as mbrId
-            ,	a.GCM_REG_ID	as gcmRegId
-            , 	b.MBR_NAME 		as mbrName
-            , 	b.MBR_PHONE_NO 	as mbrPhoneNo
-            , 	b.MBR_PHOTO_URL as mbrPhotoUrl
-            , 	a.ROOM_MBR_ID 	as roomMbrId
-            , 	a.FRND_REL_ID 	as frndRelId
-            ,	a.ROOM_MBR_RANK	as roomMbrRank
-		FROM
-				ROOM_MBR a
-			,	MBR b
-		WHERE	1 = 1
-			AND	a.MBR_ID = b.MBR_ID
-			AND	a.ROOM_NO = #{roomNo}
-		    AND a.MBR_ID NOT LIKE #{mbrId}
-	</select>
-	
-	<select id="getAlramGcmTargetRoomMbrList" parameterType="int" resultType="RoomMbr">
-		SELECT	a.ROOM_NO 		as roomNo
-            ,	a.GCM_REG_ID	as gcmRegId
-		FROM
-				ROOM_MBR a
-		WHERE	1 = 1
-		<choose>
-		    <when test="value != null and value != 0">
-			AND	a.ROOM_NO = #{value}
-			</when>
-			<otherwise>
-			AND 1 = 0
-			</otherwise>
-		</choose>
-	</select>
-	
-		<delete id="outRoom" parameterType="map">
+	<!-- 
+		 * 설  명: 방 나가기
+		 * 작성자: 김상헌 	
+	-->
+	<delete id="outRoom" parameterType="map">
 		 delete from ROOM_MBR
 		<where>
 				<if test="mbrNo != null">
@@ -164,6 +115,38 @@
 				</if>
 		</where>
 	</delete>
+	
+	
+	<!-- 
+		 * 설  명: 방 멤버 삭제
+		 * 작성자: 김상헌
+	-->
+	<delete id="deleteRoomMbr" parameterType="int">
+        delete from ROOM_MBR
+        where 	1 = 1
+        	and	MBR_NO = #{value}
+    </delete>
+    
+
+	<!-- 
+		 * 설  명: 방 멤버 추가
+		 * 작성자: 김상헌 	
+	-->
+	<insert id="addRoomMbr" parameterType="RoomMbr">
+        insert into ROOM_MBR
+        	( ROOM_NO, MBR_NO, GCM_REG_ID
+        	, ROOM_MBR_NO, ROOM_MBR_ST
+        	, REL_FRND_PHONE_NO, REL_FRND_NAME
+        	, MUTUAL_YN, ROOM_MBR_RANK)
+        values
+        	( #{roomNo}, #{mbrNo}, #{gcmRegId}
+        	, #{roomMbrNo}, #{roomMbrSt}
+        	, #{relFrndPhoneNo}, #{relFrndName}
+        	, #{mutualYn}, #{roomMbrRank} )
+    </insert>
+    
+	
+
 <!-- //====================== AS-IS =======================// -->
 <!-- 
     <select id="getRoomMbrCount" parameterType="int" resultType="int">
@@ -176,13 +159,6 @@
 		    AND room_no = #{roomNo}
 	</select>
 
-
-	<insert id="addRoomMbr" parameterType="RoomMbr">
-        insert into ROOM_MBR
-        	( ROOM_NO, MBR_ID, ROOM_MBR_ID, FRND_REL_ID, ROOM_MBR_RANK, GCM_REG_ID )
-        values
-        	( #{roomNo}, #{mbrId}, #{roomMbrId}, #{frndRelId}, #{roomMbrRank}, #{gcmRegId} )
-    </insert>
 
 
 	<delete id="deleteRoomMbr" parameterType="String">

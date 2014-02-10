@@ -10,8 +10,10 @@ select * from ROOM_PATH;
 select * from ROOM_MBR;
 select * from FEED;
 select * from FVRT_LOC;
+select * from RCNT_LOC;
 
 -- 삭제
+delete from RCNT_LOC;
 delete from FVRT_LOC;
 delete from FEED;
 delete from ROOM_MBR;

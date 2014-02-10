@@ -48,7 +48,7 @@ var setSessionItem = function (key, value) {
  */
 var getSessionItem = function (key) {
 	console.log("getSessionItem(key)");
-//	console.log(key);
+	console.log(key);
 	return JSON.parse(sessionStorage.getItem(key));
 };
 

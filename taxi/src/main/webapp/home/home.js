@@ -122,7 +122,6 @@ $(document).ready(function() {
 //	$(".btnAddRoomUI").on("touchend", function(event) {
 	$("#divAddRoom").on("click", function(event) {		
 		event.stopPropagation();
-		console.log( $(this).text() );
 //		push.initialise("addRoom");
 		addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
 		
@@ -428,11 +427,15 @@ var checkStartLocation = function() {
 	
 	var locationSession = getSessionItem("locationSession");
 
-	if ( locationSession && locationSession != null &&
-			locationSession.startName && locationSession.startName != null && locationSession.startName != "" &&
-			locationSession.startX && locationSession.startX != null && locationSession.startX != "" &&
-			locationSession.startY && locationSession.startY != null && locationSession.startY != "" ) {
-		setStartLocation(locationSession.startX, locationSession.startY, locationSession.startName, locationSession.startPrefix);
+	if ( locationSession 				&& locationSession != null 				&&
+			locationSession.startName 	&& locationSession.startName != null 	&& locationSession.startName != "" 	&&
+			locationSession.startX 		&& locationSession.startX != null 		&& locationSession.startX != "" 	&&
+			locationSession.startY 		&& locationSession.startY != null 		&& locationSession.startY != "" ) {
+		setStartLocation(	
+						locationSession.startX,
+						locationSession.startY,
+						locationSession.startName,
+						locationSession.startPrefix );
 
 		checkEndLocation();
 
@@ -498,16 +501,17 @@ var checkEndLocation = function() {
 	console.log("checkEndLocation()");
 	
 	var locationSession = getSessionItem("locationSession");
-	if ( locationSession && locationSession != null &&
-			locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
-			locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
-			locationSession.endY && locationSession.endY != null && locationSession.endY != "" ) {
+	
+	if ( locationSession 			&& locationSession != null 			&&
+			locationSession.endName && locationSession.endName != null 	&& locationSession.endName != "" 	&&
+			locationSession.endX 	&& locationSession.endX != null 	&& locationSession.endX != "" 		&&
+			locationSession.endY 	&& locationSession.endY != null 	&& locationSession.endY != "" ) {
 		
 		setEndLocation(
-				locationSession.endX,
-				locationSession.endY,
-				locationSession.endName,
-				locationSession.endPrefix );
+						locationSession.endX,
+						locationSession.endY,
+						locationSession.endName,
+						locationSession.endPrefix );
 
 		searchRooms();
 
@@ -592,7 +596,6 @@ var setEndLocation = function (x, y, locName, prefix) {
 		title : '목적지',
 		zIndex : 1
   	});
-	var loginInfo = getSessionItem("loginInfo");
 	endCircle = setCircle( coord, "#00ffff", myInfo.endRange );
 };
 
@@ -605,14 +608,14 @@ var setCircle = function( coord, color, radius ) {
 //	console.log(coord, color, radius);
 	
 	var circle = new olleh.maps.Circle({
-		center: coord,
-		radius: radius,
-		map: map,
-		fillColor: color,
-		fillOpacity: 0.07,
-		strokeColor: color,
-		strokeOpacity: 0.4,
-		strokeWeight: 1
+		center 			: coord,
+		radius 			: radius,
+		map 			: map,
+		fillColor 		: color,
+		fillOpacity 		: 0.07,
+		strokeColor 	: color,
+		strokeOpacity 	: 0.4,
+		strokeWeight 	: 1
 	});
 
 	return circle;
@@ -624,6 +627,8 @@ var setCircle = function( coord, color, radius ) {
  */
 var searchLocation = function( target ) {
     console.log("searchLocation()");
+//    console.log(target);
+    
     var query = $.trim($(target).val());
     if ( target && query != "" ) {
             if ( query.indexOf("내위치: ") == 0 || query.indexOf("최근목적지: ") == 0 ) {
@@ -641,6 +646,7 @@ var searchLocation = function( target ) {
     }
 
 };
+
 
 /**
  * 설  명: 방 목록 조회
@@ -667,7 +673,7 @@ var searchRooms = function() {
 				if (result.status == "success") {
 					initRoute();
 					
-					var searchRoomList = result.data;
+					var searchRoomList 	= result.data;
 
 					var roomPathList 	= null;
 					var roomMbrList 	= null;
@@ -677,22 +683,19 @@ var searchRooms = function() {
 					var startTime 		= null;
 					var isMyRoom 		= "false";
 
-					var roomList = [];
+					var roomList 		= [];
 
+					// 각 방들의 정보가 세팅된 방리스트 만듬
 					for( var i = 0; i < searchRoomList.length; i++ ) {
-						roomPathList = searchRoomList[i].roomPathList;
 						roomMbrList = searchRoomList[i].roomMbrList;
-
-						startInfo = null;
-						endInfo = null;
-						waypoints = [];
-
-						startTime = new Date(searchRoomList[i].roomStartTime);
-						startTime = startTime.toTimeString().substr(0, 5);
-
-						isMyRoom = isIRoomMember( roomMbrList, myInfo.mbrNo );
-
+						isMyRoom 	= isIRoomMember( roomMbrList, myInfo.mbrNo );
+						
 						// 출발지 & 목적지 & 경유지 설정
+						roomPathList 	= searchRoomList[i].roomPathList;
+						startInfo 		= null;
+						endInfo 		= null;
+						waypoints 		= [];
+						
 						for ( var j in roomPathList) {
 							if ( roomPathList[j].pathRank == 0 ) {
 								startInfo = roomPathList[j];
@@ -705,6 +708,11 @@ var searchRooms = function() {
 
 							}
 						}
+
+						// 출발시간 설정
+						startTime = new Date(searchRoomList[i].roomStartTime);
+						startTime = startTime.toTimeString().substr(0, 5);
+						
  
 						roomList[i] = {
 							roomNo 		: searchRoomList[i].roomNo,
@@ -785,7 +793,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 	$("#ulRoomList").children().remove();
 	$("#scroller").css("width", 0+"px");
 
-	if (roomList && roomList.length > 0) {
+	if (roomList && roomList.length > 0) { 
 		var roomMbrList = null;
 		var divRoomMbrThumb = null;
 
@@ -802,14 +810,14 @@ var createRoomList = function( roomList, isRoomMbr ) {
 
 			$("<li>")
 				.width(contentWidth +"px")
-				.data("roomIdx", i)
-				.data("roomNo", roomList[i].roomNo)
-				.data("startX", roomList[i].startX)
-				.data("startY", roomList[i].startY)
-				.data("endX", roomList[i].endX)
-				.data("endY", roomList[i].endY)
+				.data("roomIdx"		, i)
+				.data("roomNo"		, roomList[i].roomNo)
+				.data("startX"		, roomList[i].startX)
+				.data("startY"		, roomList[i].startY)
+				.data("endX"		, roomList[i].endX)
+				.data("endY"		, roomList[i].endY)
 				.data("roomMbrCount", roomList[i].roomMbrCount)
-				.data("isMyRoom", roomList[i].isMyRoom)
+				.data("isMyRoom"	, roomList[i].isMyRoom)
 				.append(
 						$("<div>")
 							.addClass("divHeaderLine")
@@ -917,7 +925,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 		
 		$("#btnAddViewRoom").css("visibility","visible");
 		
-	} else {
+	} else { // 방이 있는 경우
 		var btnText = "방 만들기";
 		if ( isRoomMbr ) {
 			btnText  = "내방가기";
@@ -998,12 +1006,14 @@ var initRoute = function() {
  * 설  명: 방 만들기
  * 작성자: 김상헌
  */
-var addRoom = function(regId) {
-	console.log("addRoom()");
-	console.log($("#inputTime").mobiscroll('getValue'));
+var addRoom = function( regId ) {
+	console.log("addRoom(regId)");
+//	console.log(regId);
+
 	var locationSession = getSessionItem("locationSession");
     var startTime = new Date();
     var inputTime = $("#inputTime").mobiscroll('getValue');
+    
     // AM,PM 일 때
     if (inputTime[2] == '1') {
     	startTime.setHours(inputTime[0] + 12);
@@ -1015,45 +1025,47 @@ var addRoom = function(regId) {
     if ( $('#inputTime').attr("data-val") == 'tomorrow' ) {
     	startTime.setDate(startTime.getDate() + 1);
     }
-//	distance, fare는 추후 수정필요
-    var distance = 0;
-    var fare = 0;
-    console.log(startTime);
+    
     if ( startTime && startTime != null && startTime != "" &&
-    		locationSession && locationSession != null &&
-    		locationSession.startName && locationSession.startName != null && locationSession.startName != "" &&
-    		locationSession.startX && locationSession.startX != null && locationSession.startX != "" &&
-    		locationSession.startY && locationSession.startY != null && locationSession.startY != "" &&
-    		locationSession.endName && locationSession.endName != null && locationSession.endName != "" &&
-    		locationSession.endX && locationSession.endX != null && locationSession.endX != "" &&
-    		locationSession.endY && locationSession.endY != null && locationSession.endY != ""
+    		locationSession 			&& locationSession != null &&
+    		locationSession.startName 	&& locationSession.startName != null 	&& locationSession.startName != "" 	&&
+    		locationSession.startX 		&& locationSession.startX != null 		&& locationSession.startX != "" 	&&
+    		locationSession.startY 		&& locationSession.startY != null 		&& locationSession.startY != "" 	&&
+    		locationSession.endName 	&& locationSession.endName != null 		&& locationSession.endName != "" 	&&
+    		locationSession.endX 		&& locationSession.endX != null 		&& locationSession.endX != "" 		&&
+    		locationSession.endY 		&& locationSession.endY != null 		&& locationSession.endY != ""
     		) {
-    	$.post( rootPath + "/room/addRoom.do",  {
-    		gcmRegId : regId,
-    	    roomStartTime : startTime,
-    	    roomDistance : distance,
-            roomFare : fare,
-            startLocName : locationSession.startName,
-            startLocLng : locationSession.startX,
-            startLocLat : locationSession.startY,
-    	    startLocRank : 0,
-            endLocName : locationSession.endName,
-            endLocLng : locationSession.endX,
-            endLocLat : locationSession.endY,
-            endLocRank : 99
-        },
-        function(result) {
-            if (result.status == "success") {
-            	changeHref("../room/room.html", { roomNo : result.data});
-
-            } else {
-            	console.log(result.data);
-
-            }
-        },
-        "json");
+    	
+    	var params = {
+    			mbrNo			: myInfo.mbrNo,
+	    		gcmRegId 		: regId,
+	    	    roomStartTime 	: startTime,
+	    	    roomMbrNumLimit : 4,	// 방인원수 제한 2차개발때 값 설정하는 부분 추가 되야 함.
+	            startLocName 	: locationSession.startName,
+	            startLocLng 	: locationSession.startX,
+	            startLocLat 	: locationSession.startY,
+	    	    startLocRank 	: 0,
+	            endLocName 		: locationSession.endName,
+	            endLocLng 		: locationSession.endX,
+	            endLocLat 		: locationSession.endY,
+	            endLocRank 		: 99
+        };
+    	
+    	$.post( rootPath + "/room/addRoom.do",
+    			params,
+		        function(result) {
+		            if (result.status == "success") {
+		            	changeHref("../room/room.html", { roomNo : result.data});
+		
+		            } else {
+		            	console.log(result.data);
+		
+		            }
+		        },
+		        "json");
     }
 };
+
 
 /**
  * 설  명: 경로 찾기
