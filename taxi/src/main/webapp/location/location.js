@@ -133,7 +133,7 @@ var searchAgain = function( target ) {
   
 var searchLocation = function(query, page) { 
     console.log("searchLocation(query, page)"); 
-    console.log(query, page);
+//    console.log(query, page);
     
     var params = { 
             query : encodeURI(query), 
@@ -150,7 +150,7 @@ var searchLocation = function(query, page) {
                 params : JSON.stringify( params ) 
             },  
             function(result) {
-            	console.log("======success :: " + JSON.stringify(result));
+//            	console.log("======success :: " + JSON.stringify(result));
                 if ( result.status == "success" ) {
                     var resultData =  JSON.parse(result.data); 
                     var tmpLocations = [];           
