@@ -17,7 +17,7 @@
        under the License.
  */
 
-package net.bitacademy.java41.oldboy;
+package com.taxi;
 
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaActivity;
