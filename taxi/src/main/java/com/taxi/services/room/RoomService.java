@@ -41,13 +41,22 @@ public interface RoomService {
 	 */
 	int addRoom(Room room, RoomMbr roomMbr, RoomPath startPath, RoomPath endPath, RcntLoc rcntEndLoc) throws Exception;
 	
+	/**
+	 * 설  명: 방 참여하기
+	 * 작성자: 김상헌 
+	 */
+	void joinRoom(RoomMbr roomMbr, RcntLoc rcntLoc) throws Exception;
+	
+	/**
+	 * 설  명: 내방 가져오기
+	 * 작성자: 김상헌 
+	 */
+	Room getMyRoom(int mbrNo) throws Exception;
+	
 /*	//====================== AS-IS =======================//
  
-	void joinRoom(RoomMbr roomMbr, FvrtLoc fvrtLoc) throws Exception; 
 	
 	Room getRoomInfo(int roomNo) throws Exception;
-
-	Room getMyRoom(String mbrId) throws Exception;
 
 	void outRoom(String mbrId, int roomNo) throws Exception;
 	

@@ -157,6 +157,63 @@
 	    WHERE
 	    	 ROOM_NO=#{value}
 	</select>
+	
+	<!-- 
+		 * 설  명: 해당회원이 방에 참여한것을 가정한 정보 
+		 * 작성자: 김상헌 
+	-->	
+	<select id="getVirtualRoomMbr" parameterType="roomMbr" resultType="roomMbr">
+	    -- 내 친구 관계
+		select  #{roomNo}   		as roomNo
+		    ,   #{mbrNo}  			as mbrNo
+			,	#{gcmRegId} 		as gcmRegId
+		    ,   X1.MBR_NO   		as roomMbrNo
+			,   '1' 		        as roomMbrSt
+            ,   null 				as relFrndPhoneNo
+            ,   null 				as relFrndName
+            ,   'Y'  				as mutualYn
+		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
+		from
+				ROOM_MBR X1
+			, 	MBR X2
+		where   1 = 1
+			and X1.MBR_NO = X2.MBR_NO
+		    and X1.ROOM_NO = #{roomNo}
+		    and X2.MBR_PHONE_NO in (
+			                            select  Y.FRND_PHONE_NO
+			                            from    FRND Y
+			                            where   1 = 1
+			                                and Y.MBR_NO = #{mbrNo}
+			                        )
+
+		union all
+
+		-- 내 친구의 친구 관계
+		select  #{roomNo}   		as roomNo
+		    ,   #{mbrNo}  			as mbrNo
+		    ,	#{gcmRegId} 		as gcmRegId
+		    ,   X1.MBR_NO   		as roomMbrNo
+		    ,   '1' 		        as roomMbrSt
+            ,   X2.FRND_PHONE_NO 	as relFrndPhoneNo
+            ,   X2.FRND_NAME 		as relFrndName
+            ,   'Y'  				as mutualYn
+		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
+
+		from
+				ROOM_MBR X1
+		    ,   FRND X2
+		where   X1.MBR_NO = X2.MBR_NO
+		    and X1.ROOM_NO = #{roomNo}
+		    and X2.FRND_PHONE_NO in (
+			                            select  Y.FRND_PHONE_NO
+			                            from    FRND Y
+			                            where   1 = 1
+			                                and Y.MBR_NO = #{mbrNo}
+			                        )
+		limit 1
+	</select>
+    
+	
 
 		<!-- 
 		 * 설  명: 방 멤버 삭제(방 삭제시)
@@ -209,78 +266,6 @@
 			AND	a.MBR_ID = #{mbrId}
 	</select> 
 
-
-	<select id="getVirtualRoomMbr" parameterType="roomMbr" resultType="roomMbr">
-		SELECT  #{roomNo}   AS roomNo
-		    ,   #{mbrId}  	AS mbrId
-		    ,   x1.mbr_id   AS roomMbrId
-		    ,   NULL        AS frndRelId
-		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM ROOM_MBR WHERE room_no = x1.room_no) AS roomMbrRank
-			,	#{gcmRegId} AS gcmRegId
-		<if test="mbrName != null">
-			,	#{mbrName} 			AS mbrName    
-		</if>
-		<if test="mbrPhoneNo != null">
-			,	#{mbrPhoneNo} 		AS mbrPhoneNo    
-		</if>
-		<if test="mbrPhotoUrl != null">
-			,	#{mbrPhotoUrl} 		AS mbrPhotoUrl    
-		</if>
-		<if test="roomMbrName != null">
-			,	#{roomMbrName} 		AS roomMbrName    
-		</if>
-		<if test="roomMbrPhotoUrl != null">
-			,	#{roomMbrPhotoUrl} 	AS roomMbrPhotoUrl    
-		</if>
-		<if test="frndRelName != null">
-			,	#{frndRelName} 		AS frndRelName    
-		</if>
-		FROM
-				ROOM_MBR x1
-		    , 	FRND x2
-		WHERE   x1.mbr_id = x2.frnd_id
-		    AND x1.room_no = #{roomNo}
-		    AND x2.mbr_id = #{mbrId}
-
-		UNION ALL
-
-		SELECT  #{roomNo}   AS roomNo
-		    ,   #{mbrId}  	AS mbrId
-		    ,   x1.mbr_id   AS roomMbrId
-		    ,   x2.frnd_id  AS frndRelId
-		    ,	(SELECT MAX(room_mbr_rank) + 1 FROM ROOM_MBR WHERE room_no = x1.room_no) AS roomMbrRank
-		    ,	#{gcmRegId} AS gcmRegId
-		<if test="mbrName != null">
-			,	#{mbrName} 			AS mbrName    
-		</if>
-		<if test="mbrPhoneNo != null">
-			,	#{mbrPhoneNo} 		AS mbrPhoneNo    
-		</if>
-		<if test="mbrPhotoUrl != null">
-			,	#{mbrPhotoUrl} 		AS mbrPhotoUrl    
-		</if>
-		<if test="roomMbrName != null">
-			,	#{roomMbrName} 		AS roomMbrName    
-		</if>
-		<if test="roomMbrPhotoUrl != null">
-			,	#{roomMbrPhotoUrl} 	AS roomMbrPhotoUrl    
-		</if>
-		<if test="frndRelName != null">
-			,	#{frndRelName} 		AS frndRelName    
-		</if>
-		FROM
-				ROOM_MBR x1
-		    ,   FRND x2
-		WHERE   x1.mbr_id = x2.mbr_id
-		    AND x1.room_no = #{roomNo}
-		    AND x2.frnd_id in   (
-		                            SELECT  x3.frnd_id
-		                            FROM    FRND x3
-		                            WHERE   1 = 1
-		                                AND x3.mbr_id = #{mbrId}
-		                        )
-		LIMIT 1
-	</select>
 
 
 	<delete id="outRoom" parameterType="map">
