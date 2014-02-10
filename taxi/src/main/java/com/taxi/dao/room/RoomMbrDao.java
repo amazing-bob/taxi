@@ -32,6 +32,17 @@ public interface RoomMbrDao {
 	 */
 	int addRoomMbr(RoomMbr roomDtl) throws Exception;
 	
+	/**
+	 * 설  명: 방 맴버수 조회
+	 * 작성자: 장종혁
+	 */
+	int roomMemberCount(int roomNo)throws Exception;
+	
+	/**
+	 * 설  명: 방 멤버 삭제(방 삭제시)
+	 * 작성자: 장종혁
+	 */
+	int deleteRoomMbr2(int roomNo)throws Exception;
 	
 /*	//====================== AS-IS =======================//
  

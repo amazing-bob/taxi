@@ -90,8 +90,9 @@ public class RoomServiceImpl implements RoomService {
 	
 	
 	/**
-	 * 설  명: 방 나가기
-	 * 작성자: 김상헌
+	 * 설  명: 방 나가기 (수정)
+	 * 작성자: 김상헌 (수정 : 장종혁)
+	 * 방 나갈 때 방이 삭제 안되는 경우 수정
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
 	public void outRoom(int mbrNo, int roomNo) throws Exception {
@@ -101,9 +102,28 @@ public class RoomServiceImpl implements RoomService {
 			paramMap.put("mbrNo", mbrNo);
 			//RoomMbr roomMbr = roomMbrDao.getRoomMbrInfo(paramMap);
 			
-			int count = roomMbrDao.outRoom(paramMap);
+//			int count = roomMbrDao.outRoom(paramMap);
+//		수정 부분
+			
+		int roomCnt = roomMbrDao.roomMemberCount(roomNo);
+		
+		if(roomCnt==1){ //방에 인원이 1명이므로 나가면 방도 삭제되어야 함.
+			//삭제순서 : Path -> ROOMMBR -> ROOM
+			roomPathDao.deleteRoomPath(roomNo);
+			
+			roomMbrDao.deleteRoomMbr2(roomNo);
+			
+			roomDao.deleteRoom(roomNo);
+			
+		}else{// 방에 2명 이상이므로 1명이 나가도 방은 유지가 되므로 해당 유저만 삭제하면 됨.
+			
+			roomMbrDao.deleteRoomMbr(mbrNo);
+			
+		}
 			
 			
+			
+		
 			// 푸쉬 처리 할 때 아래 주석 부분 처리 해야함....!!!!
 			
 //			if(count > 0){

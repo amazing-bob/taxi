@@ -20,6 +20,12 @@ public interface RoomPathDao {
 	 */
 	void addRoomPathList(List<RoomPath> roomPathList) throws Exception;
 	
+	/**
+	 * 설  명: 출발지&목적지 삭제
+	 * 작성자: 장종혁
+	 */
+	void deleteRoomPath(int roomNo)throws Exception;
+	
 /*	//====================== AS-IS =======================//
  	
 

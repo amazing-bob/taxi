@@ -32,6 +32,12 @@ public interface RoomDao {
 	 */
 	int addRoom(Room room) throws Exception;
 	
+	
+	/**
+	 * 설  명: 방 삭제
+	 * 작성자: 장종혁
+	 */
+	int deleteRoom(int roomNo)throws Exception;
 /*	//====================== AS-IS =======================//
 
 	Room getRoomInfo(int roomNo) throws Exception ;

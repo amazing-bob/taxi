@@ -145,8 +145,31 @@
         	, #{mutualYn}, #{roomMbrRank} )
     </insert>
     
-	
+	<!-- 
+		*설  명:방내 회원수 조회
+		*작성자:장종혁
+	 -->
+	<select id="roomMemberCount" parameterType="int" resultType="int">
+	    SELECT
+	    	 count(*)
+	    FROM 
+	    	ROOM_MBR
+	    WHERE
+	    	 ROOM_NO=#{value}
+	</select>
 
+		<!-- 
+		 * 설  명: 방 멤버 삭제(방 삭제시)
+		 * 작성자: 장종혁
+	-->
+	<delete id="deleteRoomMbr2" parameterType="int">
+        delete from ROOM_MBR
+        where 	1 = 1
+        	and	ROOM_NO = #{value}
+    </delete>
+    
+	
+	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
     <select id="getRoomMbrCount" parameterType="int" resultType="int">

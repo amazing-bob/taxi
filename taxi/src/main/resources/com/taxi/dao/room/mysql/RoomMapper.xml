@@ -154,7 +154,19 @@
 		</selectKey>
 	</insert>
 	
-	
+	<!-- 
+		* 설  명:방삭제
+		* 작성자:장종혁
+	 -->
+	 <delete id="deleteRoom" parameterType="int">
+	     DELETE 
+	     	FROM 
+	     				ROOM
+	      WHERE
+	      				ROOM_NO=#{value}
+	 </delete>
+	 
+	 
 <!-- //====================== AS-IS =======================// -->
 <!-- 
 
