@@ -16,10 +16,12 @@
                 , c.MBR_PHONE_NO		as mbrPhoneNo
                 , c.MBR_PHOTO_URL 		as mbrPhotoUrl
                 , c.GCM_REG_ID			as gcmRegId 
-	            , c.REL_FRND_PHONE_NO 	as relFrndPhoneNo
 	            , c.ROOM_MBR_NO 		as roomMbrNo 
 	            , c.ROOM_MBR_NAME 		as roomMbrName
-	            , d.REL_FRND_NAME  		as relFrndName 
+	            , c.ROOM_MBR_ST         as roomMbrSt
+	            , c.REL_FRND_PHONE_NO 	as relFrndPhoneNo
+	            , d.REL_FRND_NAME  		as relFrndName
+	            , c.MUTUAL_YN 			as mutualYn
 			  	, c.ROOM_MBR_RANK 		as roomMbrRank 
 	     from (
 		        select
@@ -27,38 +29,46 @@
 					,    a.MBR_NO
 					,    a.MBR_NAME
 					,    a.MBR_PHONE_NO
+	                ,    a.MBR_PHOTO_URL
+	                ,    a.GCM_REG_ID
 					,    b.ROOM_MBR_NO
 					,    b.ROOM_MBR_NAME
+					,    a.ROOM_MBR_ST
 					,    a.REL_FRND_PHONE_NO
+					, 	 a.MUTUAL_YN
 					,    a.ROOM_MBR_RANK
-	                ,    a.GCM_REG_ID
-	                ,    a.MBR_PHOTO_URL
 		              from  (
+		              		 -- 참여회원 정보
 		                     select
 		                            a.ROOM_NO,
 		                            a.MBR_NO,
 		                            b.MBR_NAME,
 		                            b.MBR_PHONE_NO,
-		                            a.ROOM_MBR_NO,
-		                            a.REL_FRND_PHONE_NO,
-		                            a.ROOM_MBR_RANK,
+	                                b.MBR_PHOTO_URL,
 	                                a.GCM_REG_ID,
-	                                b.MBR_PHOTO_URL
+		                            a.ROOM_MBR_NO,
+		                            a.ROOM_MBR_ST,
+		                            a.REL_FRND_PHONE_NO,
+		                            a.MUTUAL_YN,
+		                            a.ROOM_MBR_RANK
 		                       from
-		                            ROOM_MBR a, MBR b
+		                            ROOM_MBR a
+		                          , MBR b
 		                      where 1 = 1
 								and a.MBR_NO = b.MBR_NO
 								and a.ROOM_NO = #{value}
 		                   ) a
 						left outer join
 		                   (
+		                   	 -- 알고 들어가게된 사람정보
 		                     select
 									a.room_no,
 		                        	a.ROOM_MBR_NO,
 		                        	b.MBR_NAME AS  ROOM_MBR_NAME,
 	                                a.GCM_REG_ID
 		                       from
-		                            ROOM_MBR a, MBR b
+		                            ROOM_MBR a
+		                          , MBR b
 		                      where 1 = 1
 		                      	and a.ROOM_MBR_NO = b.MBR_NO
 								and a.ROOM_NO = #{value}
@@ -69,6 +79,7 @@
 				) c
 			left outer join
                 (
+                	 -- 연결 친구 정보
 	                 select
 	                        a.ROOM_NO,
 	                        a.MBR_NO,
@@ -76,15 +87,17 @@
 	                        b.FRND_PHONE_NO,
 	                        a.REL_FRND_NAME
 	                   from
-	                        ROOM_MBR a, FRND b
+	                        ROOM_MBR a
+	                      , FRND b
 	                  where 1 = 1
+	                  	and a.MBR_NO = B.MBR_NO
 						and a.REL_FRND_PHONE_NO = b.FRND_PHONE_NO
 						and a.ROOM_NO = #{value}
 					group by  
-							a.mbr_NO
+							a.MBR_NO
 				) d
 			 on c.ROOM_NO = d.ROOM_NO
-			and c.MBR_NO = d.mbr_NO
+			and c.MBR_NO = d.MBR_NO
 		  where 1 = 1
 			and c.ROOM_NO =  #{value}
 	    order by 
