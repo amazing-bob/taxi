@@ -124,7 +124,7 @@ var getCurrentHtmlPath = function() {
 
 
 /**
- * 설  명: 내정보 가져오기
+ * 설  명: SessionStorage 에 있는 myInfo 객체 가져오기
  * 작성자: 김상헌
  */
 var getMyInfo = function() {
@@ -163,27 +163,43 @@ var getMyInfo = function() {
 //authCheck();
 
 /**
- * 설  명: 방 참여 여부
+ * 설  명: 방 참여 여부 myInfo 에 설정
  * 작성자: 김상헌
  */
-var isRoomMbr = function( isRoomMbrTrue, isRoomMbrFalse ) {
-	console.log("isRoomMbr(isRoomMbrTrue, isRoomMbrFalse)");
+var setIsRoomMbr = function(callbackFunc) {
+	console.log("isRoomMbr(callbackFunc)");
+//	console.log(callbackFunc);
 	
-	$.getJSON( rootPath + "/room/isRoomMbr.do"
-			, myInfo
+	myInfo = getSessionItem("myInfo");
+	var params = {
+		mbrNo : myInfo.mbrNo
+	};
+	
+	$.getJSON( rootPath + "/room/getMyRoom.do"
+			, params
 			, function(result) {
 				if (result.status == "success") {
-					setSessionItem("isRoomMbr", result.data);
-		
-					if (result.data === true) {
-						isRoomMbrTrue();
-		        	} else {
-		        		isRoomMbrFalse();
-		        	}
-		
+					var myRoom = result.data;
+					var isRoomMbr = false;
+					
+					if ( myRoom && myRoom != null ) {
+						isRoomMbr = true;
+					}
+					
+					var myRoomObj = {
+							isRoomMbr 	: isRoomMbr,
+							myRoom 		: myRoom
+					};
+					
+					$.extend( true, myInfo, myRoomObj );
+					
+					setSessionItem("myInfo", myInfo);
+					
 				} else {
 					alert("요청 처리중 오류 발생");
 				}
+				
+				callbackFunc();
 	});
 };
 

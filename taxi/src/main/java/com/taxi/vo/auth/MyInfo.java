@@ -9,6 +9,7 @@ import com.taxi.util.CustomDateSerializer;
 import com.taxi.vo.friend.Frnd;
 import com.taxi.vo.member.Mbr;
 import com.taxi.vo.member.base.BaseMbr;
+import com.taxi.vo.room.Room;
 
 
 public class MyInfo extends Mbr implements Serializable {
@@ -40,7 +41,8 @@ public class MyInfo extends Mbr implements Serializable {
 	protected String 	loginSt;
 	protected String 	loginPassword;
 	// Room 관련
-	protected int 		roomNo;
+	protected boolean 	isRoomMbr;
+	protected Room 		myRoom;
 	
 	
 	public MyInfo setMbrNo(int mbrNo) {
@@ -149,13 +151,21 @@ public class MyInfo extends Mbr implements Serializable {
 		this.loginPassword = loginPassword;
 		return this;
 	}
-	public int getRoomNo() {
-		return roomNo;
+	public boolean isRoomMbr() {
+		return isRoomMbr;
 	}
-	public MyInfo setRoomNo(int roomNo) {
-		this.roomNo = roomNo;
+	public MyInfo setRoomMbr(boolean isRoomMbr) {
+		this.isRoomMbr = isRoomMbr;
 		return this;
 	}
+	public Room getMyRoom() {
+		return myRoom;
+	}
+	public MyInfo setMyRoom(Room myRoom) {
+		this.myRoom = myRoom;
+		return this;
+	}
+
 	
 	
 }

@@ -24,16 +24,10 @@ public interface RoomService {
 	Room getRoomInfo(int roomNo) throws Exception;
 	
 	/**
-	 * 설  명: 방에 참여 여부 조회
-	 * 작성자: 김상헌
+	 * 설  명: 내방 가져오기
+	 * 작성자: 김상헌 
 	 */
-	boolean isRoomMbr(int mbrNo) throws Exception;
-	
-	/**
-	 * 설  명: 방 나가기
-	 * 작성자: 김상헌
-	 */
-	void outRoom(int mbrNo, int roomNo) throws Exception;
+	Room getMyRoom(int mbrNo) throws Exception;
 	
 	/**
 	 * 설  명: 방 만들기
@@ -48,10 +42,11 @@ public interface RoomService {
 	void joinRoom(RoomMbr roomMbr, RcntLoc rcntLoc) throws Exception;
 	
 	/**
-	 * 설  명: 내방 가져오기
-	 * 작성자: 김상헌 
+	 * 설  명: 방 나가기
+	 * 작성자: 김상헌
 	 */
-	Room getMyRoom(int mbrNo) throws Exception;
+	void outRoom(int mbrNo, int roomNo) throws Exception;
+	
 	
 /*	//====================== AS-IS =======================//
  

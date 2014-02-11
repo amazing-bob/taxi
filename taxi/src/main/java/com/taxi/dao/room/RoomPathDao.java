@@ -24,7 +24,7 @@ public interface RoomPathDao {
 	 * 설  명: 출발지&목적지 삭제
 	 * 작성자: 장종혁
 	 */
-	void deleteRoomPath(int roomNo)throws Exception;
+	void deleteRoomPath(Map<String, Object> paramMap)throws Exception;
 	
 /*	//====================== AS-IS =======================//
  	

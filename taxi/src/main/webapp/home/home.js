@@ -732,23 +732,20 @@ var searchRooms = function() {
 					}
 
 					// 내방 여부에 따른 화면 세팅
-					isRoomMbr( function() { // isRoomMbrTrue
+					if ( myInfo.isRoomMbr ) { 
 						$("#btnAddViewRoom > img").attr("src", "../images/common/button/into_room.png");
 						$("#btnAddViewRoom").data("status", "intoMyRoomBtn");
 						$("#divRoomList").data("isRoomMbr", "true");
 						
 						createRoomList( roomList, true );
 						
-				    },
-				    function() { // isRoomMbrFalse
+					} else {
 				    	$("#btnAddViewRoom > img").attr("src", "../images/common/button/add_btn.png");
 						$("#btnAddViewRoom").data("status", "addRoomBtn");
 						$("#divRoomList").data("isRoomMbr", "false");
 						
 				    	createRoomList( roomList, false );
-				    	
-				    } );
-					
+					}
 
 				} else {
 					console.log("fail");
@@ -1181,23 +1178,14 @@ var clickAddViewRoom = function() {
 var goMyroom = function() {
 	console.log("goMyroom()");
 	
-	var params = {
-			mbrNo : myInfo.mbrNo
-	};
+	if ( myInfo.isRoomMbr ) {
+		var myRoom = myInfo.myRoom;
+		
+		if (  myRoom && myRoom != null) {
+			changeHref("../room/room.html", { roomNo : myRoom.roomNo });
+		}
+	}
 	
-	$.getJSON( rootPath + "/room/getMyRoom.do"
-			, params
-			, function(result) {
-				console.log(result);
-				if (result.status === "success") {
-					var room = result.data;
-					console.log(room);
-					if ( room && room != null &&
-							room.roomNo && room.roomNo != null && room.roomNo != 0) {
-						changeHref("../room/room.html", { roomNo : room.roomNo });
-					}
-				}
-			});
 };
 
 
@@ -1208,17 +1196,18 @@ var goMyroom = function() {
 var showAddRoomTimePicker = function() {
 	console.log("showAddRoomTimePicker()");
 	
-	isRoomMbr( function() { // isRoomMbrTrue
+	if ( myInfo.isRoomMbr ) {
     	Toast.shortshow("이미 방에 참여 중입니다.");
-    },
-    function() { // isRoomMbrFalse
+    	
+	} else {
     	var dateTime = new Date();
     	dateTime.setMinutes( dateTime.getMinutes() + 10 );
 //    	$("#setTimeBox").datebox("setTheDate", dateTime);
 		$("#divAddRoomCondition_popup").popup("open", { transition  : "pop" });
 		backgroundBlack();
 		$("#setTimeBox").parent().css("display","none");
-    } );
+	}
+	
 };
 
 
@@ -1230,37 +1219,35 @@ var joinRoom = function(regId, roomNo) {
 	console.log("joinRoom(regId, roomNo)");
 //	console.log(regId, roomNo);
 
-    isRoomMbr(
-    		function() { //isRoomMbrTrue
-    			Toast.shortshow("이미 방에 참여 중입니다.");
-		    },
-		    function() { //isRoomMbrFalse
+	if ( myInfo.isRoomMbr ) {
+		Toast.shortshow("이미 방에 참여 중입니다.");
+		
+	} else {
+    	var locationSession = getSessionItem("locationSession");
+    	
+    	var params = {
+	    		roomNo 		: roomNo,
+	    		mbrNo		: myInfo.mbrNo,
+				endLocName 	: locationSession.endName,
+				endLocLat 	: locationSession.endY,
+				endLocLng 	: locationSession.endX,
+				gcmRegId 	: regId
+    	};
+    	
+    	$.post( rootPath + "/room/joinRoom.do",
+    			params,
+				function(result) {
+    		console.log(result);
+					if (result.status =="success") {
+						
+						changeHref("../room/room.html", { roomNo : roomNo});
 
-		    	var locationSession = getSessionItem("locationSession");
-		    	
-		    	var params = {
-			    		roomNo 		: roomNo,
-			    		mbrNo		: myInfo.mbrNo,
-						endLocName 	: locationSession.endName,
-						endLocLat 	: locationSession.endY,
-						endLocLng 	: locationSession.endX,
-						gcmRegId 	: regId
-		    	};
-		    	
-		    	$.post( rootPath + "/room/joinRoom.do",
-		    			params,
-						function(result) {
-		    		console.log(result);
-							if (result.status =="success") {
-								
-								changeHref("../room/room.html", { roomNo : roomNo});
+					} else {
+						console.log(result.data);
 
-							} else {
-								console.log(result.data);
-
-							}
-						}, "json");
-		    });
+					}
+				}, "json");
+	}
 };
 
 

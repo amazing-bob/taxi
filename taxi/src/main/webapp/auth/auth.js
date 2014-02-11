@@ -13,24 +13,37 @@ $(document).ready(function() {
 	console.log(rootPath);
 	
 	var myInfo = {
-		mbrNo: 1,
-		mbrName:"회원001",
-		mbrPhotoUrl: "../images/photo/m01.jpg",
-		startRange: 500,
-		endRange: 1000
+		mbrNo 		: 1,
+		mbrName 	:"회원001",
+		mbrPhotoUrl : "../images/photo/m01.jpg",
+		startRange 	: 500,
+		endRange 	: 1000
 	};
 	
 	// 세션스토리지에 저장
 	setSessionItem("myInfo", myInfo);
+	
+	// 방 참여여부 설정
+	setIsRoomMbr( 
+			// callbackFunc
+			function() { 
+				var myInfo = getSessionItem("myInfo");
+				console.log(myInfo.isRoomMbr);
+					if ( myInfo.isRoomMbr ) { // 방 있을 때
+						// 방가기
+						changeHref("../room/room.html", { roomNo : myInfo.myRoom.roomNo });		
+					} else { // 방 없을 때
+						// 홈가기
+						changeHref("../home/home.html");		
+					}
+			} );
+	
 
-	// 홈가기
-	changeHref("../home/home.html");
-	// 방가기
-//	changeHref("../room/room.html", { roomNo : 1 });
+
+
 	
 	// 홈or 방 가기
 //	goHomeOrRoom(myInfo);
-	
 	
 //	$.ajax( rootPath + "/auth/login.do", {
 //		type: "POST",

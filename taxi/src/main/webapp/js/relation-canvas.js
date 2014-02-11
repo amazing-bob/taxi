@@ -2,7 +2,7 @@ console.log("relation-canvasjs...");
 
 function drawRelationCanvas (roomInfo, canvas, type) {
 	console.log("drawRelationCanvas(roomInfo, canvas, type)");
-	console.log(roomInfo, canvas, type);
+//	console.log(roomInfo, canvas, type);
 
 	var canvasSize = 320;
 	var imageSize = 80;

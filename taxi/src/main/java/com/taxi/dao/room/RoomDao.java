@@ -9,16 +9,10 @@ import com.taxi.vo.room.Room;
 public interface RoomDao {
 
 	/**
-	 *  설  명: 참여하고 있는 방 조회
+	 *  설  명: 방 목록 조회
 	 *  작성자: 김상헌
 	 */
 	List<Room> getRoomList(Map<String, Object> paramMap) throws Exception;
-	
-	/**
-	 * 설  명: 내방 가져오기
-	 * 작성자: 김상헌 
-	 */
-	Room getMyRoom(int mbrNo) throws Exception ;
 	
 	/**
 	 * 설  명: 방 정보 조회
@@ -30,7 +24,7 @@ public interface RoomDao {
 	 *  설  명: 참여하고 있는 방 조회
 	 *  작성자: 김상헌
 	 */
-	Room hasRooom(int mbrNo) throws Exception;
+	Room hasRoom(int mbrNo) throws Exception;
 	
 	/**
 	 *  설  명: 방 추가
@@ -43,10 +37,10 @@ public interface RoomDao {
 	 * 설  명: 방 삭제
 	 * 작성자: 장종혁
 	 */
-	int deleteRoom(int roomNo)throws Exception;
+	int deleteRoom(Map<String, Object> paramMap)throws Exception;
+	
+	
 /*	//====================== AS-IS =======================//
-
-	Room getRoomInfo(int roomNo) throws Exception ;
 
 	List<Room> getAlramGcmTargetRoomList(String criteriaTime) throws Exception;
 	

@@ -2,7 +2,9 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -41,8 +43,9 @@ public class RoomControl {
         JsonResult jsonResult = new JsonResult();
 
         try {
+
+        	jsonResult.setData( roomService.getRoomInfo(roomNo) );
             jsonResult.setStatus("success");
-            jsonResult.setData( roomService.getRoomInfo(roomNo) );
 
         } catch (Throwable e) {
         	e.printStackTrace();
@@ -94,33 +97,6 @@ public class RoomControl {
 		return jsonResult;
 	}
 	
-	
-	/**
-	 * 설  명: 방 참여 여무 조회
-	 * 작성자: 김상헌 
-	 */
-    @RequestMapping("/isRoomMbr")
-    @ResponseBody
-    public JsonResult isRoomMbr( MyInfo myInfo ) throws Exception {
-
-    	JsonResult jsonResult = new JsonResult();
-    	
-    	try {
-	    	boolean isRoomMbr = roomService.isRoomMbr( myInfo.getMbrNo() );
-	    	
-    		jsonResult.setData(isRoomMbr);
-    		jsonResult.setStatus("success");
-	    	
-    	} catch (Throwable e) {
-    		e.printStackTrace();
-    		StringWriter out = new StringWriter();
-    		e.printStackTrace(new PrintWriter(out));
-
-    		jsonResult.setStatus("fail");
-    		jsonResult.setData(out.toString());
-    	}
-    	return jsonResult;
-    }
 	
     /**
 	 * 설  명: 방 나가기
@@ -250,12 +226,8 @@ public class RoomControl {
 
         	Room myRoom = roomService.getMyRoom( mbrNo );
 
-        	if ( myRoom != null ) {
-        		jsonResult.setStatus("success");
-                jsonResult.setData( myRoom );
-        	} else {
-        		jsonResult.setStatus("fail");
-        	}
+            jsonResult.setData( myRoom );
+            jsonResult.setStatus("success");
 
         } catch (Throwable e) {
         	e.printStackTrace();

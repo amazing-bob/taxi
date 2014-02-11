@@ -53,8 +53,8 @@ public class MemberServiceImpl implements MemberService {
 		paramMap.put("room", null);
 		
     	
-		feedDao.deleteFeed(paramMap);  
-        roomMbrDao.deleteRoomMbr(mbrNo); 
+		feedDao.deleteFeed(paramMap);
+        roomMbrDao.deleteRoomMbr(paramMap); 
         frndDao.deleteFrnd(mbrNo);
         fvrtLocDao.deleteAllFvrtLoc(mbrNo); 
         settingDao.deleteSetting(mbrNo);

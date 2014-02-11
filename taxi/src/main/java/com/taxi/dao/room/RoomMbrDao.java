@@ -15,16 +15,10 @@ public interface RoomMbrDao {
 	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
 	
 	/**
-	 * 설  명: 방 나가기
-	 * 작성자: 김상헌 
-	 */
-	int outRoom(Map<String, Object> paramMap) throws Exception;
-	
-	/**
 	 * 설  명: 방 멤버 삭제
 	 * 작성자: 김상헌 
 	 */
-	void deleteRoomMbr(int mbrNo);
+	int deleteRoomMbr(Map<String, Object> paramMap) throws Exception;
 	
 	/**
 	 * 설  명: 방 멤버 추가
@@ -37,12 +31,6 @@ public interface RoomMbrDao {
 	 * 작성자: 장종혁
 	 */
 	int roomMemberCount(int roomNo)throws Exception;
-	
-	/**
-	 * 설  명: 방 멤버 삭제(방 삭제시)
-	 * 작성자: 장종혁
-	 */
-	int deleteRoomMbr2(int roomNo)throws Exception;
 	
 	/**
 	 * 설  명: 해당회원이 방에 참여한것을 가정한 정보 

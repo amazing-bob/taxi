@@ -9,54 +9,12 @@
 	    <result 	property="roomMbrNumLimit" 	column="room_mbr_num_limit"/>
 	    <result 	property="roomRegDate" 		column="room_reg_date"/>
 	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
-	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
-	        select="com.taxi.dao.room.RoomPathDao.getRoomPathList"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
 	        select="com.taxi.dao.room.RoomMbrDao.getRoomMbrDetailList"/>
+	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
+	        select="com.taxi.dao.room.RoomPathDao.getRoomPathList"/>
 	</resultMap>    
-	
-	 <!-- 
-		 *  설  명: 참여하고 있는 방 조회
-		 *  작성자: 김상헌
-	 -->
-	 <select id="getRoomInfo" parameterType="int" resultType="Room">
-		select
-				ROOM_NO 		as roomNo
-			,	ROOM_START_TIME as roomStartTime
-			,	ROOM_REG_DATE 	as roomRegDate
-		from
-				ROOM
-		where  	1 = 1
-		and		ROOM_NO = #{value}
-	</select>
-	
 	 
-	 <!-- 
-		 * 설  명: 내방 가져오기
-		 * 작성자: 김상헌 
-	-->
-	<select id="getMyRoom" parameterType="int" resultMap="roomResultMap">
-		select
-				A.ROOM_NO
-			,	A.ROOM_START_TIME
-	        ,	A.ROOM_REG_DATE
-	        ,	(	select 	count(X.MBR_NO) 
-	        		from	ROOM_MBR X
-		            where 	X.ROOM_NO = A.ROOM_NO )     AS roomMbrCount
-		from
-				ROOM A
-			, 	ROOM_MBR B
-		where  	
-				1 = 1
-		and		A.ROOM_NO = B.ROOM_NO
-		and 	A.ROOM_START_TIME > now()
-		and		B.MBR_NO = #{value}
-		order by
-				A.ROOM_START_TIME
-		limit 1
-	</select>
-	
-	
 	<!-- 
 		* 설  명: 방 목록 조회
 		* 작성자: 김상헌
@@ -142,11 +100,34 @@
 	</select>
 	
 	
+	<!-- 
+		 *  설  명: 방 정보 조회
+		 *  작성자: 김상헌
+	 -->
+	 <select id="getRoomInfo" parameterType="int" resultMap="roomResultMap">
+		select
+				A.ROOM_NO
+		    , 	A.ROOM_START_TIME
+		    , 	A.ROOM_MBR_NUM_LIMIT
+		    , 	A.ROOM_REG_DATE
+		    ,	count( B.MBR_NO ) as roomMbrCount
+		from
+				ROOM A
+			, 	ROOM_MBR B
+		where  	1 = 1
+		and	    A.ROOM_NO = B.ROOM_NO
+		and		A.ROOM_NO = #{value}
+		group by
+				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
+		limit 1
+	</select>
+	
+	
 	<!--
 		* 설  명: 참여하고 있는 방 조회
 		* 작성자: 김상헌
 	-->
-	<select id="hasRooom" parameterType="int" resultMap="roomResultMap">
+	<select id="hasRoom" parameterType="int" resultMap="roomResultMap">
 		select 	
 				A.ROOM_NO
 		    , 	A.ROOM_START_TIME
@@ -163,6 +144,7 @@
 		and 	B.MBR_NO = #{value}
 		group by
 				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
+		limit 1
 	</select>
     
 
@@ -180,19 +162,25 @@
 		</selectKey>
 	</insert>
 	
-	<!-- 
-		* 설  명:방삭제
-		* 작성자:장종혁
-	 -->
-	 <delete id="deleteRoom" parameterType="int">
-	     DELETE 
-	     	FROM 
-	     				ROOM
-	      WHERE
-	      				ROOM_NO=#{value}
-	 </delete>
-	 
 	
+	<!-- 
+		* 설  명: 방 삭제
+		* 작성자: 김상헌
+	 -->
+	<delete id="deleteRoom" parameterType="map">
+		delete from 
+				ROOM
+		where	1 = 1
+		<if test="roomNo != null and roomNo != 0">
+			and ROOM_NO  = #{roomNo}    
+		</if>
+		<if test="room != null">
+			and ROOM_NO in
+			<foreach collection="room" item="item" separator="," open=" (" close=")">
+							#{item.roomNo}
+			</foreach>
+		</if>
+	</delete>
 
 	
 	
@@ -248,19 +236,7 @@
 	</select>	
     
 	
-	<delete id="deleteRoom" parameterType="map">
-		 delete from ROOM
-		<where>
-		    <trim prefixOverrides="AND|OR">
-				<if test="room != null">
-					and ROOM_NO in
-					<foreach collection="room" item="item" separator="," open=" (" close=")">
-						#{item.roomNo}
-					</foreach>
-				</if>
-			</trim>
-		</where>
-	</delete>
+
  -->
  
 </mapper>

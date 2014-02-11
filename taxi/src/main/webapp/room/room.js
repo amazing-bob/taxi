@@ -459,16 +459,31 @@ var setWaypointMarker = function( coord, imageUrl ) {
 
 var outRoom = function (mbrNo, roomNo) {
 
-	$.getJSON( rootPath + "/room/outRoom.do?mbrNo=" + mbrNo + "&roomNo=" + roomNo
-											 , function(result) {
+	var params = {
+		mbrNo 	: mbrNo,
+		roomNo 	: roomNo 
+	};
+	$.getJSON( rootPath + "/room/outRoom.do"
+			, params
+			, function( result ) {
 				if(result.status == "success") {
+					// 방나간정보를 myInfo 에 적용
+					$.extend(true, 
+							myInfo, 
+							{
+								isRoomMbr : false, 
+								myRoom : undefined 
+							});
+					
+					setSessionItem("myInfo", myInfo);
+					
 					changeHref("../home/home.html");
 
 				} else {
 					alert("실행중 오류발생!");
 					console.log(result.data);
 				}
-		});
+			 });
 };
 
 

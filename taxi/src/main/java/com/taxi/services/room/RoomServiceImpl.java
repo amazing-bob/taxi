@@ -31,6 +31,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomDao 		roomDao;
 	@Autowired RoomMbrDao 	roomMbrDao;
 	@Autowired RoomPathDao 	roomPathDao;
+	@Autowired FeedDao 		feedDao;
 	@Autowired RcntLocDao	rcntLocDao;
 
 	
@@ -40,11 +41,6 @@ public class RoomServiceImpl implements RoomService {
 	 */
 	public Room getRoomInfo( int roomNo ) throws Exception {
 		Room roomInfo = roomDao.getRoomInfo(roomNo);
-		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrDetailList( roomInfo.getRoomNo() );
-		roomInfo.setRoomMbrCount( roomMbrInfo.size() );
-		List<RoomPath> roomPathInfo = roomPathDao.getRoomPathList( roomInfo.getRoomNo() );
-		roomInfo.setRoomMbrList(roomMbrInfo);
-		roomInfo.setRoomPathList(roomPathInfo);
 		
 		return roomInfo;
 		
@@ -74,54 +70,30 @@ public class RoomServiceImpl implements RoomService {
 	
 	
 	/**
-	 * 설  명: 방에 참여 여부 조회
+	 * 설  명: 방 나가기
 	 * 작성자: 김상헌
-	 */
-	public boolean isRoomMbr(int mbrNo) throws Exception {
-		
-		Room myRoom = roomDao.hasRooom(mbrNo);
-
-		if ( myRoom == null || myRoom.getRoomNo() == 0 ) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	
-	/**
-	 * 설  명: 방 나가기 (수정)
-	 * 작성자: 김상헌 (수정 : 장종혁)
 	 * 방 나갈 때 방이 삭제 안되는 경우 수정
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
 	public void outRoom(int mbrNo, int roomNo) throws Exception {
 		try{
 			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("roomNo", roomNo);
-			paramMap.put("mbrNo", mbrNo);
-			//RoomMbr roomMbr = roomMbrDao.getRoomMbrInfo(paramMap);
-			
-//			int count = roomMbrDao.outRoom(paramMap);
-//		수정 부분
-			
-		int roomCnt = roomMbrDao.roomMemberCount(roomNo);
+			paramMap.put("roomNo"	, roomNo);
+			paramMap.put("mbrNo"	, mbrNo);
 		
-		if(roomCnt==1){ //방에 인원이 1명이므로 나가면 방도 삭제되어야 함.
-			//삭제순서 : Path -> ROOMMBR -> ROOM
-			roomPathDao.deleteRoomPath(roomNo);
+			roomMbrDao.deleteRoomMbr(paramMap);
 			
-			roomMbrDao.deleteRoomMbr2(roomNo);
+			int roomCnt = roomMbrDao.roomMemberCount(roomNo);
 			
-			roomDao.deleteRoom(roomNo);
-			
-		}else{// 방에 2명 이상이므로 1명이 나가도 방은 유지가 되므로 해당 유저만 삭제하면 됨.
-			
-			roomMbrDao.deleteRoomMbr(mbrNo);
-			
-		}
-			
-			
+			if ( roomCnt == 0 ){ //방에 인원이 0명이므로 나가면 방도 삭제되어야 함.
+				//삭제순서 : Feed -> Path -> RoomMbr -> Room
+				paramMap.remove("mbrNo");
+				
+				feedDao.deleteFeed(paramMap);
+				roomPathDao.deleteRoomPath(paramMap);
+				roomMbrDao.deleteRoomMbr(paramMap);
+				roomDao.deleteRoom(paramMap);
+			}
 			
 		
 			// 푸쉬 처리 할 때 아래 주석 부분 처리 해야함....!!!!
@@ -224,7 +196,7 @@ public class RoomServiceImpl implements RoomService {
 	 * 작성자: 김상헌 
 	 */
 	public Room getMyRoom(int mbrNo) throws Exception {
-		return roomDao.getMyRoom(mbrNo);
+		return roomDao.hasRoom(mbrNo);
 	}
 	
 /*	//====================== AS-IS =======================//

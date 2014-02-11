@@ -72,6 +72,11 @@
 		</selectKey>
 	</insert>
 	
+	
+	<!--
+		* 설  명: 피드 삭제
+		* 작성자: 김상헌 
+	-->
 	<delete id="deleteFeed" parameterType="map">
 		delete from FEED 
 			<where>
@@ -95,6 +100,8 @@
 				</if>
 			</where>
 	</delete> 
+	
+	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
 	<select id="getFeedList"
