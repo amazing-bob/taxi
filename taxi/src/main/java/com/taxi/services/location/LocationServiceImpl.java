@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.taxi.dao.location.FvrtLocDao;
 import com.taxi.dao.location.RcntLocDao;
 import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 
 
 @Service
@@ -39,10 +40,14 @@ public class LocationServiceImpl implements LocationService {
 		fvrtLocDao.deleteFvrtLoc(fvrtLocNo);
 	}
 	
-	
-	public Object getRecentDestination(int mbrNo) throws Exception {
+	/**
+	 * 설  명: 최근 목적지 가져오기
+     * 작성자: 김상헌 
+	 */
+	public List<RcntLoc> getRecentDestination(int mbrNo) throws Exception {
     	Map<String, Object> paramsMap = new HashMap<String, Object>();
     	paramsMap.put("mbrNo", mbrNo);
+    	
     	return rcntLocDao.getRecentDestination(paramsMap); 
     } 
 	

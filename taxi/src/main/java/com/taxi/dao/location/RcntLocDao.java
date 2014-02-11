@@ -9,7 +9,11 @@ import com.taxi.vo.location.RcntLoc;
 
 public interface RcntLocDao {
 
-	List<FvrtLoc> getRecentDestination(Map<String, Object> paramsMap) throws Exception;
+	/**
+	 * 설  명: 최근 목적지 가져오기
+     * 작성자: 김상헌 
+	 */
+	List<RcntLoc> getRecentDestination(Map<String, Object> paramsMap) throws Exception;
 
 	void deleteRcntLocList(int mbrNo);
 	

@@ -3,11 +3,16 @@ package com.taxi.services.location;
 import java.util.List;
 
 import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 
 
 public interface LocationService {
 	
-	public Object getRecentDestination(int mbrNo) throws Exception;
+	/**
+	 * 설  명: 최근 목적지 가져오기
+     * 작성자: 김상헌 
+	 */
+	public List<RcntLoc> getRecentDestination(int mbrNo) throws Exception;
 	
 	List<FvrtLoc> getFavoriteList(int mbrNo) throws Exception;
 	

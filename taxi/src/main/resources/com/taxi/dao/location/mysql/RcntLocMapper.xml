@@ -4,17 +4,19 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.location.RcntLocDao">
 
-	<select id="getRecentDestination"
-			parameterType="Map" 
-            resultType="RcntLoc"> 
+    <!-- 
+    	* 설  명: 최근 목적지 가져오기
+    	* 작성자: 김상헌
+    -->
+	<select id="getRecentDestination" parameterType="Map" resultType="RcntLoc"> 
 		select 
-				RCNT_LOC_NO
-			,	MBR_NO
-			,	RCNT_LOC_NAME
-			, 	RCNT_LOC_LAT
-			, 	RCNT_LOC_LNG
-			, 	RCNT_LOC_REG_DATE
-			, 	RCNT_LOC_ST
+				RCNT_LOC_NO 		as rcntLocNo
+			,	MBR_NO 				as mbrNo			
+			,	RCNT_LOC_NAME 		as rcntLocName
+			, 	RCNT_LOC_LAT 		as rcntLocLat
+			, 	RCNT_LOC_LNG 		as rcntLocLng
+			, 	RCNT_LOC_REG_DATE 	as rcntLocRegDate 
+			, 	RCNT_LOC_ST 		as rcntLocSt
 		from 	
 				RCNT_LOC
 		where 	
@@ -24,6 +26,7 @@
 				RCNT_LOC_REG_DATE desc
     </select>
     
+	
 	<delete id="deleteRcntLocList" parameterType="int"> 
         delete from RCNT_LOC  
         where MBR_NO=#{value}  

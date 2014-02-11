@@ -2,6 +2,7 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import com.taxi.services.location.LocationService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.LoginInfo;
 import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.member.Mbr;
 
 
@@ -25,16 +27,17 @@ public class LocationControl {
 	@Autowired LocationService locationService;
 	
 	/**
-	 * 설  명 : 기존에 있던 최근 정보?  mbrID를 mbrNo로 변경함
-	 * 작성자 : 장종혁
+	 * 설  명: 최근 목적지 가져오기
+     * 작성자: 김상헌 
 	 */
 	@RequestMapping("/getRecentDestination")
     @ResponseBody
     public Object getRecentDestination(Mbr mbr) throws Exception {
         JsonResult jsonResult = new JsonResult();
         try {
-        	System.out.println("=========" + mbr.getMbrNo());
-            jsonResult.setData( locationService.getRecentDestination(mbr.getMbrNo()) );
+        	List<RcntLoc> recentLocList = locationService.getRecentDestination(mbr.getMbrNo());
+        	
+            jsonResult.setData( recentLocList );
             jsonResult.setStatus("success");
              
         } catch (Throwable e) {

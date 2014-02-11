@@ -524,12 +524,12 @@ var checkEndLocation = function() {
 		$.getJSON( rootPath + "/location/getRecentDestination.do", param, function(result) {
 			if (result.status === "success") {
 				var recentDestinationList = result.data;
-				
+				console.log(recentDestinationList);
 				if ( recentDestinationList.length > 0 ) {
 					setEndLocationSession(
-							recentDestinationList[0].fvrtLocLng,
-							recentDestinationList[0].fvrtLocLat,
-							recentDestinationList[0].fvrtLocName,
+							recentDestinationList[0].rcntLocLng,
+							recentDestinationList[0].rcntLocLat,
+							recentDestinationList[0].rcntLocName,
 							"최근목적지: ",
 							function() {
 								checkEndLocation();
