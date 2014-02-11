@@ -53,6 +53,14 @@ public interface RoomService {
 	 */
 	Room getMyRoom(int mbrNo) throws Exception;
 	
+	/**
+	 * 설  명: 지난 방 정리(AS-IS)
+	 * 작성자: 장종혁
+	 */
+	void removeRoom() throws Exception;
+	
+	
+	
 /*	//====================== AS-IS =======================//
  
 	
@@ -60,7 +68,6 @@ public interface RoomService {
 
 	void outRoom(String mbrId, int roomNo) throws Exception;
 	
-	void removeRoom() throws Exception;
 */
 	
 }

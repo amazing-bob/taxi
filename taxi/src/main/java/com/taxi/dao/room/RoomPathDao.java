@@ -26,10 +26,15 @@ public interface RoomPathDao {
 	 */
 	void deleteRoomPath(int roomNo)throws Exception;
 	
-/*	//====================== AS-IS =======================//
+	/**
+	 *설  명:시간이 지난 방의 출발지 & 목적지 삭제(쿼츠) - AS-IS
+	 *작성자:장종혁
+	 */
+	void deleteLastRoomPath(Map<String, Object> paramMap) throws Exception;
+
+	/*	//====================== AS-IS =======================//
  	
 
-	void deleteRoomPath(Map<String, Object> paramMap) throws Exception;
 */
 	
 }

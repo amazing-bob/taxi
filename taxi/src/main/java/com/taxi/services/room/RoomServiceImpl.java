@@ -32,7 +32,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomMbrDao 	roomMbrDao;
 	@Autowired RoomPathDao 	roomPathDao;
 	@Autowired RcntLocDao	rcntLocDao;
-
+	@Autowired FeedDao		feedDao;
 	
 	/**
 	 * 설  명: 방 정보 조회
@@ -227,11 +227,33 @@ public class RoomServiceImpl implements RoomService {
 		return roomDao.getMyRoom(mbrNo);
 	}
 	
+	/**
+	 * 설  명: 지난 방 정리(AS-IS)
+	 * 작성자: 장종혁
+	 */
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public void removeRoom() throws Exception {
+		System.out.println("Quartz Remove Rooms.........");
+		
+		List<Room> lastedRoomList = roomDao.getLastedRoomList();
+
+		if(lastedRoomList.size() > 0){
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("room", lastedRoomList);
+
+			feedDao.deleteFeed(paramMap);
+			roomMbrDao.outRoom(paramMap);
+			roomPathDao.deleteLastRoomPath(paramMap);
+			roomDao.deleteLastRoom(paramMap);
+		}
+	}
+
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
 	@Autowired FvrtLocDao fvrtLocDao;  
-	@Autowired FeedDao feedDao;
+
 	@Autowired PlatformTransactionManager txManager;
 	
 	
@@ -286,23 +308,6 @@ public class RoomServiceImpl implements RoomService {
 	}
 	
 	
-	@Transactional(
-			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public void removeRoom() throws Exception {
-		System.out.println("Quartz Remove Rooms.........");
-		
-		List<Room> lastedRoomList = roomDao.getLastedRoomList();
-
-		if(lastedRoomList.size() > 0){
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("room", lastedRoomList);
-
-			feedDao.deleteFeed(paramMap);
-			roomMbrDao.outRoom(paramMap);
-			roomPathDao.deleteRoomPath(paramMap);
-			roomDao.deleteRoom(paramMap);
-		}
-	}
-*/
+	*/
 
 }

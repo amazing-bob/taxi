@@ -68,6 +68,7 @@
     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
         <property name="jobDetail" ref="jobQuartz" />
         <property name="startDelay" value="3000" />
+        <!-- 10분 반복 -->
         <property name="repeatInterval" value="600000" />
     </bean>
  
@@ -85,8 +86,10 @@
         <property name="jobDetail" ref="jobQuartz" />
  
         <!-- 11시에 1회 실행 -->
-   <property name="cronExpression" value= "0 0 11 * * ?"/>
-<!--         <property name="cronExpression" value="0 * * ? * * " /> -->
+     <property name="cronExpression" value= "0 0 11 * * ?"/>
+          <!-- <property name="cronExpression" value="0/5 * * * * ?"/> -->
     </bean>
+        
+        
  
 </beans>

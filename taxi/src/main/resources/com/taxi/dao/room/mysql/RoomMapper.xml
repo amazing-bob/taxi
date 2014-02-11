@@ -193,8 +193,38 @@
 	 </delete>
 	 
 	
+	 <!-- 
+	 	*설  명: 지난 방 목록 가져오기(AS-IS)
+	 	*작성자: 장종혁
+	  -->
+	 <select id="getLastedRoomList" resultType="Room">
+	<![CDATA[
+		select 		ROOM_NO as roomNo
+		from  		ROOM
+		where
+	          		ROOM_START_TIME  <  DATE_SUB(DATE(NOW()), INTERVAL 1 DAY)
+	]]>
+	</select>	
 
-	
+	<!-- 
+		*설  명: 지난 방 지우기 (쿼츠) AS-IS
+		*작성자:장종혁
+	 -->
+<delete id="deleteLastRoom" parameterType="map">
+		 delete from ROOM
+		<where>
+		    <trim prefixOverrides="AND|OR">
+				<if test="room != null">
+					and ROOM_NO in
+					<foreach collection="room" item="item" separator="," open=" (" close=")">
+						#{item.roomNo}
+					</foreach>
+				</if>
+			</trim>
+		</where>
+	</delete>
+
+
 	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
@@ -238,14 +268,7 @@
     </select>
     
 	
-	<select id="getLastedRoomList" resultType="Room">
-	<![CDATA[
-		select 		ROOM_NO as roomNo
-		from  		ROOM
-		where
-	          		ROOM_START_TIME  <  DATE_SUB(DATE(NOW()), INTERVAL 1 DAY)
-	]]>
-	</select>	
+
     
 	
 	<delete id="deleteRoom" parameterType="map">
