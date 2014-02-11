@@ -33,7 +33,6 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomPathDao 	roomPathDao;
 	@Autowired FeedDao 		feedDao;
 	@Autowired RcntLocDao	rcntLocDao;
-
 	
 	/**
 	 * 설  명: 방 정보 조회
@@ -94,27 +93,6 @@ public class RoomServiceImpl implements RoomService {
 				roomMbrDao.deleteRoomMbr(paramMap);
 				roomDao.deleteRoom(paramMap);
 			}
-			
-		
-			// 푸쉬 처리 할 때 아래 주석 부분 처리 해야함....!!!!
-			
-//			if(count > 0){
-//				paramMap.put("roomNo", roomMbr.getRoomNo());
-//				paramMap.put("mbrId", roomMbr.getMbrId());
-//				
-//				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
-//				for (Map<String, String> map : gcmTargetMapList) {
-//					map.put("roomAction", "outRoom" );
-//					map.put("roomNo", roomMbr.getRoomNo()+"" );
-//					map.put("mbrId", roomMbr.getMbrId() );
-//					map.put("mbrName", roomMbr.getMbrName() );
-//					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
-//					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
-//				}
-//				
-//				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
-//				
-//			}
 			
 		} catch(Exception e ) {
 			throw e;
@@ -199,11 +177,34 @@ public class RoomServiceImpl implements RoomService {
 		return roomDao.hasRoom(mbrNo);
 	}
 	
+	
+	/**
+	 * 설  명: 지난 방 정리
+	 * 작성자: 장종혁
+	 */
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public void removeRoom() throws Exception {
+		System.out.println("Quartz Remove Rooms.........");
+		
+		List<Room> lastedRoomList = roomDao.getLastedRoomList();
+
+		if(lastedRoomList.size() > 0){
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("room", lastedRoomList);
+
+			feedDao.deleteFeed(paramMap);
+			roomMbrDao.deleteRoomMbr(paramMap);
+			roomPathDao.deleteLastRoomPath(paramMap);
+			roomDao.deleteLastRoom(paramMap);
+		}
+	}
+
 /*	//====================== AS-IS =======================//
  	
 	@Autowired GcmService gcmService;
 	@Autowired FvrtLocDao fvrtLocDao;  
-	@Autowired FeedDao feedDao;
+
 	@Autowired PlatformTransactionManager txManager;
 	
 	
@@ -258,23 +259,6 @@ public class RoomServiceImpl implements RoomService {
 	}
 	
 	
-	@Transactional(
-			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public void removeRoom() throws Exception {
-		System.out.println("Quartz Remove Rooms.........");
-		
-		List<Room> lastedRoomList = roomDao.getLastedRoomList();
-
-		if(lastedRoomList.size() > 0){
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("room", lastedRoomList);
-
-			feedDao.deleteFeed(paramMap);
-			roomMbrDao.outRoom(paramMap);
-			roomPathDao.deleteRoomPath(paramMap);
-			roomDao.deleteRoom(paramMap);
-		}
-	}
-*/
+	*/
 
 }

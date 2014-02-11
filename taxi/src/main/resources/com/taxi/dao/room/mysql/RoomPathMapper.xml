@@ -59,6 +59,25 @@
 	</delete>	
 	
 	
+	<!-- 
+		*설  명:시간이 지난 방의 출발지 & 목적지 삭제(쿼츠)
+		*작성자:장종혁
+	 -->
+	<delete id="deleteLastRoomPath"  parameterType="map">
+		 delete from ROOM_PATH
+		<where>
+		    <trim prefixOverrides="AND|OR">
+				<if test="room != null">
+					and ROOM_NO in
+					<foreach collection="room" item="item" separator="," open=" (" close=")">
+						#{item.roomNo}
+					</foreach>
+				</if>
+			</trim>
+		</where>
+	</delete>
+	 
+	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
 

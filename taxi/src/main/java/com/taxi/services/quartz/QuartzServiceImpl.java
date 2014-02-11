@@ -9,12 +9,19 @@ import com.taxi.services.room.RoomService;
 
 @Service
 public  class QuartzServiceImpl implements QuartzService {
-
-	
-/*	//====================== AS-IS =======================//
- 
 	@Autowired GcmService gcmService;
 	@Autowired RoomService roomService;
+
+	/**
+	 * 설  명:쿼츠 아침 11시가 되면 시간이 지난 방 정리(AS-IS 사용)
+	 * 작성자:장종혁
+	 */
+	public void roomCheckService() throws Exception {
+		roomService.removeRoom();
+	}
+
+	/*	//====================== AS-IS =======================//
+ 
 
 	public QuartzServiceImpl(){}
 
@@ -22,9 +29,6 @@ public  class QuartzServiceImpl implements QuartzService {
 		gcmService.performService();
 	}
 
-	public void roomCheckService() throws Exception {
-		roomService.removeRoom();
-	}
 */
 	
 }

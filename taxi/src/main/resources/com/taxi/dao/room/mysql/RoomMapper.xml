@@ -181,6 +181,20 @@
 			</foreach>
 		</if>
 	</delete>
+	
+	
+	 <!-- 
+	 	*설  명: 지난 방 목록 가져오기
+	 	*작성자: 장종혁
+	  -->
+	 <select id="getLastedRoomList" resultType="Room">
+	<![CDATA[
+		select 		ROOM_NO as roomNo
+		from  		ROOM
+		where
+	          		ROOM_START_TIME  <  DATE_SUB(DATE(NOW()), INTERVAL 1 DAY)
+	]]>
+	</select>	
 
 	
 	
