@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.dao.location.FvrtLocDao;
 import com.taxi.dao.location.RcntLocDao;
@@ -22,14 +24,16 @@ public class LocationServiceImpl implements LocationService {
 		return fvrtLocDao.getFvrtLoc(mbrNo);
 	}
 	
-	public void addFvrtLoc(FvrtLoc fvrtLoc) throws Exception {
+	public List<FvrtLoc> addFvrtLoc(FvrtLoc fvrtLoc) throws Exception {
 		int rank = 0;
-		
-		rank = fvrtLocDao.getFvrtLocRank(fvrtLoc.getMbrNo());
+			
+		rank = (int)fvrtLocDao.getFvrtLocRank(fvrtLoc.getMbrNo());
 		
 		fvrtLoc.setFvrtLocRank(rank);
 		
 		fvrtLocDao.addFvrtLoc(fvrtLoc);
+		
+		return fvrtLocDao.getFvrtLoc(fvrtLoc.getMbrNo());		
 	}
 
 	public void deleteAllFvrtLoc(int mbrNo) throws Exception {
@@ -50,5 +54,21 @@ public class LocationServiceImpl implements LocationService {
     	
     	return rcntLocDao.getRecentDestination(paramsMap); 
     } 
+	
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Throwable.class)
+	public void changeFavoritePlaces(int mbrNo , FvrtLoc fvrtLocList) throws Exception {
+		fvrtLocList.setMbrNo(mbrNo);
+		fvrtLocDao.updateFvrtLocRank(fvrtLocList);
+	}
+	
+	
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
+	public List<FvrtLoc> removeFavoritePlace(int fvrtLocNo , int mbrNo)throws Exception {
+	
+    	fvrtLocDao.deleteFvrtLocItem(fvrtLocNo);
+    	
+    	return fvrtLocDao.getFvrtLoc(mbrNo);
+	}	
 	
 }

@@ -313,13 +313,15 @@ var createLocationList = function(locations, page) {
   
 var getFavoriteLocation = function(execute) { 
     console.log("getFavoriteLocation()"); 
-      
-    var url =  rootPath + "/location/getFavoriteList.do"; 
-    $.getJSON(url 
+
+    var params = { mbrNo : myInfo.mbrno };
+    $.getJSON( rootPath + "/location/getFavoriteList.do" 
+    		, params
             , function(result) { 
                 if (result.status == "success") { 
                     var favoriteLocationList = result.data; 
                     execute(favoriteLocationList); 
+                    
                 } else { 
                     alert(result.data); 
                 } 
@@ -347,12 +349,19 @@ var addAndDelFavoriteLocation = function(idx, locations) {
             } 
               
             if (isFavoriteLocation == false) { 
+            	var params = { 
+            			mbrNo 		: myInfo.mbrNo,
+            			fvrtLocName : locations[idx].NAME, 
+                        fvrtLocLng  : locations[idx].X, 
+                        fvrtLocLat  : locations[idx].Y
+            	};
                 $.post( rootPath + "/location/addFavoriteLocation.do"
-                        ,{
-                            fvrtLocName : locations[idx].NAME, 
-                            fvrtLocLng  : locations[idx].X, 
-                            fvrtLocLat  : locations[idx].Y, 
-                        }, function(result) {
+                		, params
+//                        ,{
+//                            fvrtLocName : locations[idx].NAME, 
+//                            fvrtLocLng  : locations[idx].X, 
+//                            fvrtLocLat  : locations[idx].Y, 
+                        , function(result) {
                             if (result.status == "success") { 
                                 console.log("addFvrtLoc 성공"); 
                             } else { 

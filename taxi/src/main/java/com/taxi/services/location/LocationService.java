@@ -16,11 +16,14 @@ public interface LocationService {
 	
 	List<FvrtLoc> getFavoriteList(int mbrNo) throws Exception;
 	
-	void addFvrtLoc(FvrtLoc fvrtLoc)throws Exception;
+	List<FvrtLoc> addFvrtLoc(FvrtLoc fvrtLoc)throws Exception;
 	
 	void deleteAllFvrtLoc(int mbrNo)throws Exception;
 	
 	void deleteFvrtLoc(int fvrtLocNo)throws Exception;
 	
+	void changeFavoritePlaces(int mbrNo , FvrtLoc fvrtLocList) throws Exception;	
+	
+	List<FvrtLoc> removeFavoritePlace(int fvrtLocNo, int mbrNo) throws Exception;
 	
 }

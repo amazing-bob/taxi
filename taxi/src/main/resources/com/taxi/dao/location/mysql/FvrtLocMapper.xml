@@ -45,6 +45,7 @@
                             )  
     </insert> 
     
+     
 	<delete id="deleteFvrtLoc" parameterType="int"> 
 	    delete from FVRT_LOC  
 	    where FVRT_LOC_NO=#{value}
@@ -56,6 +57,18 @@
 	    where MBR_NO=#{value}  
 	</delete>
 	
+	
+	<update id="updateFvrtLocRank" parameterType="FvrtLoc">
+        update FVRT_LOC
+		set FVRT_LOC_RANK = #{fvrtLocRank}
+ 		where FVRT_LOC_NO = #{fvrtLocNo} and MBR_NO = #{mbrNo}
+        order by FVRT_LOC_RANK;
+    </update>
+	
+	<delete id="deleteFvrtLocItem" parameterType="int"> 
+	    delete from FVRT_LOC  
+	    where FVRT_LOC_NO = #{value}
+	</delete> 
 
 <!-- //====================== AS-IS =======================// -->
 <!-- 

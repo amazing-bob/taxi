@@ -1,9 +1,14 @@
 console.log("settings...");
 
 var that = this;
+var myInfo;
 
+var fvrtLocNo;
 
 $(document).ready(function() {
+	
+	myInfo = getSessionItem("myInfo");
+	
 	initAjaxLoading();
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -73,6 +78,7 @@ $(document).ready(function() {
 	});
 
 	$("#btnDeleteLoc").click(function() {
+		
 		deleteFvrtLoc();
 	});
 
@@ -406,20 +412,47 @@ function leaveMember() {
 
 
 
-function deleteFvrtLoc() {
-	console.log("!!!@");
 
-	$.getJSON(rootPath + "/member/deleteFavoritePlace.do?fvrtLocNo=" + $("#fvrtLocNo").attr("fvrtlocno"), function(result) {
-		if(result.status == "success") {
-			console.log(result.data);
-			console.log(result);
-			$("#popupFvrtLoc").popup("close");
-			fvrtLocLists();
-		} else {
-			Toast.shortshow("실행중 오류발생!");
-			console.log(result.data);
-		}
-	});
+
+
+
+
+
+
+
+
+
+/**
+ * 내  용:즐겨찾기 서버디비 데이타 삭제 후 로컬디비 동기화.
+ * 작성자:김태경
+ */
+function deleteFvrtLoc() {
+	
+	var params = {
+			mbrNo 		: myInfo.mbrNo,
+			fvrtLocNo 	: this.fvrtLocNo
+	};
+	$.getJSON( rootPath + "/location/deleteFavoritePlace.do"
+			, params
+			, function(result) {
+				if(result.status == "success") {
+					console.log(result.data);
+					console.log(result);
+					
+					myInfo.fvrtLocList = result.data;
+					
+					if(myInfo.dbUpdateStatus == false){
+						myInfo.dbUpdateStatus = true;
+					}
+					setSessionItem("myInfo",myInfo);
+					
+					$("#popupFvrtLoc").popup("close");
+					fvrtLocLists();
+				} else {
+					/*Toast.shortshow("실행중 오류발생!");*/
+					console.log(result.data);
+				}
+			});
 }
 /**
  * 내용:거리반경 정보 db update 및 localStorage 동기화
@@ -497,37 +530,78 @@ $(document).bind('pageinit', function() {
     $( "#sortable" ).disableSelection();
     $( "#sortable" ).listview('refresh');
   });*/
+
+/**
+ * 내  용:서버디비 즐겨찾기 목록 가져오기.
+ * 작성자 : 김태경
+ */
 function fvrtLocLists(){
-	$.getJSON(rootPath + "/location/getFavoriteList.do", function(result) {
-		if(result.status == "success") {
-			var FvrtLoc = result.data;
-			var ol = $("#sortable");
-			$("#sortable li").remove();
-			$('#fvrtLocNo').find('span').show();
-			for(var i=0; i<FvrtLoc.length; i++){
-
-				     $("<li>")
-				     	.attr("data-theme", "f")
-				     	.attr("id","fvrtLocNo")
-				     	.attr("fvrtLocNo", FvrtLoc[i].fvrtLocNo)
-				     	.attr("data-rank", FvrtLoc[i].fvrtLocRank)
-				     	.append($("<a>")
-				     					/*.css("text-decoration","none")*/
-								     	.attr("data-icon", "delete")
-								     	.attr("data-rel","popup")
-										.attr("href","#popupFvrtLoc")
-								     	.append($("<div>")
-								     	.text(FvrtLoc[i].fvrtLocName))
-				     	)
-				        .appendTo(ol);
-			}
-		}else {
-			Toast.shortshow("실행중 오류발생!");
-			console.log(getFavoritePlaces);
-		}
-
-	},"json");
+	var params = {
+			mbrNo : myInfo.mbrNo
+	};
+	$.getJSON(rootPath + "/location/getFavoriteList.do"
+			, params
+			, function(result) {
+				if(result.status == "success") {
+					var FvrtLoc = result.data;
+					var ol = $("#sortable");
+					$("#sortable li").remove();
+					$('#fvrtLocNo').find('span').show();
+					for(var i=0; i<FvrtLoc.length; i++){
+		
+						     $("<li>")
+						     	.attr("data-theme", "f")
+						     	.attr("class","fvrtLocNo")
+						     	.attr("fvrtLocNo", FvrtLoc[i].fvrtLocNo)
+						     	.attr("data-rank", FvrtLoc[i].fvrtLocRank)
+						     	.attr("data-no",i)
+						     	.attr("onClick",'that.setFvrtLocNo('+FvrtLoc[i].fvrtLocNo+')')
+						     	.append($("<a>")
+						     					/*.css("text-decoration","none")*/
+										     	.attr("data-icon", "delete")
+										     	.attr("data-rel","popup")
+												.attr("href","#popupFvrtLoc")
+												.attr("class","test1")
+										     	.append($("<div>")
+										     	.text(FvrtLoc[i].fvrtLocName))
+						     	)
+						        .appendTo(ol);
+					}
+				}else {
+					Toast.shortshow("실행중 오류발생!");
+					console.log(getFavoritePlaces);
+				}
+		
+			},"json");
 };
+
+
+
+/**
+ * 내  용:로컬디비에서 즐겨찾기 목록 가져오기.
+ * 작성자 : 김태경
+ */
+/*var FvrtLoc = myInfo.fvrtLocList;
+var ol = $("#sortable");
+$("#sortable li").remove();
+$('#fvrtLocNo').find('span').show();
+for(var i=0; i<FvrtLoc.length; i++){
+
+	     $("<li>")
+	     	.attr("data-theme", "f")
+	     	.attr("id","fvrtLocNo")
+	     	.attr("fvrtLocNo", FvrtLoc[i].fvrtLocNo)
+	     	.attr("data-rank", FvrtLoc[i].fvrtLocRank)
+	     	.append($("<a>")
+	     					.css("text-decoration","none")
+					     	.attr("data-icon", "delete")
+					     	.attr("data-rel","popup")
+							.attr("href","#popupFvrtLoc")
+					     	.append($("<div>")
+					     	.text(FvrtLoc[i].fvrtLocName))
+	     	)
+	        .appendTo(ol);
+}*/
 
 /*즐겨찾기 우선순위 변경 저장클릭시 이동*/
 function fvrtLocUpdate(){
@@ -542,6 +616,11 @@ function fvrtLocUpdate(){
 	console.log(fvrtArr);
 	rankUpdate(fvrtArr);
 };
+
+/**
+ * 내  용: 서버디비 우선순위 랭크값 변경 로컬디비에 동기화.
+ * 작성자 : 김태경
+ */
 function rankUpdate() {
 	var fvrtArr = [];
 	for(var index = 0; index < $("#sortable>li").size(); index++ ) {
@@ -552,21 +631,30 @@ function rankUpdate() {
 		};
 	};
 
-	$.ajax( rootPath + "/member/changeFavoritePlaces.do", {
+	$.ajax( rootPath + "/location/changeFavoritePlaces.do?mbrNo="+myInfo.mbrNo, {
 		type: "POST",
-		data: JSON.stringify( { "fvrtArr" : fvrtArr} ) ,
+		data: JSON.stringify( { "fvrtArr" : fvrtArr } ),
 		dataType: "json",
 		contentType: "application/json",
 		success: function(result) {
 			console.log(fvrtArr);
 			if(result.status == "success") {
     			console.log(result.data);
+    			
+    			//여기서 동기화 시켜주면 fvrtLocLists()는 로컬 디비에서 업데이트 된 데이터를 불러온다.
+    			myInfo.fvrtLocList = result.data;
+    			
+    			if(myInfo.dbUpdateStatus == false){
+    				myInfo.dbUpdateStatus = true;
+    			}
+    			setSessionItem("myInfo",myInfo);
+    			
     			fvrtLocLists();
-    			Toast.shortshow("우선순위가 변경되었습니다.");
-    			/*$("#sortable").listview('refresh');*/
-            	location.href = "../setting/settings.html";
+    			/*Toast.shortshow("우선순위가 변경되었습니다.");*/
+    			$("#sortable").listview('refresh');
+            	location.href = "../settings/settings.html";
 			} else {
-				Toast.shortshow("실행중 오류발생!");
+				/*Toast.shortshow("실행중 오류발생!");*/
 			}
 		},
 	});
@@ -584,4 +672,12 @@ var touchBackBtnCallbackFunc = function() {
 	} else {
 		changeHref("../home/home.html");
 	}
+};
+/**
+ * 내 용: 삭제시 해당 위치 번호 얻어와서 초기화
+ * 작업자:김태경
+ */
+var setFvrtLocNo = function(fvrtLocNo){
+	console.log(fvrtLocNo+"===================================");
+	this.fvrtLocNo = fvrtLocNo;
 };

@@ -18,7 +18,8 @@ $(document).ready(function() {
 			mbrPhotoUrl: "../images/photo/m01.jpg",
 			startRange: 500,
 			endRange: 1000,
-		
+			fvrtLocList: null,
+			rcntLocList: null
 		};
 	
 	isSignUp(myInfo);
