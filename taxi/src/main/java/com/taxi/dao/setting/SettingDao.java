@@ -1,9 +1,16 @@
 package com.taxi.dao.setting;
 
 import com.taxi.vo.auth.MyInfo;
+import com.taxi.vo.setting.Setting;
 
 
 public interface SettingDao {
+	
+	/**
+	 * 설  명: 세팅 추가
+	 * 작성자: 이용준 
+	 */
+	void addSetting(Setting setting) throws Exception;
 
 	void deleteSetting(int mbrNo);
 

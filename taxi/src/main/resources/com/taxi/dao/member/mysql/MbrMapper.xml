@@ -4,7 +4,54 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.member.MbrDao">
 
+    <!-- 
+		 * 설  명: myInfo 조회하기
+		 * 작성자: 이용준     
+    -->
+    <select id="getMyInfo" parameterType="int" resultType="MyInfo">
+	    SELECT 	a.mbr_no						as mbrNo
+	    	,	a.mbr_phone_no 					as mbrPhoneNo
+	    	,	a.mbr_device_no 				as mbrDeviceNo
+	    	, 	a.mbr_name 						as mbrName
+	    	, 	a.mbr_photo_url 				as mbrPhotoUrl
+	    	, 	a.mbr_gender 					as mbrGender
+	    	, 	a.mbr_reg_date 	 				as mbrRegDate
+	    	, 	a.last_login_date 				as lastLoginDate
+	    	, 	a.mbr_update_date 				as mbrUpdateDate
+	    	,	b.start_range 					as startRange 
+            ,	b.end_range 					as endRange
+            ,	b.push_yn 						as pushYn
+            ,	b.room_mbr_num_limit 			as roomMbrNumLimit
+            ,	b.safe_guard_phone_no 			as safeGuardPhoneNo
+            ,	b.safe_guard_name 				as safeGuardName
+            ,	b.safe_time_interval 			as safeTimeInterval
+	    FROM 	MBR a, SETTING b
+	    WHERE 	1 = 1
+	    	AND	a.mbr_no = b.mbr_no
+	    	AND a.mbr_no = #{value}
+	</select>
 
+    
+    <!--
+		 * 설  명: 회원 추가
+		 * 작성자: 이용준 
+    -->
+    <insert id="addMbr" parameterType="Mbr">
+	    insert into	MBR ( MBR_PHONE_NO, MBR_DEVICE_NO, MBR_NAME, 
+	    			MBR_PHOTO_URL, MBR_GENDER, MBR_REG_DATE, LAST_LOGIN_DATE, MBR_UPDATE_DATE)
+	    values 		(#{mbrPhoneNo}, #{mbrDeviceNo}, #{mbrName}, 
+	    			 #{mbrPhotoUrl}, #{mbrGender}, now(), now(), now() ) 
+		<selectKey resultType="int" keyProperty="mbrNo">
+			SELECT LAST_INSERT_ID()
+		</selectKey>	    			 
+	</insert>
+
+    
+	<delete id="deleteMbr" parameterType="int"> 
+        delete from MBR  
+        where MBR_NO=#{value}  
+    </delete> 
+    
 <!-- //====================== AS-IS =======================// -->
 <!--     
     <insert id="signUp" parameterType="Mbr">
@@ -36,10 +83,6 @@
     </delete> 
  -->	
  
- 	<delete id="deleteMbr" parameterType="int"> 
-        delete from MBR  
-        where MBR_NO=#{value}  
-    </delete> 
 </mapper>
 
 

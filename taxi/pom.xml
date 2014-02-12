@@ -8,6 +8,7 @@
 	<name>taxi Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
+
 	   <dependency>
 		    <groupId>org.quartz-scheduler</groupId>
 		    <artifactId>quartz</artifactId>
@@ -118,7 +119,9 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		</dependencies>
+
+		
+	</dependencies>
 	<build>
 		<finalName>taxi</finalName>
 	</build>

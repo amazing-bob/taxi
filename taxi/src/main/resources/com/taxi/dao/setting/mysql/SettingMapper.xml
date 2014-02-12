@@ -4,6 +4,15 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.setting.SettingDao">
 	
+	<!--
+		 * 설  명: 세팅 추가
+		 * 작성자: 이용준     
+    -->
+	<insert id="addSetting" parameterType="Setting">
+        INSERT INTO SETTING ( mbr_no, start_range, end_range )
+        values ( #{mbrNo}, #{startRange}, #{endRange} )
+    </insert>    
+    
     
     <update id="updateRange" parameterType="MyInfo">
         update SETTING
@@ -25,6 +34,12 @@
 		where MBR_NO = #{value};
 		
     </select>
+    
+    
+ 	<delete id="deleteSetting" parameterType="int"> 
+        delete from SETTING  
+        where MBR_NO=#{value}  
+    </delete>     
     
 <!-- //====================== AS-IS =======================// -->
 <!-- 
@@ -62,11 +77,6 @@
     </update>
  -->	
  
- 	<delete id="deleteSetting" parameterType="int"> 
-        delete from SETTING  
-        where MBR_NO=#{value}  
-    </delete> 
-
 </mapper>
 
 

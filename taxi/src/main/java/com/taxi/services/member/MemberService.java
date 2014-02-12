@@ -2,12 +2,19 @@ package com.taxi.services.member;
 
 import java.util.List;
 
+import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.member.Mbr;
 
 
 
 public interface MemberService {
+	
+	/**
+	 * 설  명: 회원가입
+	 * 작성자: 이용준 
+	 */
+	MyInfo signUp(Mbr mbr) throws Exception ;
 
 	void leaveMember(int mbrNo)throws Exception;
 

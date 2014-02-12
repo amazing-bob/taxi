@@ -21,6 +21,9 @@ import com.taxi.dao.room.RoomMbrDao;
 import com.taxi.dao.safe.SafeDao;
 import com.taxi.dao.setting.SettingDao;
 import com.taxi.dao.sharedlist.SharedDao;
+import com.taxi.vo.auth.MyInfo;
+import com.taxi.vo.member.Mbr;
+import com.taxi.vo.setting.Setting;
 
 
 @Service
@@ -32,7 +35,6 @@ public class MemberServiceImpl implements MemberService {
     @Autowired FeedDao 		  feedDao; 
     @Autowired RoomMbrDao 	  roomMbrDao; 
     @Autowired SettingDao 	  settingDao; 
-    
     @Autowired LoginDao       loginDao;
     @Autowired BlackDao       blackDao;
     @Autowired SharedDao      sharedDao;
@@ -42,6 +44,29 @@ public class MemberServiceImpl implements MemberService {
     
     @Autowired PlatformTransactionManager txManager; 
 
+    
+    /**
+	 * 설  명: 회원가입
+	 * 작성자: 이용준 
+	 */
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public MyInfo signUp(Mbr mbr) throws Exception {
+		
+		mbrDao.addMbr(mbr);
+		/*frndDao.addFrndList(mbr.getFrndList());*/
+		Setting setting = new Setting()
+									.setMbrNo( mbr.getMbrNo() )
+									.setStartRange( 500 )
+									.setEndRange( 1000 );
+		settingDao.addSetting(setting);
+		
+		MyInfo myInfo = mbrDao.getMyInfo( mbr.getMbrNo() );
+		
+		return myInfo;
+	}
+    
+    
 	@Override
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
 	public void leaveMember(int mbrNo) throws Exception {
