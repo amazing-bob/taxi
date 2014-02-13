@@ -6,6 +6,7 @@ var myInfo;
 var contentHeight;
 
 $(document).ready(function() {
+	console.log("ready()");
 	initAjaxLoading();
 	
 	/* 임시 사용자 로그인 */
@@ -21,8 +22,7 @@ $(document).ready(function() {
 			fvrtLocList: null,
 			rcntLocList: null
 		};
-	
-	isSignUp(myInfo);
+	setSessionItem("myInfo", myInfo);
 	
 	
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -70,9 +70,10 @@ $(document).ready(function() {
  */
 function onDeviceReady() {
 	console.log("onDeviceReady()");
-
+	
 	try {
-	    /*getLoginStatus();*/
+		isSignUp( getSessionItem("myInfo") );
+		
     } catch (e) {
     	alert(e);
     }
@@ -108,7 +109,7 @@ console.log("getAddressBook");
  */
 var isSignUp = function( myInfo ) {
 	console.log("isSignUp(myInfo)");
-	console.log(myInfo);
+//	console.log(myInfo);
 	
 	if ( myInfo && myInfo.mbrNo ) {
 		console.log(myInfo.mbrNo);

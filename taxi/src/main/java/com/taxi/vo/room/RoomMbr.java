@@ -23,6 +23,7 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 	protected String 	mbrName;
 	protected String 	mbrPhoneNo;
 	protected String 	mbrPhotoUrl;
+	protected String 	roomMbrName;
 
 	
 	public RoomMbr setRoomNo(int roomNo) {
@@ -74,6 +75,14 @@ public class RoomMbr extends BaseRoomMbr implements Serializable {
 		this.mbrPhotoUrl = mbrPhotoUrl;
 		return this;
 	}
+	public String getRoomMbrName() {
+		return roomMbrName;
+	}
+	public RoomMbr setRoomMbrName(String roomMbrName) {
+		this.roomMbrName = roomMbrName;
+		return this;
+	}
+	
 	
 	
 /*	//====================== AS-IS =======================//

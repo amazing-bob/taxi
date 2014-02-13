@@ -24,12 +24,12 @@ public class JobQuartz extends QuartzJobBean {
 		  try {
 			  if (ctx.getTrigger().getClass().getCanonicalName()
 					  	.equals("org.quartz.impl.triggers.SimpleTriggerImpl")){
+				  System.out.println("방 출발전 알람 Quartz Start....");
+				  quartzService.performService();
 				  
-				//  quartzService.performService();
-				  System.out.println("1");
 			  } else {
+				  System.out.println("매일 방 삭제 Quartz Start....");
 				  quartzService.roomCheckService();
-				  System.out.println("2");
 			  }
 		  } catch (Exception e) {
 				e.printStackTrace();

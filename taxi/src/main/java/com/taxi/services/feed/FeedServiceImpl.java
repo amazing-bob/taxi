@@ -19,9 +19,9 @@ import com.taxi.vo.feed.Feed;
 
 @Service
 public class FeedServiceImpl implements FeedService {
-	@Autowired FeedDao feedDao;
-	@Autowired RoomMbrDao roomMbrDao;	
-	@Autowired GcmService gcmService;
+	@Autowired FeedDao 		feedDao;
+	@Autowired RoomMbrDao 	roomMbrDao;	
+	@Autowired GcmService 	gcmService;
 	
 	public List<Feed> getFeedList(int roomNo) throws Exception {
 		return feedDao.getFeedList(roomNo);
@@ -36,15 +36,15 @@ public class FeedServiceImpl implements FeedService {
 			paramMap.put("roomNo", feed.getRoomNo());
 			paramMap.put("mbrNo", feed.getMbrNo());
 			
-//			List<Map<String, Object>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
-//			for (Map<String, Object> map : gcmTargetMapList) {
-//				map.put("feedAction", "addFeed" );
-//				map.put("roomNo", feed.getRoomNo()+"" );
-//				map.put("mbrNo", feed.getMbrNo() );
-//				map.put("feedContent", feed.getFeedContent() );
-//			}
+			List<Map<String, Object>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+			for (Map<String, Object> map : gcmTargetMapList) {
+				map.put("feedAction"	, "addFeed" );
+				map.put("roomNo"		, feed.getRoomNo() );
+				map.put("mbrNo"			, feed.getMbrNo() );
+				map.put("feedContent"	, feed.getFeedContent() );
+			}
 			
-			//gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
+			gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
 		}
 		return feeNo;
 		

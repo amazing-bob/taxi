@@ -29,17 +29,6 @@ import com.taxi.vo.room.RoomMbr;
 
 @Service
 public class GcmServiceImpl implements GcmService {
-
-	@Autowired RoomDao roomDao;
-	@Autowired RoomMbrDao roomMbrDao;
-
-
-
-
-
-	
-/*	//====================== AS-IS =======================//
- 	
 	@Autowired RoomDao roomDao;
 	@Autowired RoomMbrDao roomMbrDao;
 
@@ -52,6 +41,10 @@ public class GcmServiceImpl implements GcmService {
 	public GcmServiceImpl(){}
 
 
+	/**
+	 * 설  명: 방 출발전 알람 푸시
+	 * 작성자: 김상헌
+	 */
 	public void performService() throws Exception {
 		System.out.println("performService()");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -73,13 +66,16 @@ public class GcmServiceImpl implements GcmService {
 			msgBuilder.addData("roomStartTime", sdf.format(room.getRoomStartTime()) );
 			msgBuilder.addData("differenceTime", room.getDifferenceTime()+"");
 			
-			threadPool.execute( new FeedRunnable(regList, msgBuilder.build()) );
+			threadPool.execute( new StartAlramRunnable(regList, msgBuilder.build()) );
 		}
 		
 	}
 
-
-	public void asyncSend(List<Map<String, String>> gcmTargetMapList, Class<?> clazz)
+	/**
+	 * 설  명: google 푸시 서버로 전송할 값 설정 부분
+	 * 작성자: 김상헌 
+	 */
+	public void asyncSend(List<Map<String, Object>> gcmTargetMapList, Class<?> clazz)
 			throws IOException, EOFException {
 		final List<String> regList = new ArrayList<String>();
 		
@@ -92,10 +88,9 @@ public class GcmServiceImpl implements GcmService {
 		 		System.out.println("FeedRunnable Request()...............");
 		 		
 		 		Builder msgBuilder = new Message.Builder();
-		    	
-		    	for( java.util.Map.Entry<String, String> entry : gcmTargetMapList.get(0).entrySet() ) {
+		    	for( java.util.Map.Entry<String, Object> entry : gcmTargetMapList.get(0).entrySet() ) {
 		    		if ( !"gcmRegId".equals(entry.getKey()) ) {
-		    			msgBuilder.addData(entry.getKey(), entry.getValue());
+		    			msgBuilder.addData(entry.getKey(), String.valueOf(entry.getValue()) );
 		    		}
 		    	}
 		    	msgBuilder.addData("className", clazz.getSimpleName());
@@ -109,9 +104,9 @@ public class GcmServiceImpl implements GcmService {
 		 		
 		 		Builder msgBuilder = new Message.Builder();
 		    	
-		    	for( java.util.Map.Entry<String, String> entry : gcmTargetMapList.get(0).entrySet() ) {
+		    	for( java.util.Map.Entry<String, Object> entry : gcmTargetMapList.get(0).entrySet() ) {
 		    		if ( !"gcmRegId".equals(entry.getKey()) ) {
-		    			msgBuilder.addData(entry.getKey(), entry.getValue());
+		    			msgBuilder.addData(entry.getKey(), String.valueOf(entry.getValue()) );
 		    		}
 		    	}
 		    	msgBuilder.addData("className", clazz.getSimpleName());
@@ -229,17 +224,22 @@ public class GcmServiceImpl implements GcmService {
 		List<String> regList = null;
 	    Message message = null;
 	    
-	    public StartAlramRunnable( List<String> regList, Map<String, String> bundleMap ) {
+	    public StartAlramRunnable( List<String> regList, Message message ) {
 	    	this.sender = new Sender(APT_KEY);
 	    	this.regList = regList;
-	    	
-	    	Builder msgBuilder = new Message.Builder();
-	    	msgBuilder.addData("className", this.getClass().getSimpleName());
-	    	for( java.util.Map.Entry<String, String> entry : bundleMap.entrySet() ) {
-	    		msgBuilder.addData(entry.getKey(), entry.getValue());
-	    	}
-	    	this.message = msgBuilder.build(); 
+	    	this.message = message; 
 		}
+//	    public StartAlramRunnable( List<String> regList, Map<String, String> bundleMap ) {
+//	    	this.sender = new Sender(APT_KEY);
+//	    	this.regList = regList;
+//	    	
+//	    	Builder msgBuilder = new Message.Builder();
+//	    	msgBuilder.addData("className", this.getClass().getSimpleName());
+//	    	for( java.util.Map.Entry<String, String> entry : bundleMap.entrySet() ) {
+//	    		msgBuilder.addData(entry.getKey(), entry.getValue());
+//	    	}
+//	    	this.message = msgBuilder.build(); 
+//		}
 
 	    public void run() {
 
@@ -272,6 +272,15 @@ public class GcmServiceImpl implements GcmService {
 		  }
 	  }
 	}
+
+
+	
+/*	//====================== AS-IS =======================//
+ 	
+	@Autowired RoomDao roomDao;
+	@Autowired RoomMbrDao roomMbrDao;
+
+
 */
 	
 }

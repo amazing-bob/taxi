@@ -122,6 +122,7 @@ $(document).ready(function() {
 //	$(".btnAddRoomUI").on("touchend", function(event) {
 	$("#divAddRoom").on("click", function(event) {		
 		event.stopPropagation();
+		
 //		push.initialise("addRoom");
 		addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
 		
@@ -888,6 +889,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 											event.stopPropagation();
 											
 											var roomNo = $(this).parents("li").data("roomNo");
+											
 //											push.initialise("joinRoom", roomNo);
 											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
 											

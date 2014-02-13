@@ -196,7 +196,28 @@
 	]]>
 	</select>	
 
-	
+		 
+	<!-- 
+		 * 설  명: 방 출발 전 알림 대상 방 리스트 조회
+		 * 작성자: 김상헌
+	-->
+	<resultMap id="alramGcmTargetRoomResultMap" type="Room">
+	    <result 	property="roomNo" 			column="room_no"/>
+	    <result 	property="roomStartTime" 	column="room_start_time"/>
+	    <result 	property="differenceTime" 	column="differenceTime"/>
+	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
+	        select="com.taxi.dao.room.RoomMbrDao.getAlramGcmTargetRoomMbrList"/>
+	</resultMap>
+	<select id="getAlramGcmTargetRoomList" parameterType="string" resultMap="alramGcmTargetRoomResultMap">
+         SELECT   room_no
+				, room_start_time
+				, MINUTE(SUBTIME(room_start_time, now())) as differenceTime
+		  FROM 	ROOM
+		 WHERE
+				1=1
+		   AND
+		  		room_start_time between now() and addtime(now(), #{value})
+    </select>
 	
 <!-- //====================== AS-IS =======================// -->
 <!-- 
@@ -219,26 +240,6 @@
 
 
 	
-	
-	<resultMap id="alramGcmTargetRoomResultMap" type="Room">
-	    <result 	property="roomNo" 			column="room_no"/>
-	    <result 	property="roomStartTime" 	column="room_start_time"/>
-	    <result 	property="differenceTime" 	column="differenceTime"/>
-	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
-	        select="com.taxi.dao.room.RoomMbrDao.getAlramGcmTargetRoomMbrList"/>
-	</resultMap>
-	
-	<select id="getAlramGcmTargetRoomList" parameterType="string" resultMap="alramGcmTargetRoomResultMap">
-         SELECT   room_no
-				, room_start_time
-				, MINUTE(SUBTIME(room_start_time, now())) as differenceTime
-		  FROM 	ROOM
-		 WHERE
-				1=1
-		   AND
-		  		room_start_time between now() and addtime(now(), #{value})
-    </select>
-    
 	
 	<select id="getLastedRoomList" resultType="Room">
 	<![CDATA[

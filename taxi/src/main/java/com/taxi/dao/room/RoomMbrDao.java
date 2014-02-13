@@ -15,6 +15,12 @@ public interface RoomMbrDao {
 	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
 	
 	/**
+	 * 설  명: 방 멤버 가져오기
+	 * 김상헌: 김상헌 
+	 */
+	RoomMbr getRoomMbrInfo(Map<String, Object> paramMap) throws Exception;
+	
+	/**
 	 * 설  명: 방 멤버 삭제
 	 * 작성자: 김상헌 
 	 */
@@ -38,6 +44,17 @@ public interface RoomMbrDao {
 	 */
 	RoomMbr getVirtualRoomMbr(RoomMbr roomMbr) throws Exception;
 	
+	/**
+	 * 설  명: 푸쉬 대상자 가져오기
+	 * 작성자: 김상헌 
+	 */
+	List<Map<String, Object>> getGcmTargetMapList(Map<String, Object> paramMap) throws Exception;
+	
+	/**
+	 * 설  명: 푸쉬 출발 대상자 가져오기
+	 * 작성자: 김상헌 
+	 */
+	List<RoomMbr> getAlramGcmTargetRoomMbrList(int roomNo) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  
@@ -51,8 +68,5 @@ public interface RoomMbrDao {
 
 	int outRoom(Map<String, Object> paramMap) throws Exception;
 	
-	List<Map<String, String>> getGcmTargetMapList(Map<String, Object> paramMap) throws Exception;
-	
-	List<RoomMbr> getAlramGcmTargetRoomMbrList(int roomNo) throws Exception;
 */
 }

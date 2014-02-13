@@ -54,13 +54,11 @@ public interface RoomDao {
 	 */
 	void deleteLastRoom(Map<String, Object> paramMap) throws Exception;
 	
-/*	//====================== AS-IS =======================//
-
-	List<Room> getAlramGcmTargetRoomList(String criteriaTime) throws Exception;
 	
-	List<Room> getLastedRoomList() throws Exception;
-
-	void deleteRoom(Map<String, Object> paramMap) throws Exception;
-*/
+	/**
+	 * 설  명: 방 출발 전 알림 대상 방 리스트 조회
+	 * 작성자: 김상헌
+	 */
+	List<Room> getAlramGcmTargetRoomList(String criteriaTime) throws Exception;
 	
 }

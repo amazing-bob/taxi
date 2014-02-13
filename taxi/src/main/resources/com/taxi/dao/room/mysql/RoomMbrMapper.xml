@@ -106,6 +106,37 @@
 	
 	
 	<!-- 
+		 * 설  명: 방 멤버 가져오기
+		 * 김상헌: 김상헌 
+	-->
+	<select id="getRoomMbrInfo" parameterType="RoomMbr" resultType="RoomMbr">
+		select	
+              	a.ROOM_NO 				as roomNo  
+            , 	a.MBR_NO				as mbrNo 
+            , 	b.MBR_NAME 				as mbrName
+			, 	b.MBR_PHONE_NO			as mbrPhoneNo
+			, 	b.MBR_PHOTO_URL 		as mbrPhotoUrl
+			, 	a.GCM_REG_ID			as gcmRegId 
+            , 	a.ROOM_MBR_NO 			as roomMbrNo 
+            , 	c.MBR_NAME 				as roomMbrName
+            , 	a.ROOM_MBR_ST         	as roomMbrSt
+            , 	a.REL_FRND_PHONE_NO 	as relFrndPhoneNo
+            , 	a.REL_FRND_NAME  		as relFrndName
+            , 	a.MUTUAL_YN 			as mutualYn
+		  	, 	a.ROOM_MBR_RANK 		as roomMbrRank 		
+		from
+				ROOM_MBR a
+			,	MBR b
+			, 	MBR c
+		where	1 = 1
+		and		a.MBR_NO = b.MBR_NO
+		and 	a.ROOM_MBR_NO = c.MBR_NO
+		and		a.ROOM_NO = #{roomNo}
+		and		a.MBR_NO = #{mbrNo}
+	</select> 
+	
+	
+	<!-- 
 		 * 설  명: 방 멤버 추가
 		 * 작성자: 김상헌 	
 	-->
@@ -159,6 +190,7 @@
 	    	 ROOM_NO=#{value}
 	</select>
 	
+	
 	<!-- 
 		 * 설  명: 해당회원이 방에 참여한것을 가정한 정보 
 		 * 작성자: 김상헌 
@@ -167,6 +199,9 @@
 	    -- 내 친구 관계
 		select  #{roomNo}   		as roomNo
 		    ,   #{mbrNo}  			as mbrNo
+			,   X2.MBR_NAME         as mbrName
+            ,   X2.MBR_PHONE_NO     as mbrPhotoNo
+            ,   X2.MBR_PHOTO_URL    as mbrPhotoUrl
 			,	#{gcmRegId} 		as gcmRegId
 		    ,   X1.MBR_NO   		as roomMbrNo
 			,   '1' 		        as roomMbrSt
@@ -192,20 +227,26 @@
 		-- 내 친구의 친구 관계
 		select  #{roomNo}   		as roomNo
 		    ,   #{mbrNo}  			as mbrNo
+			,   X2.MBR_NAME         as mbrName
+            ,   X2.MBR_PHONE_NO     as mbrPhotoNo
+            ,   X2.MBR_PHOTO_URL    as mbrPhotoUrl
 		    ,	#{gcmRegId} 		as gcmRegId
 		    ,   X1.MBR_NO   		as roomMbrNo
 		    ,   '1' 		        as roomMbrSt
-            ,   X2.FRND_PHONE_NO 	as relFrndPhoneNo
-            ,   X2.FRND_NAME 		as relFrndName
+            ,   X3.FRND_PHONE_NO 	as relFrndPhoneNo
+            ,   X3.FRND_NAME 		as relFrndName
             ,   'Y'  				as mutualYn
 		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
 
 		from
 				ROOM_MBR X1
-		    ,   FRND X2
-		where   X1.MBR_NO = X2.MBR_NO
-		    and X1.ROOM_NO = #{roomNo}
-		    and X2.FRND_PHONE_NO in (
+			, 	MBR X2
+		    ,   FRND X3
+		where   1 = 1
+		and     X1.MBR_NO = X2.MBR_NO
+		and     X1.MBR_NO = X3.MBR_NO
+		and 	X1.ROOM_NO = #{roomNo}
+		and 	X3.FRND_PHONE_NO in (
 			                            select  Y.FRND_PHONE_NO
 			                            from    FRND Y
 			                            where   1 = 1
@@ -215,6 +256,66 @@
 	</select>
     
 	
+	<!-- 		   
+		 * 설  명: 푸쉬 대상자 가져오기
+ 		 * 작성자: 김상헌    
+	-->
+	<resultMap type="Map" id="getGcmTargetMapListResultMap">
+        <result property="roomNo" 				column="roomNo"			javaType="int"/>
+        <result property="mbrNo" 				column="mbrNo"			javaType="int"/>
+        <result property="mbrName" 				column="mbrName"		javaType="String"/>
+        <result property="mbrPhoneNo" 			column="mbrPhoneNo"		javaType="String"/>
+        <result property="mbrPhotoUrl" 	 		column="mbrPhotoUrl"	javaType="String"/>
+        <result property="gcmRegId" 			column="gcmRegId"		javaType="String"/>
+        <result property="roomMbrNo" 			column="roomMbrNo"		javaType="int"/>
+        <result property="roomMbrName" 			column="roomMbrName"	javaType="String"/>
+        <result property="relFrndPhoneNo" 		column="relFrndPhoneNo"	javaType="String"/>
+        <result property="mutualYn" 			column="mutualYn"		javaType="String"/>
+        <result property="roomMbrRank" 			column="roomMbrRank"	javaType="int"/>
+    </resultMap>
+	<select id="getGcmTargetMapList" parameterType="map" resultMap="getGcmTargetMapListResultMap">
+		SELECT	a.ROOM_NO				as roomNo
+            , 	a.MBR_NO				as mbrNo
+            , 	b.MBR_NAME 				as mbrName
+            , 	b.MBR_PHONE_NO 			as mbrPhoneNo
+            , 	b.MBR_PHOTO_URL 		as mbrPhotoUrl
+            ,	a.GCM_REG_ID 			as gcmRegId
+            , 	a.ROOM_MBR_NO 			as roomMbrNo
+            , 	c.MBR_NAME 				as roomMbrName
+            , 	a.REL_FRND_PHONE_NO 	as relFrndPhoneNo
+            , 	a.MUTUAL_YN 			as mutualYn
+            ,	a.ROOM_MBR_RANK 		as roomMbrRank
+		FROM
+				ROOM_MBR a
+            join                
+				MBR b
+            on a.MBR_NO = b.MBR_NO
+            left outer join
+             	MBR c
+            on a.ROOM_MBR_NO = c.MBR_NO
+		WHERE	
+				1 = 1
+		AND		a.ROOM_NO = #{roomNo}
+		AND 	a.MBR_NO NOT LIKE #{mbrNo}
+	</select>
+	
+	
+	<!-- 
+		 * 설  명: 푸쉬 출발 대상자 가져오기
+		 * 작성자: 김상헌 	
+	-->
+	<select id="getAlramGcmTargetRoomMbrList" parameterType="int" resultType="RoomMbr">
+		SELECT	a.ROOM_NO 		as roomNo
+            ,	a.GCM_REG_ID	as gcmRegId
+		FROM
+				ROOM_MBR a
+		WHERE	1 = 1
+		<choose>
+		    <when test="value != null and value != 0">
+			AND	a.ROOM_NO = #{value}
+			</when>
+		</choose>
+	</select>
 	
 	
 <!-- //====================== AS-IS =======================// -->
@@ -278,51 +379,7 @@
 		</where>
 	</delete>
 
-    <resultMap type="Map" id="getGcmTargetMapListResultMap">
-        <result property="roomNo" 		column="roomNo"			javaType="String"/>
-        <result property="mbrId" 		column="mbrId"			javaType="String"/>
-        <result property="gcmRegId" 	column="gcmRegId"		javaType="String"/>
-        <result property="mbrName" 		column="mbrName"		javaType="String"/>
-        <result property="mbrPhoneNo" 	column="mbrPhoneNo"		javaType="String"/>
-        <result property="mbrPhotoUrl" 	column="mbrPhotoUrl"	javaType="String"/>
-        <result property="roomMbrId" 	column="roomMbrId"		javaType="String"/>
-        <result property="frndRelId" 	column="frndRelId"		javaType="String"/>
-        <result property="roomMbrRank" 	column="roomMbrRank"	javaType="String"/>
-    </resultMap>
-	<select id="getGcmTargetMapList" parameterType="map" resultMap="getGcmTargetMapListResultMap">
-		SELECT	a.ROOM_NO 		as roomNo
-            , 	a.MBR_ID 		as mbrId
-            ,	a.GCM_REG_ID	as gcmRegId
-            , 	b.MBR_NAME 		as mbrName
-            , 	b.MBR_PHONE_NO 	as mbrPhoneNo
-            , 	b.MBR_PHOTO_URL as mbrPhotoUrl
-            , 	a.ROOM_MBR_ID 	as roomMbrId
-            , 	a.FRND_REL_ID 	as frndRelId
-            ,	a.ROOM_MBR_RANK	as roomMbrRank
-		FROM
-				ROOM_MBR a
-			,	MBR b
-		WHERE	1 = 1
-			AND	a.MBR_ID = b.MBR_ID
-			AND	a.ROOM_NO = #{roomNo}
-		    AND a.MBR_ID NOT LIKE #{mbrId}
-	</select>
-	
-	<select id="getAlramGcmTargetRoomMbrList" parameterType="int" resultType="RoomMbr">
-		SELECT	a.ROOM_NO 		as roomNo
-            ,	a.GCM_REG_ID	as gcmRegId
-		FROM
-				ROOM_MBR a
-		WHERE	1 = 1
-		<choose>
-		    <when test="value != null and value != 0">
-			AND	a.ROOM_NO = #{value}
-			</when>
-			<otherwise>
-			AND 1 = 0
-			</otherwise>
-		</choose>
-	</select>
+
  -->
 	
 </mapper>
