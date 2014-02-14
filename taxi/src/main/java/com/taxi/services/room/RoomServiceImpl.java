@@ -72,7 +72,6 @@ public class RoomServiceImpl implements RoomService {
 	/**
 	 * 설  명: 방 나가기
 	 * 작성자: 김상헌
-	 * 방 나갈 때 방이 삭제 안되는 경우 수정
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
 	public void outRoom(int mbrNo, int roomNo) throws Exception {

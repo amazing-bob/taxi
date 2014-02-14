@@ -126,11 +126,14 @@
 		  	, 	a.ROOM_MBR_RANK 		as roomMbrRank 		
 		from
 				ROOM_MBR a
-			,	MBR b
-			, 	MBR c
+            left outer join
+			    MBR b
+            on  a.MBR_NO = b.MBR_NO
+            left outer join
+			 	MBR c
+            on  a.ROOM_MBR_NO = c.MBR_NO
+            
 		where	1 = 1
-		and		a.MBR_NO = b.MBR_NO
-		and 	a.ROOM_MBR_NO = c.MBR_NO
 		and		a.ROOM_NO = #{roomNo}
 		and		a.MBR_NO = #{mbrNo}
 	</select> 

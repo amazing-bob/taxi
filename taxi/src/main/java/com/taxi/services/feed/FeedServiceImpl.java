@@ -23,9 +23,19 @@ public class FeedServiceImpl implements FeedService {
 	@Autowired RoomMbrDao 	roomMbrDao;	
 	@Autowired GcmService 	gcmService;
 	
+	/**
+	 * 설  명: 피드 목록 가져오기
+	 * 작성자: 김상헌
+	 */
 	public List<Feed> getFeedList(int roomNo) throws Exception {
 		return feedDao.getFeedList(roomNo);
 	}
+	
+	
+	/**
+	 * 설  명: 피드 등록하기
+	 * 작성자: 김상헌
+	 */
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public int addFeed(Feed feed) throws Exception {
@@ -36,6 +46,7 @@ public class FeedServiceImpl implements FeedService {
 			paramMap.put("roomNo", feed.getRoomNo());
 			paramMap.put("mbrNo", feed.getMbrNo());
 			
+			// 푸쉬 보낼 준비하기
 			List<Map<String, Object>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
 			for (Map<String, Object> map : gcmTargetMapList) {
 				map.put("feedAction"	, "addFeed" );
@@ -50,6 +61,11 @@ public class FeedServiceImpl implements FeedService {
 		
 	}
 	
+	
+	/**
+	 * 설  명: 피드 삭제하기
+	 * 작성자: 김상헌
+	 */
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public void deleteFeed(Feed feed) throws Exception {
@@ -62,21 +78,16 @@ public class FeedServiceImpl implements FeedService {
 		int count = feedDao.deleteFeed(paramMap);
 		
 		if(count > 0){
-			System.out.println("피드삭제 성공");
+			// 푸쉬 보낼 준비하기
+			List<Map<String, Object>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+			for (Map<String, Object> map : gcmTargetMapList) {
+				map.put("feedAction"	, "deleteFeed" );
+				map.put("roomNo"		, feed.getRoomNo() );
+				map.put("mbrNo"			, feed.getMbrNo() );
+				map.put("feedContent"	, feed.getFeedContent() );
+			}
 			
-//			paramMap.put("roomNo", feed.getRoomNo());
-//			paramMap.put("mbrNo", feed.getMbrNo());
-//			
-//			쿼츠 푸쉬부분??
-//			List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
-//			for (Map<String, String> map : gcmTargetMapList) {
-//				map.put("feedAction", "deleteFeed" );
-//				map.put("roomNo", feed.getRoomNo()+"" );
-//				map.put("mbrId", feed.getMbrId() );
-//				map.put("feedContent", feed.getFeedContent() );
-//			}
-//			
-//			gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
+			gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
 		}
 	}
 
