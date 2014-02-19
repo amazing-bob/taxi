@@ -615,3 +615,37 @@ var push = {
     });
 
 })();
+
+
+/**
+ * 설  명: Local Storage MyInfo 저장
+ * 작성자: 장종혁
+ */
+var setLocalMyInfo = function(value){
+	  if (localStorage.myInfo)
+	    {
+		  localStorage.setItem("myInfo", JSON.stringify( value ));
+	    }
+	  else // 로컬스토리지에 myInfo가 없을때
+	    {
+			localStorage.setItem("myInfo", JSON.stringify( value ));
+	    }
+};
+
+
+/**
+ *  설  명 :  LocalStorage MyInfo 값 가져오기
+ *  작성자: 장종혁
+ */
+function getLocalMyInfo(){
+	return JSON.parse(localStorage.getItem("myInfo"));
+};
+
+
+/**
+*  설  명 : LocalStorage MyInfo 값 지우기
+* 작성자 ; 장종혁
+*/
+var delLocalMyInfo = function(){
+	localStorage.removeItem("myInfo");
+};
