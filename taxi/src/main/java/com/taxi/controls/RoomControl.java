@@ -109,6 +109,7 @@ public class RoomControl {
 		
 		try {
 			roomService.outRoom(mbrNo, roomNo);
+			
 			jsonResult.setStatus("success");
 
 		} catch (Throwable e) {
@@ -161,8 +162,10 @@ public class RoomControl {
 												.setRcntLocSt("E");
 
 			int roomNo = roomService.addRoom( room, roomMbr, startPath, endPath, recentEndLoc );
+			
+			Room myRoom = roomService.getRoomInfo(roomNo);
 
-			jsonResult.setData(roomNo);
+			jsonResult.setData(myRoom);
 			jsonResult.setStatus("success");
 
         } catch (Throwable e) {
@@ -197,7 +200,11 @@ public class RoomControl {
 											.setRcntLocLng( endLocLng )
 											.setRcntLocSt("E");
         	
-            roomService.joinRoom(roomMbr, recentEndLoc);
+            int roomNo = roomService.joinRoom(roomMbr, recentEndLoc);
+            
+            Room myRoom = roomService.getRoomInfo(roomNo);
+            
+            jsonResult.setData(myRoom);
             jsonResult.setStatus("success");
 
         } catch (Throwable e) {

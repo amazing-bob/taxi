@@ -123,7 +123,7 @@ public class RoomServiceImpl implements RoomService {
 	
 	
 	/**
-	 * 설  명: 방 만들기
+	 * 설  명: 방 만들기, 방번호 리턴
 	 * 작성자: 김상헌 
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
@@ -151,11 +151,11 @@ public class RoomServiceImpl implements RoomService {
 	
 	
 	/**
-	 * 설  명: 방 참여하기
+	 * 설  명: 방 참여하기, 방번호 리턴
 	 * 작성자: 김상헌 
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
-	public void joinRoom( RoomMbr roomMbr, RcntLoc rcntLoc ) throws Exception { 
+	public int joinRoom( RoomMbr roomMbr, RcntLoc rcntLoc ) throws Exception { 
         
 		try { 
         	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
@@ -183,6 +183,8 @@ public class RoomServiceImpl implements RoomService {
 				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
 				
 			}
+        	
+        	return roomMbr.getRoomNo();
               
         } catch (Exception e) { 
             throw e; 

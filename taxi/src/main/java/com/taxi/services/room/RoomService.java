@@ -30,16 +30,16 @@ public interface RoomService {
 	Room getMyRoom(int mbrNo) throws Exception;
 	
 	/**
-	 * 설  명: 방 만들기
+	 * 설  명: 방 만들기, 방번호 리턴
 	 * 작성자: 김상헌 
 	 */
 	int addRoom(Room room, RoomMbr roomMbr, RoomPath startPath, RoomPath endPath, RcntLoc rcntEndLoc) throws Exception;
 	
 	/**
-	 * 설  명: 방 참여하기
+	 * 설  명: 방 참여하기, 방번호 리턴
 	 * 작성자: 김상헌 
 	 */
-	void joinRoom(RoomMbr roomMbr, RcntLoc rcntLoc) throws Exception;
+	int joinRoom(RoomMbr roomMbr, RcntLoc rcntLoc) throws Exception;
 	
 	/**
 	 * 설  명: 방 나가기
