@@ -2,6 +2,7 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 
@@ -26,12 +27,14 @@ public class FeedControl {
 	@ResponseBody
 	public Object getFeedList( int roomNo ) throws Exception {
 		
-		System.out.println("roomNo: " + roomNo);
 		JsonResult jsonResult = new JsonResult();
 	
 		try {
+			
+			List<Feed> feedList = feedService.getFeedList(roomNo);
+			
 			jsonResult.setStatus("success")
-					   .setData(feedService.getFeedList(roomNo));
+					   .setData(feedList);
 				
 		} catch (Throwable e) {
 			e.printStackTrace();

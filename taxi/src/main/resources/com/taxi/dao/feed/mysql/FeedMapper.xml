@@ -13,6 +13,7 @@
 					,	a.FEED_REG_DATE 	as feedRegDate
 					,	a.ROOM_NO			as roomNo
 					,	c.mbr_name			as mbrName
+					,   c.mbr_phone_no      as mbrPhoneNo
 					,	c.mbr_photo_url		as mbrPhotoUrl
 				from 	FEED a
 					,	MBR c

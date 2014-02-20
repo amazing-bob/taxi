@@ -19,18 +19,11 @@ public class Feed extends BaseFeed implements Serializable {
 	 * protected String 	feedContent;
 	 * protected Date		feedRegDate;
 	 */
+	protected String 	mbrName;
+	protected String 	mbrPhoneNo;
+	protected String 	mbrPhotoUrl;
 	
-	// protected int 		추가되는 변수;
-	protected String mbrPhotoUrl;
 	
-	
-	public String getMbrPhotoUrl() {
-		return mbrPhotoUrl;
-	}
-	public Feed setMbrPhotoUrl(String mbrPhotoUrl) {
-		this.mbrPhotoUrl = mbrPhotoUrl;
-		return this;
-	}
 	public Feed setFeedNo(int feedNo) {
 		return (Feed) super.setFeedNo(feedNo);
 	}
@@ -47,6 +40,28 @@ public class Feed extends BaseFeed implements Serializable {
 		return (Feed) super.setFeedRegDate(feedRegDate);
 	}
 	
+	
+	public String getMbrName() {
+		return mbrName;
+	}
+	public Feed setMbrName(String mbrName) {
+		this.mbrName = mbrName;
+		return this;
+	}
+	public String getMbrPhoneNo() {
+		return mbrPhoneNo;
+	}
+	public Feed setMbrPhoneNo(String mbrPhoneNo) {
+		this.mbrPhoneNo = mbrPhoneNo;
+		return this;
+	}
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public Feed setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
+		return this;
+	}
 	
 /*	//====================== AS-IS =======================//
  	
