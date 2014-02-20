@@ -59,7 +59,7 @@ CREATE TABLE `FRND` (
 	`MBR_NO`        INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
 	`FRND_PHONE_NO` VARCHAR(30) NOT NULL COMMENT '친구휴대폰번호', -- 친구휴대폰번호
 	`FRND_NAME`     VARCHAR(50) NULL     COMMENT '친구이름', -- 친구이름
-	`FRND_REG_DATE` DATETIME    NOT NULL DEFAULT now() COMMENT '친구등록일시' -- 친구등록일시
+	`FRND_REG_DATE` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '친구등록일시' -- 친구등록일시
 )
 COMMENT '친구정보';
 
@@ -77,7 +77,7 @@ CREATE TABLE `FEED` (
 	`ROOM_NO`       INTEGER      NOT NULL COMMENT '방번호', -- 방번호
 	`MBR_NO`        INTEGER      NOT NULL COMMENT '글작성 회원 번호', -- 회원번호
 	`FEED_CONTENT`  VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
-	`FEED_REG_DATE` DATETIME     NOT NULL DEFAULT now() COMMENT '피드등록일시' -- 피드등록일시
+	`FEED_REG_DATE` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '피드등록일시' -- 피드등록일시
 )
 COMMENT '피드';
 
@@ -102,7 +102,7 @@ CREATE TABLE `MBR` (
 	`MBR_NAME`        VARCHAR(50)  NOT NULL COMMENT '회원이름', -- 회원이름
 	`MBR_PHOTO_URL`   VARCHAR(255) NOT NULL COMMENT '회원사진', -- 회원사진
 	`MBR_GENDER`      VARCHAR(10)  NULL     COMMENT 'M:남성, F:여성', -- 성별
-	`MBR_REG_DATE`    DATETIME     NOT NULL DEFAULT now() COMMENT '회원가입일시', -- 회원가입일시
+	`MBR_REG_DATE`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '회원가입일시', -- 회원가입일시
 	`LAST_LOGIN_DATE` DATETIME     NOT NULL COMMENT '최종로그인일시', -- 최종로그인일시
 	`MBR_UPDATE_DATE` DATETIME     NOT NULL COMMENT '회원정보변경일시' -- 회원정보변경일시
 )
@@ -156,7 +156,7 @@ CREATE TABLE `ROOM` (
 	`ROOM_NO`            INTEGER  NOT NULL COMMENT '방번호', -- 방번호
 	`ROOM_START_TIME`    DATETIME NOT NULL COMMENT '출발시간', -- 출발시간
 	`ROOM_MBR_NUM_LIMIT` INTEGER  NOT NULL COMMENT '방인원수제한', -- 방인원수제한
-	`ROOM_REG_DATE`      DATETIME NOT NULL DEFAULT now() COMMENT '방등록일시' -- 방등록일시
+	`ROOM_REG_DATE`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '방등록일시' -- 방등록일시
 )
 COMMENT '방정보';
 
@@ -243,7 +243,7 @@ CREATE UNIQUE INDEX `UIX_LOGIN`
 CREATE TABLE `BLACK` (
 	`MBR_NO`             INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
 	`BLACK_NO`           INTEGER  NOT NULL COMMENT '블랙회원번호', -- 블랙회원번호
-	`BLACK_MBR_REG_DATE` DATETIME NOT NULL DEFAULT now() COMMENT '블랙회원등록일시' -- 블랙회원등록일시
+	`BLACK_MBR_REG_DATE` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '블랙회원등록일시' -- 블랙회원등록일시
 )
 COMMENT '블랙회원정보';
 
@@ -314,7 +314,7 @@ CREATE TABLE `SAFE` (
 	`SAFE_GUARD_PHONE_NO` VARCHAR(30) NOT NULL COMMENT '안심보호자휴대폰번호', -- 안심보호자휴대폰번호
 	`SAFE_GUARD_NAME`     VARCHAR(50) NULL     COMMENT '안심보호자이름', -- 안심보호자이름
 	`SAFE_TIME_INTERVAL`  INTEGER     NOT NULL COMMENT '단위: ms(밀리세컨드)', -- 안심알림시간간격
-	`SAFE_START_DATE`     DATETIME    NOT NULL DEFAULT now() COMMENT '안심시작일시', -- 안심시작일시
+	`SAFE_START_DATE`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '안심시작일시', -- 안심시작일시
 	`SAFE_END_DATE`       DATETIME    NULL     COMMENT '안심종료일시' -- 안심종료일시
 )
 COMMENT '안심서비스(로컬DB)';
@@ -361,7 +361,7 @@ CREATE TABLE `RCNT_LOC` (
 	`RCNT_LOC_NAME`     VARCHAR(255) NOT NULL COMMENT '최근위치명', -- 최근위치명
 	`RCNT_LOC_LAT`      DOUBLE       NOT NULL COMMENT '최근위치위도', -- 최근위치위도
 	`RCNT_LOC_LNG`      DOUBLE       NOT NULL COMMENT '최근위치경도', -- 최근위치경도
-	`RCNT_LOC_REG_DATE` DATETIME     NOT NULL DEFAULT now() COMMENT '최근위치등록일시', -- 최근위치등록일시
+	`RCNT_LOC_REG_DATE` TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '최근위치등록일시', -- 최근위치등록일시
 	`RCNT_LOC_ST`       VARCHAR(5)   NOT NULL COMMENT 'S:출발지, E:목적지' -- 즐겨찾는위치구분
 )
 COMMENT '최근위치정보';
