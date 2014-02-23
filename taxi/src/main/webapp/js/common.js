@@ -670,26 +670,6 @@ var push = {
 
 
 /**
- *   설   명 : WebDB 열기 (처음 회원가입 시 키워드값 저장)
- *   작성자 : 장종혁
- */
-var CreateWebDB_Keyword = function(keyword){
-	taxidb.transaction(function(transaction){
-		
-		   tx.executeSql('CREATE TABLE IF NOT EXISTS KEYWORD('+
-							    		'KEYWORD_NO INTEGER NOT NULL PRIMARY KEY,'+
-							    		'KEYWORD_NAME TEXT ,'+
-							    		'KEWORD_ST TEXT)');
-		
-		   
-		
-		
-		transaction.executeSql(("INSERT INTO winkles (winklename, location) VALUES (?, ?);"), 
-		[winklename, location], function(transaction, results){successCallback(results);}, errCallback);
-	});
-};
-
-/**
  *   설   명  : WebDB 키워드 테이블 생성 트렌젝션
  *   작성자 : 장종혁
  */
@@ -704,14 +684,18 @@ function OpenWebDB_Keyword(){
  *    PS2.   따로 뺀 이유 : KEYWORD는  회원가입시에 필요, 나머지는 회원 가입 후 정보이므로.
  */
 function CreateWebDB_Keyword(tx) {
+	
+	
+	deleteKeywordDB();
+	
     tx.executeSql
     		('CREATE TABLE IF NOT EXISTS KEYWORD('+
 	    		'KEYWORD_NO INTEGER NOT NULL PRIMARY KEY,'+
 	    		'KEYWORD_NAME TEXT ,'+
 	    		' KEWORD_ST TEXT)');
     
-    /*
-     * 
+    
+     /* 
      *     GET JSON KEYWORD DATA ON SERVER  SORCE CODE
      * 
      *     AND  INSERT DATA TO KEYWORD TABLE
@@ -725,29 +709,51 @@ function CreateWebDB_Keyword(tx) {
  *   설    명 : WebDB ( Keyword )값 입력
  *   작성자 : 장종혁
  */
-var saveKeywordDB = function(keyword){
-	for(var  i = 0; i < keyword.length; i++){
+var saveKeywordDB = function(keyWord){
+	
+	console.log(keyWord);
+	
 		taxidb.transaction(function(transaction){
-			transaction.executeSql(("INSERT INTO KEYWORD (KEYWORD_NO, KEYWORD_NAME,KEWORD_ST) VALUES (?, ?, ?);"), 
-			[keyword[i].keywordNo, keyword[i].keywordName, keyword[i].keywordSt], function(transaction, results){successCallback(results);}, errCallback);
+			
+			for(var  i = 0; i < keyWord.length; i++){
+				transaction.executeSql(("INSERT INTO KEYWORD (KEYWORD_NO, KEYWORD_NAME) VALUES (?,?);"), 
+				[i,keyWord[i].keyWordName], function(transaction, results){successCallback(results);}, errCallback);
+			}
+				
+			//transaction.executeSql(("INSERT INTO KEYWORD (KEYWORD_NO, KEYWORD_NAME,KEWORD_ST) VALUES (?, ?, ?);"), 
+			//[keyWord[i].keyWordNo, keyWord[i].keyWordName, keyWord[i].keyWordSt], function(transaction, results){successCallback(results);}, errCallback);
 		});
-	}
 };
+
+
+/**
+ *   설    명 : WebDB ( Keyword ) 테이블 삭제
+ *   작성자 : 장종혁
+ */
+var deleteKeywordDB = function(){
+	
+		taxidb.transaction(function(transaction){
+				transaction.executeSql(("DROP KEYWORD TABLE IF EXISTS;"));
+		});
+};
+
+
 
 /**
  * 설    명 : 오류 났을 경우 경고창으로 알림.(// Transaction error callback)
  * 작성자 : 장종혁
  */
-function errorCB(err) {
-    alert("Error processing SQL: "+err);
+function errCallback(err) {
+	//console.log(err);
+    //alert("Error processing SQL: "+err);
 }
 
 /**
  * 설    명 : 성공일 경우 알림.( // Transaction success callback)
  * 작성자 : 장종혁
  */
-function successCB() {
-    alert("success!");
+function successCallback() {
+    //alert("success!");
 }
 
 /**
@@ -755,16 +761,31 @@ function successCB() {
  *   작성자 : 장종혁
  */
 var serchKeyWord = function(value){
-	taxidb.transaction(function(transaction){
-		var result; 
-		transaction.executeSql(("SELECT * FROM KEYWORD WHERE KEYWORD_NAME LIKE %?% limit 5"), [value],
-			function(transaction, results){successCallback(results);}, errCallback);
-		result = results;
-		});
+
+	var resultData;
 	
-	return result;
+
+	taxidb.transaction(function(transaction){
+		
+		console.log("f="+value);
+		
+		transaction.executeSql('SELECT * FROM KEYWORD WHERE KEYWORD_NAME LIKE %?% limit 5', [value], function (tx, results) 
+			    {
+			       var len = results.rows.length;
+			      console.log(len);
+			    }, null);
+
+			  });
+		
+	console.log("d="+value);
+	console.log("e="+resultData);
+	//return resultData;
 };
 
-
-
+/**
+ * 설    명 : 키워드 검사값 성공일 경우 넘김.( // Transaction success callback)
+ * 작성자 : 장종혁
+ */
+function  keyWordsuccessCallback(results) {
+}
 

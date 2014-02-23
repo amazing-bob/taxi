@@ -43,6 +43,11 @@ public class MyInfo extends Mbr implements Serializable {
 	// Room 관련
 	protected boolean 	isRoomMbr;
 	protected Room 		myRoom;
+	//  keyWord 관련
+	protected String  	keyWordName;
+	protected int 		keyWordNo;
+	protected String 	keyWordSt;
+	protected String    serchKeyWord;
 	
 	
 	public MyInfo setMbrNo(int mbrNo) {
@@ -165,7 +170,35 @@ public class MyInfo extends Mbr implements Serializable {
 		this.myRoom = myRoom;
 		return this;
 	}
-
+	public String getKeyWordName() {
+		return keyWordName;
+	}
+	public MyInfo setKeyWordName(String keyWordName) {
+		this.keyWordName = keyWordName;
+		return this;
+	}
+	public int getKeyWordNo() {
+		return keyWordNo;
+	}
+	public MyInfo setKeyWordNo(int keyWordNo) {
+		this.keyWordNo = keyWordNo;
+		return this;
+	}
+	public String getKeyWordSt() {
+		return keyWordSt;
+	}
+	public MyInfo setKeyWordSt(String keyWordSt) {
+		this.keyWordSt = keyWordSt;
+		return this;
+	}
+	public String getSerchKeyWordList() {
+		return serchKeyWord;
+	}
+	public MyInfo setSerchKeyWordList(String serchKeyWord) {
+		this.serchKeyWord = serchKeyWord;
+		return this;
+	}
+	
 	
 	
 }
