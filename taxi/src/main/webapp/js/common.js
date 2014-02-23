@@ -711,13 +711,12 @@ function CreateWebDB_Keyword(tx) {
  */
 var saveKeywordDB = function(keyWord){
 	
-	console.log(keyWord);
 	
 		taxidb.transaction(function(transaction){
 			
 			for(var  i = 0; i < keyWord.length; i++){
 				transaction.executeSql(("INSERT INTO KEYWORD (KEYWORD_NO, KEYWORD_NAME) VALUES (?,?);"), 
-				[i,keyWord[i].keyWordName], function(transaction, results){successCallback(results);}, errCallback);
+				[i,keyWord[i].keyWordName], function(transaction, results){successCallback(results);}, null);
 			}
 				
 			//transaction.executeSql(("INSERT INTO KEYWORD (KEYWORD_NO, KEYWORD_NAME,KEWORD_ST) VALUES (?, ?, ?);"), 
@@ -744,8 +743,8 @@ var deleteKeywordDB = function(){
  * 작성자 : 장종혁
  */
 function errCallback(err) {
-	//console.log(err);
-    //alert("Error processing SQL: "+err);
+	console.log(" WEB DB ERR =========================================================")
+	console.log(err);
 }
 
 /**
@@ -753,39 +752,6 @@ function errCallback(err) {
  * 작성자 : 장종혁
  */
 function successCallback() {
-    //alert("success!");
 }
 
-/**
- *   설   명 : 키워드 검사 (차후 수정 예정 - result값 확인불가)
- *   작성자 : 장종혁
- */
-var serchKeyWord = function(value){
-
-	var resultData;
-	
-
-	taxidb.transaction(function(transaction){
-		
-		console.log("f="+value);
-		
-		transaction.executeSql('SELECT * FROM KEYWORD WHERE KEYWORD_NAME LIKE %?% limit 5', [value], function (tx, results) 
-			    {
-			       var len = results.rows.length;
-			      console.log(len);
-			    }, null);
-
-			  });
-		
-	console.log("d="+value);
-	console.log("e="+resultData);
-	//return resultData;
-};
-
-/**
- * 설    명 : 키워드 검사값 성공일 경우 넘김.( // Transaction success callback)
- * 작성자 : 장종혁
- */
-function  keyWordsuccessCallback(results) {
-}
 

@@ -34,7 +34,7 @@ $(document).ready(function() {
 	console.log("ready()");
 	initAjaxLoading();
 	//일단 로컬 스토리지 일단 삭제 계속 회원가입 페이지로 가기 위해.
-	//removeLocalItem("myInfo");
+	removeLocalItem("myInfo");
 
 
 	/* 임시 사용자 로그인 */
@@ -326,7 +326,7 @@ var goHomeOrRoom = function(myInfo) {
 };
 /**
  * 내용:초기회원가입시 이름입력완료후 서버디비에서 키워드 목록 가져와서 웹디비에 결과 던지기.
- * 작성자:김태경
+  * 작성자:김태경
  */
 var getKeyword = function(){
 	$.getJSON( rootPath + "/auth/getKeyWordList.do"
@@ -351,39 +351,34 @@ var getKeyword = function(){
 	});
 };
 
+/**
+ * 내  용 : 키워드 검색
+ * 작성자 : 장종혁
+ */
 var getSerchKeyWordList = function(text){
 
-	console.log("a="+text);
+	var value = text;
 	
-	var resData = serchKeyWord(text);
+	taxidb.transaction(function(transaction){
+		
+		transaction.executeSql('SELECT * FROM KEYWORD WHERE KEYWORD_NAME LIKE ? limit 5', ["%"+value+"%"], function (tx, results) 
+			    {
+			var len = results.rows.length;
+			var str = "";
+	        console.log("KEYWORD table: " + len + " rows found.");
+	        for (var i=0; i<len; i++){
+	            console.log("Row = " + i + " KEYWORD_NAME = " + results.rows.item(i).KEYWORD_NAME);
+	            
+	            str += "<li>"+results.rows.item(i).KEYWORD_NAME+"</li>";
+	            sugList.html(str);
+	            sugList.listview("refresh");
+	            
+	        }
+			    }, errCallback);
+
+	  });
+		
 	
-	console.log("b="+resData);
-	
-	/*if (resData.length>0 ) {
-
-		var str = "";
-		var serchKeyWordList = resData;
-
-		if ( serchKeyWordList ) {
-
-			for(var i in serchKeyWordList) {
-
-				str += "<li>"+serchKeyWordList[i].keyWordName+"</li>";
-			}
-
-			sugList.html(str);
-			sugList.listview("refresh");
-			console.dir(res);
-		}
-
-	} else {
-
-	}*/
-	
-
-	
-//	
-//	});
 };
 /*var aaaa = function(keyWordList){
 	console.log("자동완성 기능!!!");
