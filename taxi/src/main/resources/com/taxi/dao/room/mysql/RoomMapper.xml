@@ -8,6 +8,7 @@
 	    <result 	property="roomStartTime" 	column="room_start_time"/>
 	    <result 	property="roomMbrNumLimit" 	column="room_mbr_num_limit"/>
 	    <result 	property="roomRegDate" 		column="room_reg_date"/>
+	    <result 	property="roomColor" 		column="room_color"/>
 	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
 	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
 	        select="com.taxi.dao.room.RoomMbrDao.getRoomMbrDetailList"/>
@@ -26,6 +27,7 @@
 		    , 	A.ROOM_START_TIME
 		    , 	A.ROOM_MBR_NUM_LIMIT
 		    , 	A.ROOM_REG_DATE
+		    ,	A.ROOM_COLOR
 		    ,	count( B.MBR_NO ) as roomMbrCount
 		from
 				ROOM A
@@ -91,7 +93,7 @@
 	                            and     Z.MBR_NO =  #{mbrNo}			                
 			                )
 		group by
-				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
+				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
 		having
 				count( B.MBR_NO ) < A.ROOM_MBR_NUM_LIMIT
 		order by
@@ -110,6 +112,7 @@
 		    , 	A.ROOM_START_TIME
 		    , 	A.ROOM_MBR_NUM_LIMIT
 		    , 	A.ROOM_REG_DATE
+		    ,	A.ROOM_COLOR
 		    ,	count( B.MBR_NO ) as roomMbrCount
 		from
 				ROOM A
@@ -118,7 +121,7 @@
 		and	    A.ROOM_NO = B.ROOM_NO
 		and		A.ROOM_NO = #{value}
 		group by
-				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
+				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
 		limit 1
 	</select>
 	
@@ -133,6 +136,7 @@
 		    , 	A.ROOM_START_TIME
 		    , 	A.ROOM_MBR_NUM_LIMIT
 		    , 	A.ROOM_REG_DATE
+		    ,	A.ROOM_COLOR
 		    ,	count( B.MBR_NO ) as roomMbrCount
 		from 	
 				ROOM A
@@ -143,7 +147,7 @@
         and     A.ROOM_START_TIME > now()
 		and 	B.MBR_NO = #{value}
 		group by
-				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE
+				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
 		limit 1
 	</select>
     
@@ -154,9 +158,9 @@
 	-->
 	<insert id="addRoom" parameterType="Room">
 		insert into ROOM 
-			( ROOM_START_TIME, ROOM_MBR_NUM_LIMIT, ROOM_REG_DATE )
+			( ROOM_START_TIME, ROOM_MBR_NUM_LIMIT, ROOM_REG_DATE, ROOM_COLOR )
 		values  
-			( #{roomStartTime}, #{roomMbrNumLimit}, now())
+			( #{roomStartTime}, #{roomMbrNumLimit}, now(), #{roomColor})
 		<selectKey resultType="int" keyProperty="roomNo">
 			SELECT LAST_INSERT_ID()
 		</selectKey>

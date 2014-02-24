@@ -19,6 +19,7 @@ public class Room extends BaseRoom implements Serializable {
 	 * protected Date		roomStartTime;
 	 * protected int		roomMbrNumLimit;
 	 * protected Date		roomRegDate;
+	 * protected int		roomColor;
 	 */
 	protected int 				roomMbrCount;
 	protected List<RoomMbr>		roomMbrList;
@@ -44,6 +45,9 @@ public class Room extends BaseRoom implements Serializable {
 	}
 	public Room setRoomRegDate(Date roomRegDate) {
 		return (Room) super.setRoomRegDate(roomRegDate);
+	}
+	public Room setRoomColor(int roomColor) {
+		return (Room) super.setRoomColor(roomColor);
 	}
 	
 	public int getRoomMbrCount() {

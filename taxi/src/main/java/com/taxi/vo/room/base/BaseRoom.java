@@ -14,6 +14,7 @@ public class BaseRoom implements Serializable {
 	protected Date		roomStartTime;
 	protected int		roomMbrNumLimit;
 	protected Date		roomRegDate;
+	protected int		roomColor;
 	
 	
 	public int getRoomNo() {
@@ -46,6 +47,14 @@ public class BaseRoom implements Serializable {
 		this.roomRegDate = roomRegDate;
 		return this;
 	}
+	public int getRoomColor() {
+		return roomColor;
+	}
+	public BaseRoom setRoomColor(int roomColor) {
+		this.roomColor = roomColor;
+		return this;
+	}
+	
 	
 	
 	
