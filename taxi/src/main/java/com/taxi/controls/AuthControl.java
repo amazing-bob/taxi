@@ -2,6 +2,9 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -17,9 +20,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.taxi.services.auth.AuthService;
+import com.taxi.services.blacklist.BlackListService;
+import com.taxi.services.location.LocationService;
 import com.taxi.services.member.MemberService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.MyInfo;
+import com.taxi.vo.blacklist.Black;
+import com.taxi.vo.location.FvrtLoc;
+import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.member.Mbr;
 
 
@@ -29,6 +37,8 @@ public class AuthControl {
 	@Autowired ServletContext 	sc;
 	@Autowired AuthService 		authService;
 	@Autowired MemberService 	memberService;
+	@Autowired LocationService 	locationService;
+	@Autowired BlackListService	blackListService;
 	
 	
 	/**
@@ -42,9 +52,24 @@ public class AuthControl {
 		
 		try {
 			
-			MyInfo myInfo = authService.hasMember(mbr.getMbrNo());
+			int mbrNo = mbr.getMbrNo();
 			
-			jsonResult.setData(myInfo);
+			MyInfo myInfo 				= authService.hasMember(mbrNo);
+			List<FvrtLoc> fvrtLocList 	= locationService.getFavoriteList(mbrNo);
+			List<RcntLoc> rcntLocList 	= locationService.getRecentDestination(mbrNo);
+			List<Black> blackList 		= blackListService.getBlackList(mbrNo);
+			
+			// 대학교(keyword) 목록 조회
+			
+			// 친구정보 업데이트 코드 들어가야함.
+			
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("myInfo", myInfo);
+			resultMap.put("fvrtLocList"	, fvrtLocList);
+			resultMap.put("rcntLocList"	, rcntLocList);
+			resultMap.put("blackList"	, blackList);
+			
+			jsonResult.setData(resultMap);
 			jsonResult.setStatus("success");
 			
 		} catch(Throwable e) {

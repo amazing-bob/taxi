@@ -122,7 +122,11 @@ var getCurrentHtmlPath = function() {
 var setLocalItem = function (key, value) {
 	console.log("setLocalItem(key, value)");
 //	console.log(key, value);
-	localStorage.setItem(key, JSON.stringify(value));
+	if ( value ) {
+		localStorage.setItem(key, JSON.stringify(value));
+	} else {
+		localStorage.setItem(key, null);
+	}
 };
 
 
@@ -135,7 +139,12 @@ var setLocalItem = function (key, value) {
 var getLocalItem = function (key) {
 	console.log("getLocalItem(key)");
 //	console.log(key);
-	return JSON.parse(localStorage.getItem(key));
+	var item = localStorage.getItem(key);
+	if ( item ) {
+		return JSON.parse(item);
+	} else {
+		return null;
+	}
 };
 
 

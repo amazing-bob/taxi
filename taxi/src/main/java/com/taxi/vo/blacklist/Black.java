@@ -16,8 +16,9 @@ public class Black extends BaseBlack implements Serializable {
 	 * protected int 		blackNo;
 	 * protected Date 		blackMbrRegDate;
 	 */
-	
-	// protected int 		추가되는 변수;
+	protected String 		mbrName;
+	protected String 		mbrPhoneNo;
+	protected String 		mbrPhotoUrl;
 	
 	public Black setMbrNo(int mbrNo) {
 		return (Black) super.setMbrNo(mbrNo);
@@ -28,6 +29,30 @@ public class Black extends BaseBlack implements Serializable {
 	public Black setBlackMbrRegDate(Date blackMbrRegDate) {
 		return (Black) super.setBlackMbrRegDate(blackMbrRegDate);
 	}
+	
+	public String getMbrName() {
+		return mbrName;
+	}
+	public Black setMbrName(String mbrName) {
+		this.mbrName = mbrName;
+		return this;
+	}
+	public String getMbrPhoneNo() {
+		return mbrPhoneNo;
+	}
+	public Black setMbrPhoneNo(String mbrPhoneNo) {
+		this.mbrPhoneNo = mbrPhoneNo;
+		return this;
+	}
+	public String getMbrPhotoUrl() {
+		return mbrPhotoUrl;
+	}
+	public Black setMbrPhotoUrl(String mbrPhotoUrl) {
+		this.mbrPhotoUrl = mbrPhotoUrl;
+		return this;
+	}
+	
+	
 	
 		
 }

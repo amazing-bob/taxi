@@ -10,7 +10,7 @@ var keyWordList = new Array();
 var sugLis;
 
 $(document).ready(function() {
-
+	
 	console.log("Ready to bring the awesome.");
 	
 	OpenWebDB_Keyword();
@@ -33,28 +33,25 @@ $(document).ready(function() {
 
 	console.log("ready()");
 	initAjaxLoading();
-	//일단 로컬 스토리지 일단 삭제 계속 회원가입 페이지로 가기 위해.
-	removeLocalItem("myInfo");
-
 
 	/* 임시 사용자 로그인 */
-	console.log("tempLogin()...........");
-	console.log(rootPath);
-
-	var myInfo = {
-			mbrNo: 1,
-			mbrName:"회원001",
-			mbrPhotoUrl: "../images/photo/m01.jpg",
-			startRange: 500,
-			endRange: 1000,
-			fvrtLocList: null,
-			rcntLocList: null,
-			keyNoList: null
-	};
+//	console.log("tempLogin()...........");
+//	console.log(rootPath);
+//	var myInfo = {
+//			mbrNo: 1,
+//			mbrName:"회원001",
+//			mbrPhotoUrl: "../images/photo/m01.jpg",
+//			startRange: 500,
+//			endRange: 1000,
+//			fvrtLocList: null,
+//			rcntLocList: null,
+//			keyNoList: null
+//	};
+//	setLocalItem("myInfo", myInfo);
+	
 	// 웹 버전일 경우만 주석 풀어야됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	isSignUp( getLocalItem("myInfo") );
 
-	setLocalItem("myInfo", myInfo);
 
 
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -148,40 +145,43 @@ var getAddressBook = function() {
  */
 var isSignUp = function( myInfo ) {
 	console.log("isSignUp(myInfo)");
-//	console.log(myInfo);
+	console.log(myInfo);
 
 	if ( myInfo && myInfo.mbrNo ) {
 		console.log(myInfo.mbrNo);
 
 		$.getJSON( rootPath + "/auth/hasMember.do"
 				, { mbrNo: myInfo.mbrNo }
-		, function(result) {
-			if(result.status == "success") {
-				if ( result.data ) {
-					var myInfo = result.data;
-					// 세션스토리지에 저장
-					//setSessionItem("myInfo", myInfo );
-
-					//로컬 스토리지에 저장
-					setLocalItem("myInfo", myInfo);
-
-					goHomeOrRoom(myInfo);
-
-				} else {
-					that.myInfo = myInfo;
-
-					// 회원가입 화면 이동 
-
-					//디비에서 키워드 목록 가져오기.
-
-
-					$.mobile.changePage("#divPhonePage");
-				}
-
-			} else {
-				alert("시스템오류 발생");
-			}
-		});
+				, function(result) {
+					if(result.status == "success") {
+						myInfo = result.data.myInfo;
+						fvrtLocList = result.data.fvrtLocList;
+						rcntLocList = result.data.rcntLocList;
+						blackList = result.data.blackList;
+						
+						if ( myInfo ) {
+							alert("로그인!!");
+							//로컬 스토리지에 저장
+							setLocalItem("myInfo", myInfo);
+		
+							goHomeOrRoom(myInfo);
+		
+						} else {
+							alert("로그아웃!!");
+							that.myInfo = myInfo;
+		
+							// 회원가입 화면 이동 
+		
+							//디비에서 키워드 목록 가져오기.
+		
+		
+							$.mobile.changePage("#divPhonePage");
+						}
+		
+					} else {
+						alert("시스템오류 발생");
+					}
+				});
 
 	} else {
 		// 회원가입 화면 이동
@@ -324,9 +324,11 @@ var goHomeOrRoom = function(myInfo) {
 				}
 			} );
 };
+
+
 /**
- * 내용:초기회원가입시 이름입력완료후 서버디비에서 키워드 목록 가져와서 웹디비에 결과 던지기.
-  * 작성자:김태경
+ * 내  용: 초기회원가입시 이름입력완료후 서버디비에서 키워드 목록 가져와서 웹디비에 결과 던지기.
+ * 작성자: 김태경
  */
 var getKeyword = function(){
 	$.getJSON( rootPath + "/auth/getKeyWordList.do"
