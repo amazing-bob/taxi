@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.taxi.services.location.LocationService;
 import com.taxi.services.room.RoomService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.LoginInfo;
@@ -29,8 +30,9 @@ import com.taxi.vo.room.RoomPath;
 @Controller
 @RequestMapping("/room")
 public class RoomControl {
-	@Autowired ServletContext sc;
-	@Autowired RoomService roomService;	
+	@Autowired ServletContext 	sc;
+	@Autowired RoomService 		roomService;	
+	@Autowired LocationService 	locationService;
 	
 	
 	/**
@@ -193,8 +195,10 @@ public class RoomControl {
         JsonResult jsonResult = new JsonResult();
         
         try {
+        	int mbrNo = roomMbr.getMbrNo();
+        	
         	RcntLoc recentEndLoc = new RcntLoc()
-											.setMbrNo( roomMbr.getMbrNo() )
+											.setMbrNo( mbrNo )
 											.setRcntLocName( endLocName )
 											.setRcntLocLat( endLocLat )
 											.setRcntLocLng( endLocLng )
@@ -203,8 +207,13 @@ public class RoomControl {
             int roomNo = roomService.joinRoom(roomMbr, recentEndLoc);
             
             Room myRoom = roomService.getRoomInfo(roomNo);
+            List<RcntLoc> rcntLocList 	= locationService.getRecentDestination(mbrNo);
             
-            jsonResult.setData(myRoom);
+            Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put("myRoom"		, myRoom);
+            resultMap.put("rcntLocList" , rcntLocList);
+            
+            jsonResult.setData(resultMap);
             jsonResult.setStatus("success");
 
         } catch (Throwable e) {

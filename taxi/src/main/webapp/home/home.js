@@ -1252,8 +1252,12 @@ var joinRoom = function(regId, roomNo) {
     			params,
 				function(result) {
 					if (result.status =="success") {
-						setSessionItem("myRoom", result.data);
-						changeHref("../room/room.html", { roomNo : roomNo});
+						setSessionItem("myRoom", result.data.myRoom);
+						// WebDB 에 적용
+						deleteAllRcntLocTable( myInfo.mbrNo );
+                		insertRcntLocTable( result.data.rcntLocList );
+						
+						changeHref("../room/room.html", { roomNo : roomNo });
 
 					} else {
 						console.log(result.data);
@@ -1265,63 +1269,117 @@ var joinRoom = function(regId, roomNo) {
 
 
 /**
- * 설  명: 즐겨찾기 목록
+ * 설  명: WebDB 에서 즐겨찾기 목록가져와서 그리기
  * 작성자: 김상헌
  */
 var favoriteList = function() {
     console.log("favoriteList()");
-
-    $.getJSON( rootPath + "/location/getFavoriteList.do", function(result) {
-        if(result.status == "success") {
-            var fvrtLoc = result.data;
-            var ul = $("#favoriteUl");
-
-            $("#favoriteUl #favoriteList").remove();
-            for (var i in fvrtLoc) {
-                $("<li>")
-                    .attr("id", "favoriteList")
-                    .attr("data-theme","d")
-                    .attr("data-icon", "false")
-                    .data("endX", fvrtLoc[i].fvrtLocLng)
-                    .data("endY", fvrtLoc[i].fvrtLocLat)
-                    .data("locName", fvrtLoc[i].fvrtLocName)
-//                    .on("touchend", function(event) {
-                    .click( function(event){
-                    	setEndLocationSession(
-                     			$(this).data("endX"),
-                     			$(this).data("endY"),
-                     			$(this).data("locName"),
-                    			"",
-                    			function () {
-                		    		checkEndLocation();
-                		    		map.moveTo( new olleh.maps.Coord($(this).data("endX"), $(this).data("endY")) );
-                                    $("#divFavoriteLoc_popup").popup("close");
-                		    	});
-                     	return false;
-                    })
-                    .append(
-                    		$("<a>")
-                            	.attr("id", "favoriteLink")
-                                .attr("href","#")
-                                .text( fvrtLoc[i].fvrtLocName)
-                                .append(
-                                		$("<img>")
-                                			.addClass("ui-li-icon ui-corner-none")
-	                                        .attr("src", "../images/common/star-th.png")
-                                )
-                    )
-                    .appendTo(ul);
-                $("#favoriteUl").listview("refresh");
-            }
-
-            $("#divFavoriteLoc_popup").popup("open", {
-    			transition : "pop"
+    
+    // WebDB 에서 즐겨찾기 목록 가져오기
+    selectMyFvrtLocList(
+    		myInfo.mbrNo,
+    		// Callback
+    		function( favoriteLocationList ) {
+	            var ul = $("#favoriteUl");
+	            
+	            $("#favoriteUl #favoriteList").remove();
+	            for (var i in favoriteLocationList) {
+	                $("<li>")
+	                    .attr("id" 			, "favoriteList")
+	                    .attr("data-theme" 	,"d")
+	                    .attr("data-icon" 	, "false")
+	                    .data("endX" 		, favoriteLocationList[i].fvrtLocLng)
+	                    .data("endY" 		, favoriteLocationList[i].fvrtLocLat)
+	                    .data("locName" 	, favoriteLocationList[i].fvrtLocName)
+	                    .click( function(event){
+	                    	setEndLocationSession(
+	                     			$(this).data("endX"),
+	                     			$(this).data("endY"),
+	                     			$(this).data("locName"),
+	                    			"",
+	                    			function () {
+	                		    		checkEndLocation();
+	                		    		map.moveTo( new olleh.maps.Coord($(this).data("endX"), $(this).data("endY")) );
+	                                    $("#divFavoriteLoc_popup").popup("close");
+	                		    	});
+	                     	return false;
+	                    })
+	                    .append(
+	                    		$("<a>")
+	                            	.attr("id", "favoriteLink")
+	                                .attr("href","#")
+	                                .text( favoriteLocationList[i].fvrtLocName)
+	                                .append(
+	                                		$("<img>")
+	                                			.addClass("ui-li-icon ui-corner-none")
+		                                        .attr("src", "../images/common/star-th.png")
+	                                )
+	                    )
+	                    .appendTo(ul);
+	                $("#favoriteUl").listview("refresh");
+	            }
+	
+	            $("#divFavoriteLoc_popup").popup("open", {
+	    			transition : "pop"
+	    		});
     		});
-        } else {
-	        // 즐겨찾기 없을경우 + 버튼 추가
-
-        }
-    });
+//    $.getJSON(
+//    		// URL
+//    		rootPath + "/location/getFavoriteList.do",
+//    		// Parameter
+//    		{ mbrNo : myInfo.mbrNo },
+//    		// Success
+//    		function(result) {
+//		        if(result.status == "success") {
+//		            var fvrtLoc = result.data;
+//		            var ul = $("#favoriteUl");
+//		
+//		            $("#favoriteUl #favoriteList").remove();
+//		            for (var i in fvrtLoc) {
+//		                $("<li>")
+//		                    .attr("id", "favoriteList")
+//		                    .attr("data-theme","d")
+//		                    .attr("data-icon", "false")
+//		                    .data("endX", fvrtLoc[i].fvrtLocLng)
+//		                    .data("endY", fvrtLoc[i].fvrtLocLat)
+//		                    .data("locName", fvrtLoc[i].fvrtLocName)
+////		                    .on("touchend", function(event) {
+//		                    .click( function(event){
+//		                    	setEndLocationSession(
+//		                     			$(this).data("endX"),
+//		                     			$(this).data("endY"),
+//		                     			$(this).data("locName"),
+//		                    			"",
+//		                    			function () {
+//		                		    		checkEndLocation();
+//		                		    		map.moveTo( new olleh.maps.Coord($(this).data("endX"), $(this).data("endY")) );
+//		                                    $("#divFavoriteLoc_popup").popup("close");
+//		                		    	});
+//		                     	return false;
+//		                    })
+//		                    .append(
+//		                    		$("<a>")
+//		                            	.attr("id", "favoriteLink")
+//		                                .attr("href","#")
+//		                                .text( fvrtLoc[i].fvrtLocName)
+//		                                .append(
+//		                                		$("<img>")
+//		                                			.addClass("ui-li-icon ui-corner-none")
+//			                                        .attr("src", "../images/common/star-th.png")
+//		                                )
+//		                    )
+//		                    .appendTo(ul);
+//		                $("#favoriteUl").listview("refresh");
+//		            }
+//		
+//		            $("#divFavoriteLoc_popup").popup("open", {
+//		    			transition : "pop"
+//		    		});
+//		        } else {
+//			        // 즐겨찾기 없을경우 + 버튼 추가
+//		
+//		        }
+//		    });
 };
 
 

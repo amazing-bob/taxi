@@ -70,15 +70,13 @@ public class LocationControl {
 	 */
 	@RequestMapping("/getFavoriteList")
     @ResponseBody
-    public Object getFavoriteList() throws Exception {
-//    public Object getFavoriteList(int mbrNo) throws Exception {
+    public Object getFavoriteList(int mbrNo) throws Exception {
         JsonResult jsonResult = new JsonResult();
+        
         try {
-        	int mbrNo;
-        	mbrNo=1;
+        	List<FvrtLoc> fvrtLocList = locationService.getFavoriteList(mbrNo);
         	
-        	System.out.println("=========" + mbrNo);
-            jsonResult.setData(locationService.getFavoriteList(mbrNo));
+            jsonResult.setData(fvrtLocList);
             jsonResult.setStatus("success");
              
         } catch (Throwable e) {

@@ -64,7 +64,7 @@ public class AuthControl {
 			// 친구정보 업데이트 코드 들어가야함.
 			
 			Map<String, Object> resultMap = new HashMap<String, Object>();
-			resultMap.put("myInfo", myInfo);
+			resultMap.put("myInfo" 		, myInfo);
 			resultMap.put("fvrtLocList"	, fvrtLocList);
 			resultMap.put("rcntLocList"	, rcntLocList);
 			resultMap.put("blackList"	, blackList);
