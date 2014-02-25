@@ -18,11 +18,11 @@ public class BaseRcntLoc implements Serializable {
 	protected double 	rcntLocLng;
 	protected Date 		rcntLocRegDate;
 	
-	public int getRcntlocNo() {
+	public int getRcntLocNo() {
 		return rcntLocNo;
 	}
-	public BaseRcntLoc setRcntlocNo(int rcntlocNo) {
-		this.rcntLocNo = rcntlocNo;
+	public BaseRcntLoc setRcntLocNo(int rcntLocNo) {
+		this.rcntLocNo = rcntLocNo;
 		return this;
 	}
 	public int getMbrNo() {

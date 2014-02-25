@@ -13,7 +13,7 @@ public class Black extends BaseBlack implements Serializable {
 	/* Base 변수
 	 * 
 	 * protected int 		mbrNo;
-	 * protected int 		blackNo;
+	 * protected int 		blackMbrNo;
 	 * protected Date 		blackMbrRegDate;
 	 */
 	protected String 		mbrName;
@@ -23,8 +23,8 @@ public class Black extends BaseBlack implements Serializable {
 	public Black setMbrNo(int mbrNo) {
 		return (Black) super.setMbrNo(mbrNo);
 	}
-	public Black setBlackNo(int blackNo) {
-		return (Black) super.setBlackNo(blackNo);
+	public Black setBlackMbrNo(int blackMbrNo) {
+		return (Black) super.setBlackMbrNo(blackMbrNo);
 	}
 	public Black setBlackMbrRegDate(Date blackMbrRegDate) {
 		return (Black) super.setBlackMbrRegDate(blackMbrRegDate);

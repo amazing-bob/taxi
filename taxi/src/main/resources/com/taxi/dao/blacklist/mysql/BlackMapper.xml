@@ -9,7 +9,7 @@
         <result column="MBR_NAME" 				property="mbrName" 			/>
         <result column="MBR_PHONE_NO" 			property="mbrPhoneNo" 		/>
         <result column="MBR_PHOTO_URL" 			property="mbrPhotoUrl" 		/>
-        <result column="BLACK_NO" 				property="blackNo" 			/>
+        <result column="BLACK_MBR_NO" 			property="blackMbrNo" 			/>
         <result column="BLACK_MBR_REG_DATE" 	property="blackMbrRegDate" 	/>
     </resultMap>
     
@@ -23,7 +23,7 @@
 	    	,	B.MBR_NAME 				
 	    	,	B.MBR_PHONE_NO 			
 	    	,	B.MBR_PHOTO_URL 		
-	    	,	A.BLACK_NO 				
+	    	,	A.BLACK_MBR_NO 				
 	    	,	A.BLACK_MBR_REG_DATE 	
 	    from
 	    		BLACK A

@@ -24,8 +24,8 @@ public class RcntLoc extends BaseRcntLoc implements Serializable {
 	
 	// protected int 		추가되는 변수;
 	
-	public RcntLoc setRcntlocNo(int rcntlocNo) {
-		return (RcntLoc) super.setRcntlocNo(rcntlocNo);
+	public RcntLoc setRcntlocNo(int rcntLocNo) {
+		return (RcntLoc) super.setRcntLocNo(rcntLocNo);
 	}
 	public RcntLoc setMbrNo(int mbrNo) {
 		return (RcntLoc) super.setMbrNo(mbrNo);

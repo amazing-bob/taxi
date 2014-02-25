@@ -243,7 +243,7 @@ CREATE UNIQUE INDEX `UIX_LOGIN`
 -- 블랙회원정보
 CREATE TABLE `BLACK` (
 	`MBR_NO`             INTEGER   NOT NULL COMMENT '회원번호', -- 회원번호
-	`BLACK_NO`           INTEGER   NOT NULL COMMENT '블랙회원번호', -- 블랙회원번호
+	`BLACK_MBR_NO`           INTEGER   NOT NULL COMMENT '블랙회원번호', -- 블랙회원번호
 	`BLACK_MBR_REG_DATE` TIMESTAMP NOT NULL DEFAULT now() COMMENT '블랙회원등록일시' -- 블랙회원등록일시
 )
 COMMENT '블랙회원정보';
@@ -253,7 +253,7 @@ ALTER TABLE `BLACK`
 	ADD CONSTRAINT `PK_BLACK` -- 블랙회원정보 기본키
 		PRIMARY KEY (
 			`MBR_NO`,   -- 회원번호
-			`BLACK_NO`  -- 블랙회원번호
+			`BLACK_MBR_NO`  -- 블랙회원번호
 		);
 
 -- 동승회원정보
@@ -484,7 +484,7 @@ ALTER TABLE `BLACK`
 ALTER TABLE `BLACK`
 	ADD CONSTRAINT `FK_MBR_TO_BLACK2` -- 회원정보 -> 블랙회원정보2
 		FOREIGN KEY (
-			`BLACK_NO` -- 블랙회원번호
+			`BLACK_MBR_NO` -- 블랙회원번호
 		)
 		REFERENCES `MBR` ( -- 회원정보
 			`MBR_NO` -- 회원번호

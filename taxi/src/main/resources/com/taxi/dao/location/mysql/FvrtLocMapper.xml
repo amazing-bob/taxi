@@ -21,13 +21,13 @@
     </select>  
     
      <!-- 랭크 값은 충돌로 기존에 있던건 삭제함.  --> 	
-	<select id="getFvrtLocRank"
-	    	parameterType="int"
-	    	resultType="int">
-	    select FVRT_LOC_RANK + 1 
-	    from FVRT_LOC
-	    where MBR_NO = #{value} order by FVRT_LOC_RANK desc limit 1;
+	<select id="getFvrtLocRank" parameterType="int" resultType="int">
+	    select  ifnull( max(FVRT_LOC_RANK), 0 ) + 1
+		from    FVRT_LOC
+		where   1 = 1
+		and     MBR_NO = #{value}
 	</select>
+	
 		
      <insert id="addFvrtLoc" 
             parameterType="FvrtLoc"> 

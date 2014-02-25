@@ -11,7 +11,7 @@ public class BaseBlack implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	protected int 		mbrNo;
-	protected int 		blackNo;
+	protected int 		blackMbrNo;
 	protected Date 		blackMbrRegDate;
 	
 	public int getMbrNo() {
@@ -21,11 +21,11 @@ public class BaseBlack implements Serializable {
 		this.mbrNo = mbrNo;
 		return this;
 	}
-	public int getBlackNo() {
-		return blackNo;
+	public int getBlackMbrNo() {
+		return blackMbrNo;
 	}
-	public BaseBlack setBlackNo(int blackNo) {
-		this.blackNo = blackNo;
+	public BaseBlack setBlackMbrNo(int blackMbrNo) {
+		this.blackMbrNo = blackMbrNo;
 		return this;
 	}
 	@JsonSerialize(using = CustomDateSerializer.class)
