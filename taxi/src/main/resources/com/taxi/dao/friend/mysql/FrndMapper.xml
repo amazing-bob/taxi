@@ -30,7 +30,7 @@
  	    select a.MBR_NO 				 as	 mbrNo,
  	                a.FRND_PHONE_NO as    frndPhoneNo, 
  	                a.FRND_NAME			  as    frndName,
- 	                b.MBR_NAME			  as    mbeName
+ 	                b.FRND_REG_DATE	   as    frndRegDate
  	    from FRND
  	    where MBR_NO=#{value}
  	</select>
