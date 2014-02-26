@@ -16,16 +16,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.taxi.services.auth.AuthService;
 import com.taxi.services.blacklist.BlackListService;
+import com.taxi.services.friend.FriendService;
 import com.taxi.services.location.LocationService;
 import com.taxi.services.member.MemberService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.blacklist.Black;
+import com.taxi.vo.friend.Frnd;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.member.Mbr;
@@ -39,7 +43,7 @@ public class AuthControl {
 	@Autowired MemberService 	memberService;
 	@Autowired LocationService 	locationService;
 	@Autowired BlackListService	blackListService;
-	
+	@Autowired FriendService    friendService;
 	
 	/**
 	 * 설  명: 회원가입 여부 조회 
@@ -100,16 +104,24 @@ public class AuthControl {
 			JsonObject jsonObject = (JsonObject) parser.parse(json);
 			Mbr mbr = gson.fromJson(jsonObject, new TypeToken<Mbr>() {}.getType());
 			
-			// 임시 이미지 세팅
-			mbr.setMbrPhotoUrl("../images/photo/m01.jpg");
-			
-/*			JsonElement jsonElement = jsonObject.get("friendList");
+			// json객체에서 frndList 가져오기
+			JsonElement jsonElement = jsonObject.get("frndList");
 			JsonArray jsonArray = jsonElement.getAsJsonArray();
 			List<Frnd> frndList = gson.fromJson(jsonArray, new TypeToken<List<Frnd>>() {}.getType());
 			
-			mbr.setFrndList(frndList);*/
-		
+			// 임시 이미지 세팅
+			mbr.setMbrPhotoUrl("../images/photo/m01.jpg");
+			
+			// 회원가입
 			MyInfo myInfo = memberService.signUp(mbr);
+
+			// 넣기 전 frndList에  mbrNo 추가
+			for(Frnd frnd : frndList){
+				frnd.setMbrNo(myInfo.getMbrNo());
+			}
+
+			//frndList 서버에 등록
+			friendService.insertFrndList(frndList);
 			
 			jsonResult.setData(myInfo);
 			jsonResult.setStatus("success");

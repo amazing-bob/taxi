@@ -9,11 +9,12 @@ public interface FrndDao {
 
 	void deleteFrnd(int mbrNo);
 
+	void addFrndList(List<Frnd> list);
 	
+	Frnd serchFrnd(String frndPhoneNo);
 	
 /*	//====================== AS-IS =======================//
  
-	void addFrndList(List<Frnd> list);
 	
 	int deleteFrnd(String mbrId) throws Exception;
 */
