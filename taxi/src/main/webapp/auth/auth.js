@@ -2,19 +2,20 @@ console.log("authjs...");
 
 var that = this;
 var myInfo;
-
 var contentHeight;
-
 var keyWordList = new Array();
-
 var sugLis;
+var keywordNo;
 
 $(document).ready(function() {
 	
 	openWebDB();
 	
 	sugList = $("#suggestions");
-
+	/**
+	 * 내용 : 입력받은 키워드값 으로 시작하는 데이터 리스트로 보여주기
+	 * 작성자 : 김태경
+	 */
 	$("#schoolName").on("input", function(e) {
 		var text = $(this).val();
 
@@ -24,27 +25,36 @@ $(document).ready(function() {
 		} else {
 			searchKeywordList(text, function(keywordList) {
 				var str = "";
-				
+			/*	var keywordLi = null;*/
 				for ( var i = 0; i < keywordList.length; i++ ) {
-					str += "<li>"+keywordList[i].KEYWORD_NAME+"</li>";
-					sugList.html(str);
+					str += "<li class='listdata' data-no="+keywordList[i].KEYWORD_NO+">"
+	            	+keywordList[i].KEYWORD_NAME+"</li>";
+					
+					/*keywordLi = $("<li>").addClass("listdata")
+										.data("no", keywordList[i].KEYWORD_NO)
+										.text(keywordList[i].KEYWORD_NAME)
+										.click(function() {
+											console.log("22222222");
+										})
+										.appendTo(sugList);*/
+										
+					
 					sugList.listview("refresh");
 				}
 			});
-//			taxidb.transaction( sele(transaction, function(keywordList) {
-//			console.log("000");
-//			console.log(keywordList);
-//			var str = "";
-//			
-//			str += "<li>"+keywordList.KEYWORD_NAME+"</li>";
-//			sugList.html(str);
-//			sugList.listview("refresh");
-//		}));
-
 		}
 	});
 
-
+	$('body').on('click', ".listdata", function (e) { 
+//	$(".listdata").click(function() {
+		
+		var i = $(this)[0];
+		keywordNo = i.dataset.no;
+		console.log(i.dataset.no);
+		console.log(i.innerHTML);
+	 	    $("#schoolName").val(i.innerHTML);
+	    $(".listdata").remove();
+	});  
 	console.log("ready()");
 	initAjaxLoading();
 
@@ -284,9 +294,9 @@ var clickSignupBtn = function(){
 
 	var phoneNo = $("#txtPhone").val();
 	var mbrName = $("#txtName").val();
-
+	
 	if ( phoneNo && mbrName ) {
-		signUp( phoneNo, mbrName );
+		signUp( phoneNo, mbrName , keywordNo);
 
 	} else {
 		console.log("clickSignupBtn 예외발생");
@@ -301,13 +311,15 @@ var clickSignupBtn = function(){
  * 
  * 추가 : 2014-02-25 장종혁 : WebDB에 myInfo값 추가를 위해 서버에서 받은 mbrNo를 받아서 저장.
  */
-var signUp = function( phoneNo, mbrName ) {
-	console.log("signUp(myInfo, phoneNo,mbrName)");
+var signUp = function( phoneNo, mbrName, keywordNo ) {
+	console.log("signUp(myInfo, phoneNo, mbrName="+keywordNo+")");
 
 	var params = {
-			mbrName 	: mbrName,
-			mbrPhoneNo 	: phoneNo,
-			frndList : getSessionItem("frndData")
+			mbrName 		: 	mbrName,
+			mbrPhoneNo 		: 	phoneNo,
+			mbrKeywordNo	: 	keywordNo
+				
+			/*frndList : getSessionItem("frndData")*/
 	};
 
 	$.ajax( rootPath + "/auth/signUp.do", {
@@ -327,7 +339,7 @@ var signUp = function( phoneNo, mbrName ) {
 					// 세션스토리지에 저장
 					//setSessionItem("myInfo", myInfo );
 					//로컬스토리지에 저장
-					//일단 무조건 회원가입을 매번 하는 화면보기위해 잠시 주석.
+				
 					setLocalItem("myInfo", myInfo);
 				}
 

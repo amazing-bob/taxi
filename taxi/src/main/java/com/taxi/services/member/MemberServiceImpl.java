@@ -53,13 +53,23 @@ public class MemberServiceImpl implements MemberService {
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public MyInfo signUp(Mbr mbr) throws Exception {
 		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		System.out.println("mbrKeywordNo 서비스,"+mbr.getMbrKeywordNo());
+		paramMap.put("keywordNo",mbr.getMbrKeywordNo());
+		
 		mbrDao.addMbr(mbr);
+		System.out.println("mbrNo 서비스,"+mbr.getMbrNo());
+		paramMap.put("mbrNo",  mbr.getMbrNo());
+		keywordRelDao.setKeywordRelData(paramMap);
 		/*frndDao.addFrndList(mbr.getFrndList());*/
 		Setting setting = new Setting()
 									.setMbrNo( mbr.getMbrNo() )
 									.setStartRange( 500 )
 									.setEndRange( 1000 );
 		settingDao.addSetting(setting);
+		
+		
+		
 		
 		MyInfo myInfo = mbrDao.getMyInfo( mbr.getMbrNo() );
 		

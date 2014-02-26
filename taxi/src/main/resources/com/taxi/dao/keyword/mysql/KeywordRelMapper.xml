@@ -8,7 +8,11 @@
         delete from KEYWORD_REL  
         where MBR_NO=#{value}  
     </delete> 
- 
+ 	
+	<insert id="setKeywordRelData" parameterType="Map">
+	    insert into KEYWORD_REL(KEYWORD_NO,MBR_NO)
+	    values (#{keywordNo},#{mbrNo})
+	</insert>
 </mapper> 
 
 

@@ -19,8 +19,15 @@ public class BaseMbr implements Serializable {
 	protected Date 		mbrRegDate;
 	protected Date 		lastLoginDate;
 	protected Date 		mbrUpdateDate;
+	protected int 		mbrKeywordNo;
 	
-	
+	public int getMbrKeywordNo() {
+		return mbrKeywordNo;
+	}
+	public BaseMbr setMbrKeywordNo(int mbrKeywordNo) {
+		this.mbrKeywordNo = mbrKeywordNo;
+		return this;
+	}
 	public int getMbrNo() {
 		return mbrNo;
 	}

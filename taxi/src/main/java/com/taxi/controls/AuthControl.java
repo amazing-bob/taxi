@@ -104,24 +104,31 @@ public class AuthControl {
 			JsonObject jsonObject = (JsonObject) parser.parse(json);
 			Mbr mbr = gson.fromJson(jsonObject, new TypeToken<Mbr>() {}.getType());
 			
-			// json객체에서 frndList 가져오기
-			JsonElement jsonElement = jsonObject.get("frndList");
-			JsonArray jsonArray = jsonElement.getAsJsonArray();
-			List<Frnd> frndList = gson.fromJson(jsonArray, new TypeToken<List<Frnd>>() {}.getType());
-			
-			// 임시 이미지 세팅
+			System.out.println("mbrName:"+mbr.getMbrName());
+			System.out.println("mbrPhoneNo"+mbr.getMbrPhoneNo());
+			System.out.println("mbrKeywordNo"+mbr.getMbrKeywordNo());
+			//임시 이미지 셋팅.
 			mbr.setMbrPhotoUrl("../images/photo/m01.jpg");
 			
-			// 회원가입
 			MyInfo myInfo = memberService.signUp(mbr);
+			System.out.println(myInfo.getKeyWordNo()+"==================================");
+			
+			// json객체에서 frndList 가져오기
+			try{
+				JsonElement jsonElement = jsonObject.get("frndList");
+				JsonArray jsonArray = jsonElement.getAsJsonArray();
+				List<Frnd> frndList = gson.fromJson(jsonArray, new TypeToken<List<Frnd>>() {}.getType());
+				// 넣기 전 frndList에  mbrNo 추가
+				for(Frnd frnd : frndList){
+					frnd.setMbrNo(myInfo.getMbrNo());
+				}
 
-			// 넣기 전 frndList에  mbrNo 추가
-			for(Frnd frnd : frndList){
-				frnd.setMbrNo(myInfo.getMbrNo());
-			}
-
-			//frndList 서버에 등록
-			friendService.insertFrndList(frndList);
+				//frndList 서버에 등록
+				friendService.insertFrndList(frndList);
+			}catch(Exception e){
+				
+			};
+			
 			
 			jsonResult.setData(myInfo);
 			jsonResult.setStatus("success");
