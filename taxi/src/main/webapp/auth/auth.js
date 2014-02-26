@@ -127,6 +127,7 @@ function onDeviceReady() {
     var fields = ["displayName", "name","phoneNumbers"];
     navigator.contacts.find(fields, extractionContactData, onError, options);
 	
+    setPhoneNo();
 	
 	try {
 		//로컬스토리지로 변경 - 종혁
@@ -134,6 +135,23 @@ function onDeviceReady() {
 	} catch (e) {
 		alert(e);
 	}
+}
+
+/**
+ *  설   명 : 휴대폰 전화번호를 자동으로 txtPhone 에 추가.
+ *  작성자 : 장종혁
+ */
+var setPhoneNo = function() {
+    PhoneNumber.getPhoneNo(function(result) {
+		$("#txtPhone").val(result.phoneNo);
+		
+		$('#spnPhoneStatus').text('Valid');
+		$('#spnPhoneStatus').css('color', 'green');
+		$("#btnPhoneNo").removeAttr("disabled").button("refresh");
+		
+	}, function() {
+		// error
+	});
 }
 
 /**
