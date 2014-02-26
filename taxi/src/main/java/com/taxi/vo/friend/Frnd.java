@@ -17,7 +17,18 @@ public class Frnd extends BaseFrnd implements Serializable {
 	 */
 	
 	// protected int 		추가되는 변수;
+
+	private String mbrName;
 	
+	
+	
+	public String getMbrName() {
+		return mbrName;
+	}
+	public Frnd setMbrName(String mbrName) {
+		this.mbrName = mbrName;
+		return this;
+	}
 	public Frnd setMbrNo(int mbrNo) {
 		return (Frnd) super.setMbrNo(mbrNo);
 	}

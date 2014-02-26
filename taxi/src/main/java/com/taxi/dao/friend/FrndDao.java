@@ -13,6 +13,8 @@ public interface FrndDao {
 	
 	Frnd serchFrnd(String frndPhoneNo);
 	
+	List<Frnd> getFrnd(int mbrNo);
+	
 /*	//====================== AS-IS =======================//
  
 	
