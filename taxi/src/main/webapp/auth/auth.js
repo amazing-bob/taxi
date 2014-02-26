@@ -10,68 +10,100 @@ var keyWordList = new Array();
 var sugLis;
 
 $(document).ready(function() {
-	
-	openWebDB();
-	
-	sugList = $("#suggestions");
-
-	$("#schoolName").on("input", function(e) {
-		var text = $(this).val();
-
-		if(text.length < 1) {
-			sugList.html("");
-			sugList.listview("refresh");
-		} else {
-			searchKeywordList(text, function(keywordList) {
-				var str = "";
-				
-				for ( var i = 0; i < keywordList.length; i++ ) {
-					str += "<li>"+keywordList[i].KEYWORD_NAME+"</li>";
-					sugList.html(str);
-					sugList.listview("refresh");
-				}
-			});
-//			taxidb.transaction( sele(transaction, function(keywordList) {
-//			console.log("000");
-//			console.log(keywordList);
-//			var str = "";
-//			
-//			str += "<li>"+keywordList.KEYWORD_NAME+"</li>";
-//			sugList.html(str);
-//			sugList.listview("refresh");
-//		}));
-
-		}
-	});
-
-
 	console.log("ready()");
-	initAjaxLoading();
-
-	/* 임시 사용자 로그인 */
-//	console.log("tempLogin()...........");
-//	console.log(rootPath);
-//	var myInfo = {
-//			mbrNo: 26,
-//			mbrName:"회원001",
-//			mbrPhotoUrl: "../images/photo/m01.jpg",
-//			startRange: 500,
-//			endRange: 1000,
-//			fvrtLocList: null,
-//			rcntLocList: null,
-//			keyNoList: null
-//	};
-//	setLocalItem("myInfo", myInfo);
 	
-	// 웹 버전일 경우만 주석 풀어야됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	isSignUp( getLocalItem("myInfo") );
-
-
-
-	document.addEventListener("deviceready", onDeviceReady, false);
+	initAjaxLoading();
+	
 	contentHeight = $(window).height();
 	$("#selectionLoginContent").height(contentHeight+"px");
+	
+	// 최초 WebDB 만들기
+	openWebDB(function() { // Success Callback
+		
+		registerEvent();
+		
+		
+		///////////////////
+		sugList = $("#suggestions");
 
+		$("#schoolName").on("input", function(e) {
+			var text = $(this).val();
+
+			if(text.length < 1) {
+				sugList.html("");
+				sugList.listview("refresh");
+			} else {
+				searchKeywordList(text, function(keywordList) {
+					var str = "";
+					
+					for ( var i = 0; i < keywordList.length; i++ ) {
+						str += "<li>"+keywordList[i].KEYWORD_NAME+"</li>";
+						sugList.html(str);
+						sugList.listview("refresh");
+					}
+				});
+//				taxidb.transaction( sele(transaction, function(keywordList) {
+//				console.log("000");
+//				console.log(keywordList);
+//				var str = "";
+//				
+//				str += "<li>"+keywordList.KEYWORD_NAME+"</li>";
+//				sugList.html(str);
+//				sugList.listview("refresh");
+//			}));
+
+			}
+		});
+		///////////////////////////
+
+		
+
+		/* 임시 사용자 로그인 */
+//		console.log("tempLogin()...........");
+//		console.log(rootPath);
+//		var myInfo = {
+//				mbrNo: 26,
+//				mbrName:"회원001",
+//				mbrPhotoUrl: "../images/photo/m01.jpg",
+//				startRange: 500,
+//				endRange: 1000,
+//				fvrtLocList: null,
+//				rcntLocList: null,
+//				keyNoList: null
+//		};
+//		setLocalItem("myInfo", myInfo);
+		
+		// 웹 버전일 경우만 주석 풀어야됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		isSignUp( getLocalItem("myInfo") );
+		
+	});
+	
+}); //reday()
+
+/**
+ * deviceready 이벤트
+ */
+function onDeviceReady() {
+	console.log("onDeviceReady()");
+
+	try {
+		//로컬스토리지로 변경 - 종혁
+		isSignUp( getLocalItem("myInfo") );
+	} catch (e) {
+		alert(e);
+	}
+}
+
+
+/**
+ * 설  명: 이벤트 등록
+ * 작성자: 김상헌
+ */
+var registerEvent = function() {
+	console.log("registerEvent()");
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
 	// 폰번호 입력시 validatePhone() 호출
 	$("#content").on('keyup','#txtPhone', function(e) {
 		if ( validatePhone('txtPhone') ) {
@@ -111,23 +143,7 @@ $(document).ready(function() {
 		var keyVal = $("#schoolName");
 		serchKeyWord(keyVal);
 	});*/
-
-
-}); //reday()
-
-/**
- * deviceready 이벤트
- */
-function onDeviceReady() {
-	console.log("onDeviceReady()");
-
-	try {
-		//로컬스토리지로 변경 - 종혁
-		isSignUp( getLocalItem("myInfo") );
-	} catch (e) {
-		alert(e);
-	}
-}
+};
 
 
 /**
@@ -177,16 +193,20 @@ var isSignUp = function( myInfo ) {
 							//로컬 스토리지에 저장
 							setLocalItem("myInfo", myInfo);
 							
+							console.log("aaaa");
 							// WebDB 에 추가
-							insertFvrtLocTable(fvrtLocList);
-							insertRcntLocTable(rcntLocList);
-							insertBlackTable(blackList);
-		
-							// 이거는 꼭지워야 한다 WebDB를 동기방식으로 바꾸면서 꼭 지워야 하는 부분//////////////////////////////////////////////////////////
-							setInterval(function() {
-								goHomeOrRoom(myInfo);
-							}, 500);
-		
+							executeQuery(
+									// Transaction Execute
+									function(transaction) {
+										insertFvrtLocTable(transaction, fvrtLocList);
+										insertRcntLocTable(transaction, rcntLocList);
+										insertBlackTable(transaction, blackList);
+									},
+									// Success Callback
+									function() {
+										goHomeOrRoom(myInfo);
+									});
+							
 						} else {
 							clearLocalData();
 		
@@ -213,12 +233,18 @@ var isSignUp = function( myInfo ) {
  */
 var clearLocalData = function() {
 	console.log("clearLocalData()");
-	
-	deleteAllFvrtLocTable();
-	deleteAllRcntLocTable();
-	deleteAllBlackTable();
-	clearSession();
-	clearLocal();
+	executeQuery(
+			// Transaction Execute
+			function(transaction) {
+				deleteAllFvrtLocTable(transaction);
+				deleteAllRcntLocTable(transaction);
+				deleteAllBlackTable(transaction);
+			}, 
+			// Success Callback
+			function() {
+				clearSession();
+				clearLocal();
+			});
 };
 
 
