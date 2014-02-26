@@ -17,6 +17,7 @@ var openWebDB = function( successCallbackFunc) {
 		createRcntLocTable(transaction);
 		createBlackTable(transaction);
 		createKeywordTable(transaction);
+		createFrndTable(transaction);
 	},
 	// Error Callback
 	function(err) {

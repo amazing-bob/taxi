@@ -61,7 +61,7 @@ $(document).ready(function() {
 		/* 임시 사용자 로그인 */
 //		console.log("tempLogin()...........");
 //		console.log(rootPath);
-//		var myInfo = {
+//		setLocalItem("myInfo", {
 //				mbrNo: 26,
 //				mbrName:"회원001",
 //				mbrPhotoUrl: "../images/photo/m01.jpg",
@@ -70,8 +70,7 @@ $(document).ready(function() {
 //				fvrtLocList: null,
 //				rcntLocList: null,
 //				keyNoList: null
-//		};
-//		setLocalItem("myInfo", myInfo);
+//		});
 		
 		// 웹 버전일 경우만 주석 풀어야됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		isSignUp( getLocalItem("myInfo") );
@@ -79,20 +78,6 @@ $(document).ready(function() {
 	});
 	
 }); //reday()
-
-/**
- * deviceready 이벤트
- */
-function onDeviceReady() {
-	console.log("onDeviceReady()");
-
-	try {
-		//로컬스토리지로 변경 - 종혁
-		isSignUp( getLocalItem("myInfo") );
-	} catch (e) {
-		alert(e);
-	}
-}
 
 
 /**
@@ -139,34 +124,102 @@ var registerEvent = function() {
 	$("#btnName").on('click', clickKeyWordPage);
 	$("#signUpComplete").on('click', clickSignupBtn);
 
-	/*$("#schoolName").on("input",function(){
-		var keyVal = $("#schoolName");
-		serchKeyWord(keyVal);
-	});*/
 };
 
 
 /**
- * 설  명 :
- * 작성자 : 
+ * deviceready 이벤트
  */
-var getAddressBook = function() {
-	console.log("getAddressBook");
-//	console.log(callback, args);
+function onDeviceReady() {
+	console.log("onDeviceReady()");
 
-
-	/*if ( user.friends && user.friends.data ) {
-	myInfo.friendList = [user.friends.data.length];
-	for ( var i = 0; i < user.friends.data.length; i++ ) {
-		myInfo.friendList[i] = {
-    			frndId: 		user.friends.data[i].id,
-    			mbrId:			myInfo.mbrId,
-    			frndName: 		user.friends.data[i].name,
-    			frndGender:		user.friends.data[i].gender,
-    			frndPhotoUrl: 	user.friends.data[i].picture.data.url
-    	};
+	//휴대폰 기기안의 주소록 가져오기
+    var options = new ContactFindOptions();
+    options.multiple  = true; 
+    var fields = ["displayName", "name","phoneNumbers"];
+    navigator.contacts.find(fields, extractionContactData, onError, options);
+	
+    setPhoneNo();
+	
+	try {
+		//로컬스토리지로 변경 - 종혁
+		isSignUp( getLocalItem("myInfo") );
+	} catch (e) {
+		alert(e);
 	}
-}*/
+}
+
+/**
+ *  설   명 : 휴대폰 전화번호를 자동으로 txtPhone 에 추가.
+ *  작성자 : 장종혁
+ */
+var setPhoneNo = function() {
+    PhoneNumber.getPhoneNo(function(result) {
+		$("#txtPhone").val(result.phoneNo);
+		
+		$('#spnPhoneStatus').text('Valid');
+		$('#spnPhoneStatus').css('color', 'green');
+		$("#btnPhoneNo").removeAttr("disabled").button("refresh");
+		
+	}, function() {
+		// error
+	});
+};
+
+/**
+ * 설    명 : 주소록 가져온 정보를 추출하여 contactsList에 저장 후 임시로 세션 스토리지에 저장
+ * 작성자 : 장종혁
+ * P     S  : 친구의 휴대폰 정보는 Base64 md5 형식으로 저장됨. 
+ */
+function extractionContactData(contacts) {
+
+	var contactsList = new Array();
+	var frndList = new Array();
+	
+    for (var i=0; i<contacts.length; i++) {
+
+        	if(contacts[i].phoneNumbers==null){
+        		
+        		contactsList[i] = {
+    					type : "notFound",
+    					name : 	contacts[i].displayName,
+    					value : "noHaveValue"
+    			};
+        		
+        	}else{
+        		
+	        		for (var j=0; j<contacts[i].phoneNumbers.length; j++) {
+
+	        			contactsList[i] = {
+	        					type : contacts[i].phoneNumbers[j].type,
+	        					name : 	contacts[i].displayName,
+	        					value : contacts[i].phoneNumbers[j].value
+	        			};
+	        		}
+        	}
+    }
+    
+    var num = 0;
+    console.log(contactsList);
+    for(var i = 0; i<contactsList.length;i++){
+    	
+    //	console.log("정보 )    타입 : " + contactsList[i].type + "   | 이름 : " + contactsList[i].name + "   |번호 : " + contactsList[i].value+"\n");
+
+    	if( contactsList[i].value.substring(0,3)=="010"){
+    		
+    		frndList[num] = {
+    				frndName : contactsList[i].name ,
+    				frndPhoneNo : b64_md5(contactsList[i].value)
+    		};
+    		
+    		num++;
+    		
+    	}
+    	
+    }
+    
+    setSessionItem("frndData",frndList);
+    
 };
 
 
@@ -285,14 +338,17 @@ var clickSignupBtn = function(){
 }; 
 
 /**
- * 회원가입
+ * 회원가입 
+ * 
+ * 추가 : 2014-02-25 장종혁 : WebDB에 myInfo값 추가를 위해 서버에서 받은 mbrNo를 받아서 저장.
  */
 var signUp = function( phoneNo, mbrName ) {
 	console.log("signUp(myInfo, phoneNo,mbrName)");
 
 	var params = {
 			mbrName 	: mbrName,
-			mbrPhoneNo 	: phoneNo
+			mbrPhoneNo 	: phoneNo,
+			frndList : getSessionItem("frndData")
 	};
 
 	$.ajax( rootPath + "/auth/signUp.do", {
@@ -305,14 +361,20 @@ var signUp = function( phoneNo, mbrName ) {
 				var myInfo = result.data;
 
 				if ( myInfo ) {
-					// 세션스토리지에 저장
-					//setSessionItem("myInfo", myInfo );
 					//로컬스토리지에 저장
-					//일단 무조건 회원가입을 매번 하는 화면보기위해 잠시 주석.
 					setLocalItem("myInfo", myInfo);
+					
+					//주소록 친구 정보 base64 md5 형식으로 웹DB에 저장.
+					executeQuery(
+							// Transaction Execute
+							function(transaction) {
+								insertFrndTable( transaction, getSessionItem("frndData"), myInfo.mbrNo);
+							}, 
+							// Success Callback
+							function() {
+								changeHref("../home/home.html",myInfo);
+							});
 				}
-
-				changeHref("../home/home.html",myInfo);
 
 			} else {
 				alert("회원등록 중 오류 발생");

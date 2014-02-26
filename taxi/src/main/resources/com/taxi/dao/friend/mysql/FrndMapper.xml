@@ -4,26 +4,23 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.friend.FrndDao">
     
+    <insert id="addFrndList"  parameterType="java.util.List">
+        insert into FRND(MBR_NO, FRND_PHONE_NO,FRND_NAME, FRND_REG_DATE) values
+        <foreach collection="list"   item="frnd" separator=",">
+			( #{frnd.mbrNo},#{frnd.frndPhoneNo},#{frnd.frndName},now() )
+        </foreach>
+    </insert>
     
-<!-- //====================== AS-IS =======================// -->
-<!-- 	
-	<insert id="addFrndList" parameterType="java.util.List">
-		insert into	FRND ( MBR_ID, FRND_ID, FRND_NAME, FRND_PHOTO_URL ) values
-		<foreach collection="list" item="frnd" separator=",">
-		( #{frnd.mbrId},#{frnd.frndId},#{frnd.frndName},#{frnd.frndPhotoUrl} )
-		</foreach>
-	</insert>
-	
-	
-	<delete id="deleteFrnd" parameterType="String"> 
-        delete from FRND  
-        where MBR_ID=#{value}  
-    </delete> 
-    
- -->
- 
  	<delete id="deleteFrnd" parameterType="int"> 
         delete from FRND  
         where MBR_NO=#{value}  
     </delete> 
+    
+ 	
+ 	<select id="serchFrnd"  parameterType="String" resultType="Frnd">
+ 	    select a.MBR_NO, a.FRND_PHONE_NO, a.FRND_NAME, b.MBR_NAME 
+ 	    from    FRND a, MBR b
+ 	    where a.MBR_NO=b.MBR_NO and a.FRND_PHONE_NO=#{value}
+ 	</select>
+    
 </mapper>
