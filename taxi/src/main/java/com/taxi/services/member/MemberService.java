@@ -14,7 +14,7 @@ public interface MemberService {
 	 * 설  명: 회원가입
 	 * 작성자: 이용준 
 	 */
-	MyInfo signUp(Mbr mbr) throws Exception ;
+	MyInfo signUp(Mbr mbr, int keywordNo) throws Exception ;
 
 	void leaveMember(int mbrNo)throws Exception;
 
