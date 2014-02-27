@@ -5,10 +5,11 @@
 <mapper namespace="com.taxi.dao.friend.FrndDao">
     
     <insert id="addFrndList"  parameterType="java.util.List">
-        insert into FRND(MBR_NO, FRND_PHONE_NO,FRND_NAME, FRND_REG_DATE) values
-        <foreach collection="list"   item="frnd" separator=",">
+        INSERT INTO FRND(MBR_NO, FRND_PHONE_NO,FRND_NAME, FRND_REG_DATE) VALUES
+         <foreach collection="list"   item="frnd" separator=",">
 			( #{frnd.mbrNo},#{frnd.frndPhoneNo},#{frnd.frndName},now() )
         </foreach>
+        ON DUPLICATE KEY UPDATE MBR_NO=VALUES(MBR_NO)M FRND_PHONE_NO=VALUES(FRND_PHONE_NO)
     </insert>
     
  	<delete id="deleteFrnd" parameterType="int"> 
@@ -18,9 +19,21 @@
     
  	
  	<select id="serchFrnd"  parameterType="String" resultType="Frnd">
- 	    select a.MBR_NO, a.FRND_PHONE_NO, a.FRND_NAME, b.MBR_NAME 
+ 	    select a.MBR_NO					 as		mbrNo,
+ 	    			a.FRND_PHONE_NO as		frndPhoneNo,
+ 	    			a.FRND_NAME			  as		frndName,
+ 	    			b.MBR_NAME			  as      mbrName 
  	    from    FRND a, MBR b
- 	    where a.MBR_NO=b.MBR_NO and a.FRND_PHONE_NO=#{value}
+ 	    where a.MBR_NO=b.MBR_NO and a.FRND_PHONE_NO=#{value} limits 1
  	</select>
     
+ 	<select id="getFrnd" parameterType="int" resultType="Frnd">
+ 	    select a.MBR_NO 				 as	 mbrNo,
+ 	                a.FRND_PHONE_NO as    frndPhoneNo, 
+ 	                a.FRND_NAME			  as    frndName,
+ 	                b.FRND_REG_DATE	   as    frndRegDate
+ 	    from FRND
+ 	    where MBR_NO=#{value}
+ 	</select>
+ 	
 </mapper>

@@ -12,7 +12,7 @@ import com.taxi.vo.member.Mbr;
 
 @Service
 public class FriendServiceImpl implements FriendService {
-	@Autowired FrndDao FrndDao;
+	@Autowired FrndDao frndDao;
 	
 	/**
 	 * 설  명 : 친구목록 등록
@@ -20,8 +20,12 @@ public class FriendServiceImpl implements FriendService {
 	 */
 	public void insertFrndList(List<Frnd> frndList)throws Exception{
 		
-		FrndDao.addFrndList(frndList);
+		frndDao.addFrndList(frndList);
 		
+	}
+
+	public List<Frnd> getFrndList(int mbrNo) throws Exception {
+		return frndDao.getFrnd(mbrNo);
 	}
 	
 }
