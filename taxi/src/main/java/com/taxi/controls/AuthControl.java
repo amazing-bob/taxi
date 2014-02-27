@@ -59,28 +59,29 @@ public class AuthControl {
 			int mbrNo = mbr.getMbrNo();
 			
 			MyInfo myInfo = authService.hasMember(mbrNo);
+			List<Frnd> 		frndList 	= null;
+			List<FvrtLoc> 	fvrtLocList = null;
+			List<RcntLoc> 	rcntLocList = null;
+			List<Black> 	blackList 	= null;
+			
 			
 			if ( myInfo != null && myInfo.getMbrNo() > 0 ) {
-				List<Frnd> 		frndList 	= friendService.getFrndList(mbrNo);
-				List<FvrtLoc> 	fvrtLocList = locationService.getFavoriteList(mbrNo);
-				List<RcntLoc> 	rcntLocList = locationService.getRecentDestination(mbrNo);
-				List<Black> 	blackList 	= blackListService.getBlackList(mbrNo);
-				
-				Map<String, Object> resultMap = new HashMap<String, Object>();
-				resultMap.put("myInfo" 		, myInfo);
-				resultMap.put("frndList"	, frndList);
-				resultMap.put("fvrtLocList"	, fvrtLocList);
-				resultMap.put("rcntLocList"	, rcntLocList);
-				resultMap.put("blackList"	, blackList);
-			
-				
-				jsonResult.setData(resultMap);
-				jsonResult.setStatus("success");
-				
-			} else {
-				throw new Exception("회원가입 실패!!");
-				
+				frndList 	= friendService.getFrndList(mbrNo);
+				fvrtLocList = locationService.getFavoriteList(mbrNo);
+				rcntLocList = locationService.getRecentDestination(mbrNo);
+				blackList 	= blackListService.getBlackList(mbrNo);
 			}
+			
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("myInfo" 		, myInfo);
+			resultMap.put("frndList"	, frndList);
+			resultMap.put("fvrtLocList"	, fvrtLocList);
+			resultMap.put("rcntLocList"	, rcntLocList);
+			resultMap.put("blackList"	, blackList);
+			
+			
+			jsonResult.setData(resultMap);
+			jsonResult.setStatus("success");
 			
 		} catch(Throwable e) {
 			e.printStackTrace();
@@ -131,28 +132,31 @@ public class AuthControl {
 
 			int mbrNo = memberService.signUp(mbr, keywordNo, frndListParam);
 		
-			if ( mbrNo > 0 ) {
-				MyInfo 			myInfo 		= memberService.getMyInfo(mbrNo);
-				List<Frnd> 		frndList 	= friendService.getFrndList(mbrNo);
-				List<FvrtLoc> 	fvrtLocList = locationService.getFavoriteList(mbrNo);
-				List<RcntLoc> 	rcntLocList = locationService.getRecentDestination(mbrNo);
-				List<Black> 	blackList 	= blackListService.getBlackList(mbrNo);
-				
-				Map<String, Object> resultMap = new HashMap<String, Object>();
-				resultMap.put("myInfo" 		, myInfo);
-				resultMap.put("frndList"	, frndList);
-				resultMap.put("fvrtLocList"	, fvrtLocList);
-				resultMap.put("rcntLocList"	, rcntLocList);
-				resultMap.put("blackList"	, blackList);
+			MyInfo 			myInfo 		= null;
+			List<Frnd> 		frndList 	= null;
+			List<FvrtLoc> 	fvrtLocList = null;
+			List<RcntLoc> 	rcntLocList = null;
+			List<Black> 	blackList 	= null;
 			
-				
-				jsonResult.setData(resultMap);
-				jsonResult.setStatus("success");
-				
-			} else {
-				throw new Exception("회원가입 실패!!");
-				
+			if ( mbrNo > 0 ) {
+				myInfo 		= memberService.getMyInfo(mbrNo);
+				frndList 	= friendService.getFrndList(mbrNo);
+				fvrtLocList = locationService.getFavoriteList(mbrNo);
+				rcntLocList = locationService.getRecentDestination(mbrNo);
+				blackList 	= blackListService.getBlackList(mbrNo);
 			}
+			
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("myInfo" 		, myInfo);
+			resultMap.put("frndList"	, frndList);
+			resultMap.put("fvrtLocList"	, fvrtLocList);
+			resultMap.put("rcntLocList"	, rcntLocList);
+			resultMap.put("blackList"	, blackList);
+			
+			
+			jsonResult.setData(resultMap);
+			jsonResult.setStatus("success");
+
 					
 		} catch(Throwable e) {
 			e.printStackTrace();
