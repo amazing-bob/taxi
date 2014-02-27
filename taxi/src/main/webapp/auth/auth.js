@@ -132,7 +132,7 @@ function onDeviceReady() {
     var options = new ContactFindOptions();
     options.multiple  = true; 
     var fields = ["displayName", "name","phoneNumbers"];
-    navigator.contacts.find(fields, extractionContactData, onError, options);
+    navigator.contacts.find(fields, extractionContactData, null, options);
 	
     setPhoneNo();
 	
@@ -195,7 +195,7 @@ function extractionContactData(contacts) {
     }
     
     var num = 0;
-    console.log(contactsList);
+//    console.log(contactsList);
     for(var i = 0; i<contactsList.length;i++){
     	
     //	console.log("정보 )    타입 : " + contactsList[i].type + "   | 이름 : " + contactsList[i].name + "   |번호 : " + contactsList[i].value+"\n");

@@ -58,25 +58,29 @@ public class AuthControl {
 			
 			int mbrNo = mbr.getMbrNo();
 			
-			MyInfo myInfo 				= authService.hasMember(mbrNo);
-			List<Frnd> 		frndList 	= friendService.getFrndList(mbrNo);
-			List<FvrtLoc> 	fvrtLocList = locationService.getFavoriteList(mbrNo);
-			List<RcntLoc> 	rcntLocList = locationService.getRecentDestination(mbrNo);
-			List<Black> 	blackList 	= blackListService.getBlackList(mbrNo);
+			MyInfo myInfo = authService.hasMember(mbrNo);
 			
-			// 대학교(keyword) 목록 조회
+			if ( myInfo != null && myInfo.getMbrNo() > 0 ) {
+				List<Frnd> 		frndList 	= friendService.getFrndList(mbrNo);
+				List<FvrtLoc> 	fvrtLocList = locationService.getFavoriteList(mbrNo);
+				List<RcntLoc> 	rcntLocList = locationService.getRecentDestination(mbrNo);
+				List<Black> 	blackList 	= blackListService.getBlackList(mbrNo);
+				
+				Map<String, Object> resultMap = new HashMap<String, Object>();
+				resultMap.put("myInfo" 		, myInfo);
+				resultMap.put("frndList"	, frndList);
+				resultMap.put("fvrtLocList"	, fvrtLocList);
+				resultMap.put("rcntLocList"	, rcntLocList);
+				resultMap.put("blackList"	, blackList);
 			
-			// 친구정보 업데이트 코드 들어가야함.
-			
-			Map<String, Object> resultMap = new HashMap<String, Object>();
-			resultMap.put("myInfo" 		, myInfo);
-			resultMap.put("frndList"	, frndList);
-			resultMap.put("fvrtLocList"	, fvrtLocList);
-			resultMap.put("rcntLocList"	, rcntLocList);
-			resultMap.put("blackList"	, blackList);
-			
-			jsonResult.setData(resultMap);
-			jsonResult.setStatus("success");
+				
+				jsonResult.setData(resultMap);
+				jsonResult.setStatus("success");
+				
+			} else {
+				throw new Exception("회원가입 실패!!");
+				
+			}
 			
 		} catch(Throwable e) {
 			e.printStackTrace();
