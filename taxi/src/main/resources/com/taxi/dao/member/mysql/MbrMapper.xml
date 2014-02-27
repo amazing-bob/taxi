@@ -25,11 +25,18 @@
             ,	b.safe_guard_phone_no 			as safeGuardPhoneNo
             ,	b.safe_guard_name 				as safeGuardName
             ,	b.safe_time_interval 			as safeTimeInterval
-            ,	c.KEYWORD_NO					as keyWordNo
-		FROM 	MBR a, SETTING b, KEYWORD_REL c
+            ,	c.KEYWORD_NO					as keywordNo
+            ,	d.KEYWORD_NAME					as keywordName
+            ,	d.KEYWORD_ST					as keywordSt
+		FROM 	
+				MBR a
+			, 	SETTING b
+			, 	KEYWORD_REL c
+			, 	KEYWORD d
 	    WHERE 	1 = 1
 	    	AND	a.mbr_no = b.mbr_no
 	    	AND a.mbr_no = c.mbr_no
+	    	AND c.keyword_no = d.keyword_no
 	    	AND a.mbr_no = #{value}
 	    	
 	</select>
@@ -44,8 +51,6 @@
 	    			MBR_PHOTO_URL, MBR_GENDER, MBR_REG_DATE, LAST_LOGIN_DATE, MBR_UPDATE_DATE)
 	    values 		(#{mbrPhoneNo}, #{mbrDeviceNo}, #{mbrName}, 
 	    			 #{mbrPhotoUrl}, #{mbrGender}, now(), now(), now() ) 
-	    			 
-	   	
 		<selectKey resultType="int" keyProperty="mbrNo">
 			SELECT LAST_INSERT_ID()
 		</selectKey>	    			 

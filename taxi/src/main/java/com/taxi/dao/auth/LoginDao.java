@@ -12,11 +12,6 @@ public interface LoginDao {
 
 	void deleteLoginData(int mbrNo);
 
-	List<MyInfo> getKeyWordList();
-
-	/*List<MyInfo> serchKeyWordList(String serchKeyWord);*/
-
-	
 
 }
 

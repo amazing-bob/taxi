@@ -5,6 +5,18 @@
 
 <mapper namespace="com.taxi.dao.keyword.KeywordDao">
 
+	<select id="getKeywordList" resultType="MyInfo"> 
+		select 
+				KEYWORD_NO 		as keywordNo
+			,	KEYWORD_NAME 	as keywordName			
+			,	KEYWORD_ST 		as keywordSt
+			
+		from 	
+				KEYWORD
+		where 	
+				1 = 1
+		
+    </select>
  
 </mapper> 
 

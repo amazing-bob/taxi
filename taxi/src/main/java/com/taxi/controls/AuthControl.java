@@ -103,15 +103,18 @@ public class AuthControl {
 			JsonParser parser = new JsonParser();
 			JsonObject jsonObject = (JsonObject) parser.parse(json);
 			Mbr mbr = gson.fromJson(jsonObject, new TypeToken<Mbr>() {}.getType());
-			
-			System.out.println("mbrName:"+mbr.getMbrName());
-			System.out.println("mbrPhoneNo"+mbr.getMbrPhoneNo());
-			System.out.println("mbrKeywordNo"+mbr.getMbrKeywordNo());
 			//임시 이미지 셋팅.
 			mbr.setMbrPhotoUrl("../images/photo/m01.jpg");
 			
-			MyInfo myInfo = memberService.signUp(mbr);
-			System.out.println(myInfo.getKeyWordNo()+"==================================");
+			int keywordNo = 0;
+			try {
+				JsonElement keywordElement = jsonObject.get("keywordNo");
+				keywordNo = keywordElement.getAsInt();
+			} catch(Exception e) {}
+			
+			
+			MyInfo myInfo = memberService.signUp(mbr, keywordNo);
+			
 			
 			// json객체에서 frndList 가져오기
 			try{
@@ -125,12 +128,22 @@ public class AuthControl {
 
 				//frndList 서버에 등록
 				friendService.insertFrndList(frndList);
+				
 			}catch(Exception e){
 				
 			};
 			
+			List<Frnd> frndList = friendService.getFrndList(myInfo.getMbrNo());
 			
-			jsonResult.setData(myInfo);
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("myInfo" 		, myInfo);
+			resultMap.put("frndList"	, frndList);
+//			resultMap.put("fvrtLocList"	, fvrtLocList);
+//			resultMap.put("rcntLocList"	, rcntLocList);
+//			resultMap.put("blackList"	, blackList);
+		
+			
+			jsonResult.setData(resultMap);
 			jsonResult.setStatus("success");
 					
 		} catch(Throwable e) {
@@ -145,58 +158,7 @@ public class AuthControl {
 	}
 	
 	
-	/**
-	 * 설  명: 초기 DB 키워드 목록 
-	 * 작성자: 김태경
-	 */
-	@RequestMapping("/getKeyWordList")
-	@ResponseBody
-	public Object getKeyWordlist() throws Exception {
-		JsonResult jsonResult = new JsonResult();
-		
-		try {
-			
-			jsonResult.setData(authService.getKeyWordlist());
-			jsonResult.setStatus("success");
-			
-		} catch(Throwable e) {
-			e.printStackTrace();
-			StringWriter out = new StringWriter();
-			e.printStackTrace(new PrintWriter(out));
-			
-			jsonResult = new JsonResult().setStatus("fail");
-			jsonResult.setData(out.toString());
-		}
-		
-		return jsonResult;
-	}
-	
-	/**
-	 * 설  명: 초기 DB 키워드 목록 
-	 * 작성자: 김태경
-	 *//*
-	@RequestMapping("/serchKeyWordList")
-	@ResponseBody
-	public Object serchKeyWordList(String serchKeyWord) throws Exception {
-		JsonResult jsonResult = new JsonResult();
-		
-		System.out.println("=================================입력된 키워드:"+serchKeyWord+"===============");
-		try {
-			
-			jsonResult.setData(authService.serchKeyWordList(serchKeyWord));
-			jsonResult.setStatus("success");
-			
-		} catch(Throwable e) {
-			e.printStackTrace();
-			StringWriter out = new StringWriter();
-			e.printStackTrace(new PrintWriter(out));
-			
-			jsonResult = new JsonResult().setStatus("fail");
-			jsonResult.setData(out.toString());
-		}
-		
-		return jsonResult;
-	}*/
+
 /*	//====================== AS-IS =======================//
  	
 	@Autowired MemberService memberService;

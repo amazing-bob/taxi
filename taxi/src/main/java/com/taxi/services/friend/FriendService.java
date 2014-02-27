@@ -10,6 +10,6 @@ public interface FriendService {
 	
 	public void insertFrndList(List<Frnd> frndList)throws Exception;
 	
-	
+	public List<Frnd> getFrndList(int mbrNo)throws Exception;
 
 }

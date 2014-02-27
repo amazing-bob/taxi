@@ -4,38 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.taxi.dao.auth.LoginDao">
+    
 	<delete id="deleteLoginData" parameterType="int">
 	    delete from LOGIN  
         where MBR_NO=#{value}
 	</delete>
  
-	<select id="getKeyWordList" resultType="MyInfo"> 
-		select 
-				KEYWORD_NO 		as keyWordNo
-			,	KEYWORD_NAME 	as keyWordName			
-			,	KEYWORD_ST 		as keyWordSt
-			
-		from 	
-				KEYWORD
-		where 	
-				1 = 1
-		
-    </select>
-   <!--  
-	<select id="serchKeyWordList" parameterType="String" resultType="MyInfo"> 
-		select 
-				KEYWORD_NO 		as keyWordNo
-			,	KEYWORD_NAME 	as keyWordName			
-			,	KEYWORD_ST 		as keyWordSt
-			
-		from 	
-				KEYWORD
-		where 	
-				1 = 1 and
-				KEYWORD_NAME LIKE CONCAT(‘%’, #{value}, ‘%’)
-		order by KEYWORD_NAME DESC LIMIT 5
-		
-    </select> -->
 </mapper> 
 
 

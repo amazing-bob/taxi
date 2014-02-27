@@ -26,25 +26,7 @@ public class AuthServiceImpl implements AuthService {
 		return myInfo;
 	}
 
-	/**
-	 * 설명: 전체 키워드 리스트 목록 가져오기
-	 * 작성자:김태경
-	 */
-	@Override
-	public List<MyInfo> getKeyWordlist() throws Exception {
-		
-		List<MyInfo> keyWordList = loginDao.getKeyWordList();
-		return keyWordList;
-		
-	}
 
-	/*@Override
-	public List<MyInfo> serchKeyWordList(String serchKeyWord) {
-		
-		List<MyInfo> serchKeyWordList = loginDao.serchKeyWordList(serchKeyWord);
-		return serchKeyWordList;
-	}*/
-	
 	
 /*	//====================== AS-IS =======================//
  
