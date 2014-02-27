@@ -24,8 +24,13 @@ public class FriendServiceImpl implements FriendService {
 		
 	}
 
+	
+	/**
+	 * 설  명: 친구목록 가져오기
+	 * 작성자: 김상헌
+	 */
 	public List<Frnd> getFrndList(int mbrNo) throws Exception {
-		return frndDao.getFrnd(mbrNo);
+		return frndDao.getFrndList(mbrNo);
 	}
 	
 }

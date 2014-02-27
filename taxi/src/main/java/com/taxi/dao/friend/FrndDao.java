@@ -13,12 +13,10 @@ public interface FrndDao {
 	
 	Frnd serchFrnd(String frndPhoneNo);
 	
-	List<Frnd> getFrnd(int mbrNo);
-	
-/*	//====================== AS-IS =======================//
- 
-	
-	int deleteFrnd(String mbrId) throws Exception;
-*/
+	/**
+	 * 설  명: 친구 목록 가져오기
+	 * 작성자: 김상헌
+	 */
+	List<Frnd> getFrndList(int mbrNo);
 	
 }

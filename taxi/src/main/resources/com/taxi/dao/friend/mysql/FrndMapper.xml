@@ -9,7 +9,9 @@
          <foreach collection="list"   item="frnd" separator=",">
 			( #{frnd.mbrNo},#{frnd.frndPhoneNo},#{frnd.frndName},now() )
         </foreach>
-        ON DUPLICATE KEY UPDATE MBR_NO=VALUES(MBR_NO)M FRND_PHONE_NO=VALUES(FRND_PHONE_NO)
+        ON DUPLICATE KEY UPDATE 
+        		MBR_NO = VALUES(MBR_NO)
+        	, 	FRND_PHONE_NO = VALUES(FRND_PHONE_NO)
     </insert>
     
  	<delete id="deleteFrnd" parameterType="int"> 
@@ -27,13 +29,24 @@
  	    where a.MBR_NO=b.MBR_NO and a.FRND_PHONE_NO=#{value} limits 1
  	</select>
     
- 	<select id="getFrnd" parameterType="int" resultType="Frnd">
- 	    select a.MBR_NO 				 as	 mbrNo,
- 	                a.FRND_PHONE_NO as    frndPhoneNo, 
- 	                a.FRND_NAME			  as    frndName,
- 	                b.FRND_REG_DATE	   as    frndRegDate
- 	    from FRND
- 	    where MBR_NO=#{value}
+
+ 	<!--
+		 * 설  명: 친구 목록 가져오기
+		 * 작성자: 김상헌 	 
+ 	-->
+ 	<select id="getFrndList" parameterType="int" resultType="Frnd">
+		select 	
+		        a.MBR_NO 			as mbrNo
+		    ,   b.MBR_NAME          as mbrName
+		    ,   a.FRND_PHONE_NO 	as frndPhoneNo
+		    ,   a.FRND_NAME			as frndName
+		    ,   a.FRND_REG_DATE	   	as frndRegDate
+		from    
+		        FRND a
+		    ,   MBR b
+		where   1 = 1
+		and     a.MBR_NO = b.MBR_NO
+		and     a.MBR_NO= #{value} 	    
  	</select>
  	
 </mapper>

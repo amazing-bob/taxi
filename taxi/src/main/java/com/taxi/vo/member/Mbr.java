@@ -29,16 +29,6 @@ public class Mbr extends BaseMbr implements Serializable {
 	// protected int 		추가되는 변수;
 	
 	
-	private List<Frnd> frndList;
-	
-	
-	
-	public List<Frnd> getFrndList() {
-		return frndList;
-	}
-	public void setFrndList(List<Frnd> frndList) {
-		this.frndList = frndList;
-	}
 	public Mbr setMbrNo(int mbrNo) {
 		return (Mbr) super.setMbrNo(mbrNo);
 	}
