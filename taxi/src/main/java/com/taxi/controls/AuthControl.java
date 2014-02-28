@@ -69,7 +69,7 @@ public class AuthControl {
 				frndList 	= friendService.getFrndList(mbrNo);
 				fvrtLocList = locationService.getFavoriteList(mbrNo);
 				rcntLocList = locationService.getRecentDestination(mbrNo);
-				blackList 	= blackListService.getBlackList(mbrNo);
+				blackList 	= blackListService.getBlackList(mbrNo, 0);
 			}
 			
 			Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -149,7 +149,7 @@ public class AuthControl {
 				frndList 	= friendService.getFrndList(mbrNo);
 				fvrtLocList = locationService.getFavoriteList(mbrNo);
 				rcntLocList = locationService.getRecentDestination(mbrNo);
-				blackList 	= blackListService.getBlackList(mbrNo);
+				blackList 	= blackListService.getBlackList(mbrNo, 0);
 			}
 			
 			Map<String, Object> resultMap = new HashMap<String, Object>();

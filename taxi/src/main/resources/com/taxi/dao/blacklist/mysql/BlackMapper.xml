@@ -6,10 +6,10 @@
 <mapper namespace="com.taxi.dao.blacklist.BlackDao">
     <resultMap id="blackListResultMap" type="Black">
         <result column="MBR_NO" 				property="mbrNo" 			/>
-        <result column="MBR_NAME" 				property="mbrName" 			/>
-        <result column="MBR_PHONE_NO" 			property="mbrPhoneNo" 		/>
-        <result column="MBR_PHOTO_URL" 			property="mbrPhotoUrl" 		/>
-        <result column="BLACK_MBR_NO" 			property="blackMbrNo" 			/>
+        <result column="BLACK_MBR_NO" 			property="blackMbrNo" 		/>
+        <result column="BLACK_MBR_NAME" 		property="blackMbrName" 	/>
+        <result column="BLACK_MBR_PHONE_NO" 	property="blackMbrPhoneNo" 	/>
+        <result column="BLACK_MBR_PHOTO_URL" 	property="blackMbrPhotoUrl" />
         <result column="BLACK_MBR_REG_DATE" 	property="blackMbrRegDate" 	/>
     </resultMap>
     
@@ -20,21 +20,36 @@
 	<select id="getBlackList" parameterType="int" resultMap="blackListResultMap">
 	    select 
 	    		A.MBR_NO 				
-	    	,	B.MBR_NAME 				
-	    	,	B.MBR_PHONE_NO 			
-	    	,	B.MBR_PHOTO_URL 		
-	    	,	A.BLACK_MBR_NO 				
+	    	,	A.BLACK_MBR_NO 		
+	    	,	B.MBR_NAME 			as BLACK_MBR_NAME	
+	    	,	B.MBR_PHONE_NO 		as BLACK_MBR_PHONE_NO
+	    	,	B.MBR_PHOTO_URL 	as BLACK_MBR_PHOTO_URL
 	    	,	A.BLACK_MBR_REG_DATE 	
 	    from
 	    		BLACK A
             ,   MBR B
 	    where
 	    		1 = 1
-        and     A.MBR_NO = B.MBR_NO
-  		and 	A.MBR_NO = #{mbrNo} 
+        and     A.BLACK_MBR_NO 	= B.MBR_NO
+  		and 	A.MBR_NO 		= #{mbrNo} 
+  		<if test="blackMbrNo != 0">
+  		and 	A.BLACK_MBR_NO 	= #{blackMbrNo}
+  		</if> 
 	</select>
-	    
+	
+	
+	<!-- 
+		 * 설  명: 블랙리스트 등록
+		 * 작성자: 김상헌	
+	-->
+	<insert id="insertBlack" parameterType="Black">
+	    insert into BLACK
+	    	( MBR_NO, BLACK_MBR_NO, BLACK_MBR_REG_DATE )
+	    values
+	    	( #{mbrNo}, #{blackMbrNo}, #{blackMbrRegDate})
+	</insert>
     
+	
     
 	<delete id="deleteBlackList" parameterType="int">
 	    delete from BLACK  

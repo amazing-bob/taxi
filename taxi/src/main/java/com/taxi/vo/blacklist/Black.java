@@ -16,9 +16,9 @@ public class Black extends BaseBlack implements Serializable {
 	 * protected int 		blackMbrNo;
 	 * protected Date 		blackMbrRegDate;
 	 */
-	protected String 		mbrName;
-	protected String 		mbrPhoneNo;
-	protected String 		mbrPhotoUrl;
+	protected String 		blackMbrName;
+	protected String 		blackMbrPhoneNo;
+	protected String 		blackMbrPhotoUrl;
 	
 	public Black setMbrNo(int mbrNo) {
 		return (Black) super.setMbrNo(mbrNo);
@@ -30,29 +30,28 @@ public class Black extends BaseBlack implements Serializable {
 		return (Black) super.setBlackMbrRegDate(blackMbrRegDate);
 	}
 	
-	public String getMbrName() {
-		return mbrName;
-	}
-	public Black setMbrName(String mbrName) {
-		this.mbrName = mbrName;
-		return this;
-	}
-	public String getMbrPhoneNo() {
-		return mbrPhoneNo;
-	}
-	public Black setMbrPhoneNo(String mbrPhoneNo) {
-		this.mbrPhoneNo = mbrPhoneNo;
-		return this;
-	}
-	public String getMbrPhotoUrl() {
-		return mbrPhotoUrl;
-	}
-	public Black setMbrPhotoUrl(String mbrPhotoUrl) {
-		this.mbrPhotoUrl = mbrPhotoUrl;
-		return this;
-	}
 	
-	
+	public String getBlackMbrName() {
+		return blackMbrName;
+	}
+	public Black setBlackMbrName(String blackMbrName) {
+		this.blackMbrName = blackMbrName;
+		return this;
+	}
+	public String getBlackMbrPhoneNo() {
+		return blackMbrPhoneNo;
+	}
+	public Black setBlackMbrPhoneNo(String blackMbrPhoneNo) {
+		this.blackMbrPhoneNo = blackMbrPhoneNo;
+		return this;
+	}
+	public String getBlackMbrPhotoUrl() {
+		return blackMbrPhotoUrl;
+	}
+	public Black setBlackMbrPhotoUrl(String blackMbrPhotoUrl) {
+		this.blackMbrPhotoUrl = blackMbrPhotoUrl;
+		return this;
+	}
 	
 		
 }

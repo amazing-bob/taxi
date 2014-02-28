@@ -19,9 +19,29 @@ public class BlackListServiceImpl implements BlackListService {
 	 * 작성자: 김상헌
 	 */
 	@Override
-	public List<Black> getBlackList(int mbrNo) throws Exception {
+	public List<Black> getBlackList( int mbrNo, int blackMbrNo ) throws Exception {
+		Black black = new Black()
+							.setMbrNo(mbrNo)
+							.setBlackMbrNo(blackMbrNo);
+							
 		
-		return blackDao.getBlackList(mbrNo);
+		return blackDao.getBlackList(black);
 	}
+	
+	
+	/**
+	 * 설  명: 블랙리스트 등록
+	 * 작성자: 김상헌
+	 */
+	@Override
+	public boolean registerBlacklist(Black black) throws Exception {
+		int count = blackDao.insertBlack(black);
+		
+		if ( count > 0 )
+			return true;
+		else 
+			return false;
+	}
+
 	
 }

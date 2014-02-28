@@ -226,7 +226,8 @@ function extractionContactData(contacts) {
     		
     		frndList[num] = {
     				frndName : contactsList[i].name ,
-    				frndPhoneNo : b64_md5(contactsList[i].value)
+    				frndPhoneNo : contactsList[i].value
+    				//frndPhoneNo : b64_md5(contactsList[i].value)
     		};
     		
     		num++;
