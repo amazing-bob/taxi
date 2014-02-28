@@ -27,7 +27,7 @@ $(document).ready(function() {
 //		console.log("tempLogin()...........");
 //		console.log(rootPath);
 //		setLocalItem("myInfo", {
-//				mbrNo: 26,
+//				mbrNo: 1,
 //				mbrName:"회원001",
 //				mbrPhotoUrl: "../images/photo/m01.jpg",
 //				startRange: 500,
