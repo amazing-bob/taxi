@@ -9,35 +9,47 @@
 		 * 작성자: 이용준     
     -->
     <select id="getMyInfo" parameterType="int" resultType="MyInfo">
-	    SELECT 	a.mbr_no						as mbrNo
-	    	,	a.mbr_phone_no 					as mbrPhoneNo
-	    	,	a.mbr_device_no 				as mbrDeviceNo
-	    	, 	a.mbr_name 						as mbrName
-	    	, 	a.mbr_photo_url 				as mbrPhotoUrl
-	    	, 	a.mbr_gender 					as mbrGender
-	    	, 	a.mbr_reg_date 	 				as mbrRegDate
-	    	, 	a.last_login_date 				as lastLoginDate
-	    	, 	a.mbr_update_date 				as mbrUpdateDate
-	    	,	b.start_range 					as startRange 
-            ,	b.end_range 					as endRange
-            ,	b.push_yn 						as pushYn
-            ,	b.room_mbr_num_limit 			as roomMbrNumLimit
-            ,	b.safe_guard_phone_no 			as safeGuardPhoneNo
-            ,	b.safe_guard_name 				as safeGuardName
-            ,	b.safe_time_interval 			as safeTimeInterval
+	    select 	
+                a.MBR_NO						as mbrNo
+	    	,	a.MBR_PHONE_NO 					as mbrPhoneNo
+	    	,	a.MBR_DEVICE_NO 				as mbrDeviceNo
+	    	, 	a.MBR_NAME 						as mbrName
+	    	, 	a.MBR_PHOTO_URL 				as mbrPhotoUrl
+	    	, 	a.MBR_GENDER 					as mbrGender
+	    	, 	a.MBR_REG_DATE 	 				as mbrRegDate
+	    	, 	a.LAST_LOGIN_DATE 				as lastLoginDate
+	    	, 	a.MBR_UPDATE_DATE 				as mbrUpdateDate
+	    	,	b.START_RANGE 					as startRange 
+            ,	b.END_RANGE 					as endRange
+            ,	b.PUSH_YN 						as pushYn
+            ,	b.ROOM_MBR_NUM_LIMIT 			as roomMbrNumLimit
+            ,	b.SAFE_GUARD_PHONE_NO 			as safeGuardPhoneNo
+            ,	b.SAFE_GUARD_NAME 				as safeGuardName
+            ,	b.SAFE_TIME_INTERVAL 			as safeTimeInterval
             ,	c.KEYWORD_NO					as keywordNo
-            ,	d.KEYWORD_NAME					as keywordName
-            ,	d.KEYWORD_ST					as keywordSt
-		FROM 	
+            ,	c.KEYWORD_NAME					as keywordName
+            ,	c.KEYWORD_ST					as keywordSt
+		from 	
 				MBR a
-			, 	SETTING b
-			, 	KEYWORD_REL c
-			, 	KEYWORD d
-	    WHERE 	1 = 1
-	    	AND	a.mbr_no = b.mbr_no
-	    	AND a.mbr_no = c.mbr_no
-	    	AND c.keyword_no = d.keyword_no
-	    	AND a.mbr_no = #{value}
+            left join
+			 	SETTING b
+            on a.MBR_NO = b.MBR_NO
+            left join
+                (
+                    select  c.MBR_NO
+                        ,   c.KEYWORD_NO
+                        ,   d.KEYWORD_NAME
+                        ,   d.KEYWORD_ST
+                    from    
+                            KEYWORD_REL c
+    			        , 	KEYWORD d
+                    where   1 = 1
+                    and     c.KEYWORD_NO = d.KEYWORD_NO
+                ) c
+			on  a.MBR_NO = c.MBR_NO
+	    where 	1 = 1
+	    	and	a.MBR_NO = b.MBR_NO
+	    	and a.MBR_NO = #{value}
 	    	
 	</select>
 
@@ -62,37 +74,6 @@
         where MBR_NO=#{value}  
     </delete> 
     
-<!-- //====================== AS-IS =======================// -->
-<!--     
-    <insert id="signUp" parameterType="Mbr">
-	    insert into	MBR ( MBR_ID, MBR_NAME, MBR_PHONE_NO, 
-	    			MBR_PHOTO_URL, MBR_GENDER, MBR_REG_DATE)
-	    values 		(#{mbrId}, #{mbrName}, #{mbrPhoneNo}, 
-	    			 #{mbrPhotoUrl}, #{mbrGender}, now() ) 
-	</insert>
-    	
-	<select id="getLoginInfo" parameterType="string" resultType="LoginInfo">
-	    SELECT 	a.mbr_id 		as mbrId
-	    	, 	a.mbr_name 		as mbrName
-	    	,	a.mbr_phone_no 	as mbrPhoneNo
-	    	, 	a.mbr_photo_url as mbrPhotoUrl
-	    	, 	a.mbr_gender 	as mbrGender
-	    	, 	a.mbr_reg_date 	as mbrRegDate
-	    	,	b.start_range 	as startRange 
-            ,	b.end_range 	as endRange 
-	    FROM 	MBR a, SETTING b
-	    WHERE 	1 = 1
-	    	AND	a.mbr_id = b.mbr_id
-	    	AND a.mbr_id = #{value}
-	</select>
-	
-	
-	<delete id="deleteMbr" parameterType="String"> 
-        delete from MBR  
-        where MBR_ID=#{value}  
-    </delete> 
- -->	
- 
 </mapper>
 
 

@@ -121,14 +121,20 @@ public class AuthControl {
 			try {
 				// keywordNo 받기
 				JsonElement keywordElement = jsonObject.get("keywordNo");
-				keywordNo = keywordElement.getAsInt();
+				if ( keywordElement != null ) {
+					keywordNo = keywordElement.getAsInt();
+				}
 				
 				// frndList 받기
 				JsonElement jsonElement = jsonObject.get("frndList");
 				JsonArray jsonArray = jsonElement.getAsJsonArray();
-				frndListParam = gson.fromJson(jsonArray, new TypeToken<List<Frnd>>() {}.getType());
+				if ( jsonArray != null ) {
+					frndListParam = gson.fromJson(jsonArray, new TypeToken<List<Frnd>>() {}.getType());
+				}
 				
-			} catch(Exception e) {}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 
 			int mbrNo = memberService.signUp(mbr, keywordNo, frndListParam);
 		
