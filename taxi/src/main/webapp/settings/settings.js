@@ -15,6 +15,7 @@ $(document).ready(function() {
 
 
 	$("#seach").click(function() {
+		myInfo = getLocalItem("myInfo");
 		startRangeChk();
 		endRangeChk();
 		$("#startRange").find("input[type='radio']").bind("change", function(){
@@ -22,7 +23,7 @@ $(document).ready(function() {
 	});
 
 
-	$(".rangeSave").click(function() {
+	$("#rangeSave").click(function() {
 		addRange();
 	});
 
@@ -88,7 +89,7 @@ $(document).ready(function() {
 	$("#btnFvrtLocUpdate").click(function(){
 		fvrtLocUpdate();
 	});
-	$(".save").click(function(){
+	$("#save").click(function(){
 		rankUpdate();
 	});
 
@@ -144,8 +145,10 @@ function onDeviceReady() {
 
 function startRangeChk() {
 
-	myInfo = getSessionItem("myInfo");
-
+//	myInfo = getSessionItem("myInfo");
+	
+	
+	
 	if(myInfo.startRange == "500"){
 		$("#radio-choice-h-2a").prop("checked", true);
 	}else if(myInfo.startRange =="1000"){
@@ -164,7 +167,9 @@ function startRangeChk() {
  * 작성자:김태경
  */
 function endRangeChk() {
-
+	
+	
+	
 	if(myInfo.endRange == "500"){
 		$("#radio-choice-h-3a").prop("checked", true);
 	}else if(myInfo.endRange =="1000"){
@@ -231,9 +236,9 @@ function leaveMember() {
 			function(result) {
 		if(result.status == "success") {
 
-			removeSessionItem("myInfo");
-			/*Toast.shortshow("탈퇴가 성공적으로 되었습니다.");*/
-			alert("회원탈퇴 성공");
+			clearLocal();
+			//Toast.shortshow("탈퇴가 성공적으로 되었습니다.");
+			//alert("회원탈퇴 성공");
 			changeHref("../auth/auth.html");
 			console.log("처리됨");
 //			facebookLogout();	//이 부분은 아직 나중에 처리 하고.
@@ -299,7 +304,7 @@ function addRange(){
 					console.log("변경된 검색지 반경"+myInfo.startRange+"=========");
 					console.log("변경된 검색지 반경"+myInfo.endRange+"=========");
 
-					setSessionItem("myInfo", myInfo);
+					setLocalItem("myInfo", myInfo);
 
 					changeHref("../settings/settings.html");
 					/*location.href = "../settings/settings.html";*/
