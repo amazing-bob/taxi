@@ -155,6 +155,13 @@ public class RoomControl {
 											.setPathName(endLocName)
 											.setPathLat(endLocLat)
 											.setPathLng(endLocLng);
+        	
+        	RcntLoc recentStartLoc = new RcntLoc()
+        										.setMbrNo(myInfo.getMbrNo())
+        										.setRcntLocName(startPath.getPathName())
+        										.setRcntLocLat( startPath.getPathLat() )
+												.setRcntLocLng( startPath.getPathLng() )
+												.setRcntLocSt("S");
 
         	RcntLoc recentEndLoc = new RcntLoc()
 												.setMbrNo( myInfo.getMbrNo() )
@@ -163,7 +170,7 @@ public class RoomControl {
 												.setRcntLocLng( endPath.getPathLng() )
 												.setRcntLocSt("E");
 
-			int roomNo = roomService.addRoom( room, roomMbr, startPath, endPath, recentEndLoc );
+			int roomNo = roomService.addRoom( room, roomMbr, startPath, endPath, recentStartLoc, recentEndLoc );
 			
 			Room myRoom = roomService.getRoomInfo(roomNo);
 
@@ -190,12 +197,21 @@ public class RoomControl {
     @RequestMapping("/joinRoom")
     @ResponseBody
     public JsonResult joinRoom( 
-    		RoomMbr roomMbr, String endLocName, double endLocLat, double endLocLng ) throws Exception {
+    		RoomMbr roomMbr,
+    		String startLocName	, double startLocLat, double startLocLng,
+    		String endLocName, double endLocLat, double endLocLng ) throws Exception {
 
         JsonResult jsonResult = new JsonResult();
         
         try {
         	int mbrNo = roomMbr.getMbrNo();
+        	
+        	RcntLoc recentStartLoc = new RcntLoc()
+											.setMbrNo( mbrNo )
+											.setRcntLocName( startLocName )
+											.setRcntLocLat( startLocLat )
+											.setRcntLocLng( startLocLng )
+											.setRcntLocSt("S");
         	
         	RcntLoc recentEndLoc = new RcntLoc()
 											.setMbrNo( mbrNo )
@@ -204,7 +220,7 @@ public class RoomControl {
 											.setRcntLocLng( endLocLng )
 											.setRcntLocSt("E");
         	
-            int roomNo = roomService.joinRoom(roomMbr, recentEndLoc);
+            int roomNo = roomService.joinRoom(roomMbr, recentStartLoc, recentEndLoc);
             
             Room myRoom = roomService.getRoomInfo(roomNo);
             List<RcntLoc> rcntLocList 	= locationService.getRecentDestination(mbrNo);

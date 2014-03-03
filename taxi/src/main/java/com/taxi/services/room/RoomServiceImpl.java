@@ -129,7 +129,7 @@ public class RoomServiceImpl implements RoomService {
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
 	public int addRoom(
 			Room room			, RoomMbr roomMbr	,
-			RoomPath startPath	, RoomPath endPath	, RcntLoc rcntLoc ) throws Exception {
+			RoomPath startPath	, RoomPath endPath	, RcntLoc startRcntLoc , RcntLoc endRcntLoc ) throws Exception {
         
         roomDao.addRoom(room); 
         int roomNo = room.getRoomNo(); 
@@ -141,8 +141,9 @@ public class RoomServiceImpl implements RoomService {
         roomPathList.add( startPath.setRoomNo(roomNo) );
         roomPathList.add( endPath.setRoomNo(roomNo) );
         roomPathDao.addRoomPathList( roomPathList ); 
-        
-        rcntLocDao.addRcntLoc( rcntLoc );
+
+        rcntLocDao.addRcntLoc( startRcntLoc );
+        rcntLocDao.addRcntLoc( endRcntLoc );
 
         
         return roomNo;
@@ -155,14 +156,18 @@ public class RoomServiceImpl implements RoomService {
 	 * 작성자: 김상헌 
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
-	public int joinRoom( RoomMbr roomMbr, RcntLoc rcntLoc ) throws Exception { 
+	public int joinRoom( RoomMbr roomMbr,RcntLoc startRcntLoc , RcntLoc endRcntLoc) throws Exception { 
         
 		try { 
         	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
         	
         	int count =  roomMbrDao.addRoomMbr(roomMbr); 
         	
-        	rcntLocDao.addRcntLoc( rcntLoc );
+
+        	rcntLocDao.addRcntLoc( startRcntLoc );
+        	
+        	rcntLocDao.addRcntLoc( endRcntLoc );
+        	
         	
         	// 푸쉬 보낼 준비
         	if(count > 0){

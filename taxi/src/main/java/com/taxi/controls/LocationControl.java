@@ -65,7 +65,6 @@ public class LocationControl {
 	/**
 	 * 설  명 : 즐겨찾기 목록 가져오기
 	 * 작성자 : 장종혁
-	 * 현재는 mbrNo를 보내주지 않으므로 고정적으로 1이라 작성
 	 * 
 	 */
 	@RequestMapping("/getFavoriteList")
