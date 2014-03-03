@@ -1,23 +1,33 @@
 package com.taxi.services.quartz;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.services.gcm.GcmService;
 import com.taxi.services.room.RoomService;
+import com.taxi.services.sharedlist.SharedListService;
+import com.taxi.vo.room.Room;
 
 
 @Service
 public  class QuartzServiceImpl implements QuartzService {
-	@Autowired GcmService 	gcmService;
-	@Autowired RoomService 	roomService;
+	@Autowired GcmService 			gcmService;
+	@Autowired RoomService 			roomService;
+	@Autowired SharedListService 	sharedListService;
 
 	/**
 	 * 설  명:쿼츠 아침 11시가 되면 시간이 지난 방 정리(AS-IS 사용)
 	 * 작성자:장종혁
 	 */
 	public void roomCheckService() throws Exception {
-		roomService.removeRoom();
+		List<Room> pastRoomList = roomService.searchPastRoomList();
+		
+		sharedListService.registerSharedlist(pastRoomList);
+		roomService.removeRoom(pastRoomList);
 	}
 	
 	/**
@@ -28,12 +38,4 @@ public  class QuartzServiceImpl implements QuartzService {
 		gcmService.performService();
 	}
 
-	/*	//====================== AS-IS =======================//
- 
-
-	public QuartzServiceImpl(){}
-
-
-*/
-	
 }

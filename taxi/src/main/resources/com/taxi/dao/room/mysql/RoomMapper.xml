@@ -191,7 +191,7 @@
 	 	*설  명: 지난 방 목록 가져오기
 	 	*작성자: 장종혁
 	  -->
-	 <select id="getLastedRoomList" resultType="Room">
+	 <select id="getPastRoomList" resultType="Room">
 	<![CDATA[
 		select 		ROOM_NO as roomNo
 		from  		ROOM
@@ -223,40 +223,6 @@
 		  		room_start_time between now() and addtime(now(), #{value})
     </select>
 	
-<!-- //====================== AS-IS =======================// -->
-<!-- 
-
-
-
-
-	<select id="getRoomInfo" parameterType="int" resultType="Room">
-		select
-				ROOM_NO 		as roomNo
-			,	ROOM_START_TIME as roomStartTime
-			,	ROOM_DISTANCE 	as roomDistance
-			,	ROOM_FARE 		as roomFare
-			,	ROOM_REG_DATE 	as roomRegDate
-		from
-				ROOM
-		where  	1 = 1
-			and	ROOM_NO = #{value}
-	</select>
-
-
-	
-	
-	<select id="getLastedRoomList" resultType="Room">
-	<![CDATA[
-		select 		ROOM_NO as roomNo
-		from  		ROOM
-		where
-	          		ROOM_START_TIME  <  DATE_SUB(DATE(NOW()), INTERVAL 1 DAY)
-	]]>
-	</select>	
-    
-	
-
- -->
  
 </mapper>
 

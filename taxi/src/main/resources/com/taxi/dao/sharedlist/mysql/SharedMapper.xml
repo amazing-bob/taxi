@@ -4,6 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.taxi.dao.sharedlist.SharedDao">
+    
+    <!--
+		 * 설  명: 동승자 리스트 추가
+		 * 작성자: 김상헌
+    -->
+    <insert id="insertSharedList" parameterType="map">
+		insert into SHARED ( MBR_NO, SHARED_NO, LAST_SHARED_DATE )
+		select  A.MBR_NO            -- MBR_NO
+		    ,   B.MBR_NO            -- SHARED_NO
+		    ,   C.ROOM_START_TIME   -- LAST_SHARED_DATE
+		from    ROOM_MBR A
+		    ,   ROOM_MBR B
+		    ,   ROOM C
+		where   1 = 1
+		and     A.ROOM_NO = C.ROOM_NO
+		and     A.ROOM_NO = B.ROOM_NO
+		and     A.MBR_NO != B.MBR_NO
+		<if test="room != null">
+		and     A.ROOM_NO in 
+			<foreach collection="room" item="item" separator="," open=" (" close=")">
+							#{item.roomNo}
+			</foreach>
+		</if>
+		on duplicate key update LAST_SHARED_DATE = C.ROOM_START_TIME
+    </insert>
+    
+    
 	<delete id="deleteSharedList" parameterType="int"> 
         delete from SHARED  
         where MBR_NO=#{value}  

@@ -85,9 +85,9 @@
         <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="jobQuartz" />
  
-        <!-- 11시에 1회 실행 -->
-     <property name="cronExpression" value= "0 0 11 * * ?"/>
-          <!-- <property name="cronExpression" value="0/5 * * * * ?"/> -->
+        <!-- 매일 11시에 1회 실행 -->
+		<property name="cronExpression" value= "0 0 11 * * ?"/>
+<!-- 		<property name="cronExpression" value="0/5 * * * * ?"/> -->
     </bean>
         
         

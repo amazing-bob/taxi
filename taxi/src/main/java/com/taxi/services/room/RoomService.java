@@ -47,22 +47,18 @@ public interface RoomService {
 	 */
 	void outRoom(int mbrNo, int roomNo) throws Exception;
 	
+	/**
+	 * 설  명: 지난 방 목록 가져오기
+	 * 작성자: 김상헌
+	 */
+	List<Room> searchPastRoomList() throws Exception;
 	
 	/**
 	 * 설  명: 지난 방 정리(AS-IS)
 	 * 작성자: 장종혁
 	 */
-	void removeRoom() throws Exception;
+	void removeRoom(List<Room> pastRoomList) throws Exception;
 	
 	
-	
-/*	//====================== AS-IS =======================//
- 
-	
-	Room getRoomInfo(int roomNo) throws Exception;
-
-	void outRoom(String mbrId, int roomNo) throws Exception;
-	
-*/
 	
 }

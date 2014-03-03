@@ -2,8 +2,6 @@ set SQL_SAFE_UPDATES = 0;
 
 /* 테스트데이터터 */
 -- 조회
-select * from KEYWORD_REL;
-select * from KEYWORD;
 select * from MBR;
 select * from SETTING;
 select * from FRND;
@@ -13,8 +11,12 @@ select * from ROOM_MBR;
 select * from FEED;
 select * from FVRT_LOC;
 select * from RCNT_LOC;
+select * from KEYWORD_REL;
+select * from KEYWORD;
+select * from SHARED;
 
 -- 삭제
+delete from SHARED;
 delete from KEYWORD_REL;
 delete from KEYWORD;
 delete from RCNT_LOC;

@@ -32,28 +32,23 @@ public interface RoomDao {
 	 */
 	int addRoom(Room room) throws Exception;
 	
-	
 	/**
 	 * 설  명: 방 삭제
 	 * 작성자: 장종혁
 	 */
 	int deleteRoom(Map<String, Object> paramMap)throws Exception;
 	
-	
-	
 	/**
 	 * 설  명: 지난방 리스트 가져오기(AS-IS)
 	 * 작성자: 장종혁
 	 */
-	List<Room> getLastedRoomList() throws Exception;
-	
+	List<Room> getPastRoomList() throws Exception;
 	
 	/**
 	 * 설  명: 지난방 삭제하기(AS-IS)(쿼츠)
 	 * 작성자: 장종혁
 	 */
-	void deleteLastRoom(Map<String, Object> paramMap) throws Exception;
-	
+	void deletePastRoom(Map<String, Object> paramMap) throws Exception;
 	
 	/**
 	 * 설  명: 방 출발 전 알림 대상 방 리스트 조회

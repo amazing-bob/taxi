@@ -207,86 +207,32 @@ public class RoomServiceImpl implements RoomService {
 	
 	
 	/**
-	 * 설  명: 지난 방 정리
+	 * 설  명: 지난 방 목록 가져오기
+	 * 작성자: 김상헌
+	 */
+	public List<Room> searchPastRoomList() throws Exception {
+		
+		return roomDao.getPastRoomList();
+	}
+	
+	
+	/**
+	 * 설  명: 지난 방 삭제
 	 * 작성자: 장종혁
 	 */
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public void removeRoom() throws Exception {
-		System.out.println("Quartz Remove Rooms.........");
+	public void removeRoom( List<Room> pastRoomList ) throws Exception {
 		
-		List<Room> lastedRoomList = roomDao.getLastedRoomList();
-
-		if(lastedRoomList.size() > 0){
+		if(pastRoomList.size() > 0){
 			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("room", lastedRoomList);
+			paramMap.put("room", pastRoomList);
 
 			feedDao.deleteFeed(paramMap);
 			roomMbrDao.deleteRoomMbr(paramMap);
 			roomPathDao.deleteLastRoomPath(paramMap);
-			roomDao.deleteLastRoom(paramMap);
+			roomDao.deleteRoom(paramMap);
 		}
 	}
-
-/*	//====================== AS-IS =======================//
- 	
-	@Autowired GcmService gcmService;
-	@Autowired FvrtLocDao fvrtLocDao;  
-
-	@Autowired PlatformTransactionManager txManager;
-	
-	
-	
-	
-	public Room getRoomInfo( int roomNo ) throws Exception {
-		Room roomInfo = roomDao.getRoomInfo(roomNo);
-		List<RoomMbr> roomMbrInfo = roomMbrDao.getRoomMbrDetailList( roomInfo.getRoomNo() );
-		roomInfo.setRoomMbrCount( roomMbrInfo.size() );
-		List<RoomPath> roomPathInfo = roomPathDao.getRoomPathList( roomInfo.getRoomNo() );
-		
-		roomInfo.setRoomMbrList(roomMbrInfo);
-		roomInfo.setRoomPathList(roomPathInfo);
-		
-		return roomInfo;
-		
-	}
-
-
-	@Transactional(
-			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public void outRoom(String mbrId, int roomNo) throws Exception {
-		try{
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-			paramMap.put("roomNo", roomNo);
-			paramMap.put("mbrId", mbrId);
-			RoomMbr roomMbr = roomMbrDao.getRoomMbrInfo(paramMap);
-			
-			int count = roomMbrDao.outRoom(paramMap);
-			
-			if(count > 0){
-				paramMap.put("roomNo", roomMbr.getRoomNo());
-				paramMap.put("mbrId", roomMbr.getMbrId());
-				
-				List<Map<String, String>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
-				for (Map<String, String> map : gcmTargetMapList) {
-					map.put("roomAction", "outRoom" );
-					map.put("roomNo", roomMbr.getRoomNo()+"" );
-					map.put("mbrId", roomMbr.getMbrId() );
-					map.put("mbrName", roomMbr.getMbrName() );
-					map.put("mbrPhoneNo", roomMbr.getMbrPhoneNo() );
-					map.put("mbrPhotoUrl", roomMbr.getMbrPhotoUrl() );
-				}
-				
-				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
-				
-			}
-			
-		} catch(Exception e ) {
-			throw e;
-		}
-	}
-	
-	
-	*/
 
 }
