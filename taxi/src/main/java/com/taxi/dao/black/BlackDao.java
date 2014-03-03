@@ -1,8 +1,8 @@
-package com.taxi.dao.blacklist;
+package com.taxi.dao.black;
 
 import java.util.List;
 
-import com.taxi.vo.blacklist.Black;
+import com.taxi.vo.black.Black;
 
 
 public interface BlackDao {

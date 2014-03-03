@@ -1,4 +1,4 @@
-package com.taxi.vo.blacklist.base;
+package com.taxi.vo.black.base;
 
 import java.io.Serializable;
 import java.util.Date;

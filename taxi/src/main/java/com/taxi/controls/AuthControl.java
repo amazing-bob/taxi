@@ -22,13 +22,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.taxi.services.auth.AuthService;
-import com.taxi.services.blacklist.BlackListService;
+import com.taxi.services.black.BlackService;
 import com.taxi.services.friend.FriendService;
 import com.taxi.services.location.LocationService;
 import com.taxi.services.member.MemberService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.MyInfo;
-import com.taxi.vo.blacklist.Black;
+import com.taxi.vo.black.Black;
 import com.taxi.vo.friend.Frnd;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.RcntLoc;
@@ -42,7 +42,7 @@ public class AuthControl {
 	@Autowired AuthService 		authService;
 	@Autowired MemberService 	memberService;
 	@Autowired LocationService 	locationService;
-	@Autowired BlackListService	blackListService;
+	@Autowired BlackService		blackService;
 	@Autowired FriendService    friendService;
 	
 	/**
@@ -69,7 +69,7 @@ public class AuthControl {
 				frndList 	= friendService.getFrndList(mbrNo);
 				fvrtLocList = locationService.getFavoriteList(mbrNo);
 				rcntLocList = locationService.getRecentDestination(mbrNo);
-				blackList 	= blackListService.getBlackList(mbrNo, 0);
+				blackList 	= blackService.getBlackList(mbrNo, 0);
 			}
 			
 			Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -149,7 +149,7 @@ public class AuthControl {
 				frndList 	= friendService.getFrndList(mbrNo);
 				fvrtLocList = locationService.getFavoriteList(mbrNo);
 				rcntLocList = locationService.getRecentDestination(mbrNo);
-				blackList 	= blackListService.getBlackList(mbrNo, 0);
+				blackList 	= blackService.getBlackList(mbrNo, 0);
 			}
 			
 			Map<String, Object> resultMap = new HashMap<String, Object>();

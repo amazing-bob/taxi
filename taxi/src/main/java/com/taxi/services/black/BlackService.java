@@ -1,11 +1,11 @@
-package com.taxi.services.blacklist;
+package com.taxi.services.black;
 
 import java.util.List;
 
-import com.taxi.vo.blacklist.Black;
+import com.taxi.vo.black.Black;
 
 
-public interface BlackListService {
+public interface BlackService {
 	
 	/**
 	 * 설  명: 블랙리스트 조회 

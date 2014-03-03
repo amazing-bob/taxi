@@ -1,4 +1,4 @@
-package com.taxi.vo.sharedlist.base;
+package com.taxi.vo.shared.base;
 
 import java.io.Serializable;
 import java.util.Date;

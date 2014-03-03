@@ -11,16 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taxi.services.blacklist.BlackListService;
+import com.taxi.services.black.BlackService;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.blacklist.Black;
+import com.taxi.vo.black.Black;
 
 
 @Controller
-@RequestMapping("/blackList")
-public class BlackListControl {
+@RequestMapping("/black")
+public class BlackControl {
 	@Autowired ServletContext 	sc;
-	@Autowired BlackListService blackListService;
+	@Autowired BlackService 	blackService;
 	
 	
 	/**
@@ -33,12 +33,12 @@ public class BlackListControl {
 		JsonResult jsonResult  = new JsonResult();
 		
 		try {
-			boolean isSuccess = blackListService.registerBlacklist(black);
+			boolean isSuccess = blackService.registerBlacklist(black);
 			
 			List<Black> blackList = null;
 			
 			if ( isSuccess ) {
-				blackList = blackListService.getBlackList( black.getMbrNo(), black.getBlackMbrNo() );
+				blackList = blackService.getBlackList( black.getMbrNo(), black.getBlackMbrNo() );
 			}
 			
 			jsonResult.setData(blackList);

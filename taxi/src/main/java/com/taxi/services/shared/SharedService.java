@@ -1,4 +1,4 @@
-package com.taxi.services.sharedlist;
+package com.taxi.services.shared;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.taxi.vo.room.Room;
 import com.taxi.vo.setting.Setting;
 
 
-public interface SharedListService {
+public interface SharedService {
 
 	/**
 	 * 설  명: 동승자 추가

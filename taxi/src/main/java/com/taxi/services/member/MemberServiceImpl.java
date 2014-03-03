@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.dao.auth.LoginDao;
-import com.taxi.dao.blacklist.BlackDao;
+import com.taxi.dao.black.BlackDao;
 import com.taxi.dao.feed.FeedDao;
 import com.taxi.dao.friend.FrndDao;
 import com.taxi.dao.keyword.KeywordRelDao;
@@ -21,7 +21,7 @@ import com.taxi.dao.member.MbrDao;
 import com.taxi.dao.room.RoomMbrDao;
 import com.taxi.dao.safe.SafeDao;
 import com.taxi.dao.setting.SettingDao;
-import com.taxi.dao.sharedlist.SharedDao;
+import com.taxi.dao.shared.SharedDao;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.friend.Frnd;
 import com.taxi.vo.member.Mbr;

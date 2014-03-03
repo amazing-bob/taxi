@@ -1,9 +1,9 @@
-package com.taxi.vo.blacklist;
+package com.taxi.vo.black;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import com.taxi.vo.blacklist.base.BaseBlack;
+import com.taxi.vo.black.base.BaseBlack;
 
 
 

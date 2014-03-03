@@ -1,10 +1,10 @@
-package com.taxi.vo.sharedlist;
+package com.taxi.vo.shared;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.taxi.vo.sharedlist.base.BaseShared;
+import com.taxi.vo.shared.base.BaseShared;
 
 
 public class Shared extends BaseShared implements Serializable {

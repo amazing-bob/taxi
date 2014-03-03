@@ -1,4 +1,4 @@
-package com.taxi.services.sharedlist;
+package com.taxi.services.shared;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.taxi.dao.sharedlist.SharedDao;
+import com.taxi.dao.shared.SharedDao;
 import com.taxi.vo.room.Room;
 
 
 @Service
-public class SharedListServiceImpl implements SharedListService {
+public class SharedServiceImpl implements SharedService {
 	@Autowired SharedDao sharedDao;
 
 	

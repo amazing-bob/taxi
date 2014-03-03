@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.taxi.dao.blacklist.BlackDao">
-    <resultMap id="blackListResultMap" type="Black">
+<mapper namespace="com.taxi.dao.black.BlackDao">
+    <resultMap id="blackResultMap" type="Black">
         <result column="MBR_NO" 				property="mbrNo" 			/>
         <result column="BLACK_MBR_NO" 			property="blackMbrNo" 		/>
         <result column="BLACK_MBR_NAME" 		property="blackMbrName" 	/>
@@ -17,7 +17,7 @@
 		 * 설  명: 블랙리스트 조회
 		 * 작상자: 김상헌
 	-->
-	<select id="getBlackList" parameterType="int" resultMap="blackListResultMap">
+	<select id="getBlackList" parameterType="int" resultMap="blackResultMap">
 	    select 
 	    		A.MBR_NO 				
 	    	,	A.BLACK_MBR_NO 		

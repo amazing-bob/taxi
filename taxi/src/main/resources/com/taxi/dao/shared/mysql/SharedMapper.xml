@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.taxi.dao.sharedlist.SharedDao">
+<mapper namespace="com.taxi.dao.shared.SharedDao">
     
     <!--
 		 * 설  명: 동승자 리스트 추가

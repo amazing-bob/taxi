@@ -1,16 +1,16 @@
-package com.taxi.services.blacklist;
+package com.taxi.services.black;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.taxi.dao.blacklist.BlackDao;
-import com.taxi.vo.blacklist.Black;
+import com.taxi.dao.black.BlackDao;
+import com.taxi.vo.black.Black;
 
 
 @Service
-public class BlackListServiceImpl implements BlackListService {
+public class BlackServiceImpl implements BlackService {
 	@Autowired BlackDao blackDao;
 
 	

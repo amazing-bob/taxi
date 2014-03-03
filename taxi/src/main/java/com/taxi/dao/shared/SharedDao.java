@@ -1,4 +1,4 @@
-package com.taxi.dao.sharedlist;
+package com.taxi.dao.shared;
 
 import java.util.Map;
 
