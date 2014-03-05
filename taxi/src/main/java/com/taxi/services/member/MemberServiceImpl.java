@@ -95,7 +95,10 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
     
-    
+    /**
+     * 내용:회원탈퇴시. 모든 데이터 삭제
+     * 작성자 : 김태경
+     */
 	@Override
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
 	public void leaveMember(int mbrNo) throws Exception {
@@ -112,7 +115,7 @@ public class MemberServiceImpl implements MemberService {
         frndDao.deleteFrnd(mbrNo);
         fvrtLocDao.deleteAllFvrtLoc(mbrNo); 
         settingDao.deleteSetting(mbrNo);
-        mbrDao.deleteMbr(mbrNo);
+       
         
         loginDao.deleteLoginData(mbrNo);
         blackDao.deleteBlackList(mbrNo);
@@ -120,6 +123,7 @@ public class MemberServiceImpl implements MemberService {
         keywordRelDao.deleteKeywordRelData(mbrNo);
         safeDao.deleteSafeData(mbrNo);
         rcntLocDao.deleteRcntLocList(mbrNo);
+        mbrDao.deleteMbr(mbrNo);
         
 		
 	}

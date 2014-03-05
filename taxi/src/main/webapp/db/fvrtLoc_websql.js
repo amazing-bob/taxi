@@ -92,21 +92,18 @@ var insertFvrtLocTable = function( transaction, fvrtLocList ) {
 	}
 };
 /**
- * 즐겨찾기 랭크 업데이트 (현재 업데이트 문 error 로 안쓰지만 추후 수정예정)
+ * 즐겨찾기 랭크 업데이트
  * 작성자 : 김태경
  */
 var updateFvrtLocRank = function( transaction , fvrtLocList ) {
 	console.log("updateFvrtLocRank(fvrtLocList)");
 	
 	var sql = 
-		"UPDATE FVRT_LOC" +
-		"SET fvrtLocRank =?" + 
-		"WHERE fvrtLocNo =?;";
+		" UPDATE FVRT_LOC" +
+		" SET fvrtLocRank =?" + 
+		" WHERE fvrtLocNo =?;";
 	
 	for(var i in fvrtLocList){
-		console.log(fvrtLocList[i].fvrtLocRank+"====================================");
-		console.log(fvrtLocList[i].fvrtLocNo+"=====================================");
-		
 		transaction.executeSql(
 				sql, 
 				// Parameter
@@ -122,8 +119,6 @@ var updateFvrtLocRank = function( transaction , fvrtLocList ) {
 				function () {
 					console.log("updateFvrtLocTable  fail");
 				});
-
-
 	}
 
 };
