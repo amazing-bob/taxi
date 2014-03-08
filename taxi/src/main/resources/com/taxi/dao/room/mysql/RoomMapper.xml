@@ -4,15 +4,17 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taxi.dao.room.RoomDao">    
 	 <resultMap id="roomResultMap" type="Room">
-	    <result 	property="roomNo" 			column="room_no"/>
-	    <result 	property="roomStartTime" 	column="room_start_time"/>
-	    <result 	property="roomMbrNumLimit" 	column="room_mbr_num_limit"/>
-	    <result 	property="roomRegDate" 		column="room_reg_date"/>
-	    <result 	property="roomColor" 		column="room_color"/>
-	    <result 	property="roomMbrCount" 	column="roomMbrCount"/>
-	    <collection property="roomMbrList" 		column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
+	    <result 	column="ROOM_NO" 			property="roomNo"			/>
+	    <result 	column="ROOM_START_TIME"	property="roomStartTime" 	/>
+	    <result 	column="ROOM_MBR_NUM_LIMIT"	property="roomMbrNumLimit" 	/>
+	    <result 	column="ROOM_REG_DATE"		property="roomRegDate" 		/>
+	    <result 	column="ROOM_COLOR"			property="roomColor" 		/>
+	    <result 	column="RELATION_CD"		property="relationCd" 		/>
+	    <result 	column="RELATION_MBR"		property="relationMbr" 		/>
+	    <result 	column="ROOM_MBR_COUNT"		property="roomMbrCount" 	/>
+	    <collection column="ROOM_NO"			property="roomMbrList" 	javaType="java.util.ArrayList" 	ofType="RoomMbr"
 	        select="com.taxi.dao.room.RoomMbrDao.getRoomMbrDetailList"/>
-	    <collection property="roomPathList" 	column="room_no" 	javaType="java.util.ArrayList" 	ofType="RoomPath"
+	    <collection column="ROOM_NO"			property="roomPathList"	javaType="java.util.ArrayList" 	ofType="RoomPath"
 	        select="com.taxi.dao.room.RoomPathDao.getRoomPathList"/>
 	</resultMap>    
 	 
@@ -21,84 +23,123 @@
 		* 작성자: 김상헌
 	 -->
 	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
-	    <![CDATA[
-		select
+	<![CDATA[
+		select 
 				A.ROOM_NO
-		    , 	A.ROOM_START_TIME
-		    , 	A.ROOM_MBR_NUM_LIMIT
-		    , 	A.ROOM_REG_DATE
-		    ,	A.ROOM_COLOR
-		    ,	count( B.MBR_NO ) as roomMbrCount
-		from
-				ROOM A
-			, 	ROOM_MBR B
-		where   
-                1 = 1
-		and	    A.ROOM_NO = B.ROOM_NO
-        and     A.ROOM_START_TIME > now()
-        and     A.ROOM_NO in (
-		    					-- 출발지 & 목적지 조건
-		    					select
-		    							X1.ROOM_NO
-		    					from
-		    							(
-					                        select
-					                                X1.ROOM_NO
-					                        from
-					                                ROOM_PATH X1
-					                        where
-					                                1 = 1
-					                            and X1.PATH_RANK = 0
-					                            and sqrt(pow(#{startLat} - X1.PATH_LAT, 2) + pow(#{startLng} - X1.PATH_LNG, 2)) <= #{startRange}
-		    							) X1,
-		    							(
-				                            select
-					                                X2.ROOM_NO
-					                        from
-					                                ROOM_PATH X2
-					                        where
-					                                1 = 1
-                                            and     X2.PATH_RANK = 99
-                                            and     sqrt(pow(#{endLat} - X2.PATH_LAT, 2) + pow(#{endLng} - X2.PATH_LNG, 2)) <= #{endRange}
-		    							) X2
-    							where
-    									1 = 1
-								and	    X1.ROOM_NO = X2.ROOM_NO
-							)
-	    and     A.ROOM_NO in (
-	                            -- 친구 관계 조건
-	    		                select  ROOM_NO
-	    		                from
-	    		                        ROOM_MBR X
-	    		                    ,   MBR Y
-	                                ,   FRND Z
-	    		                where   
-	                                    1 = 1
-	    	                    and     Y.MBR_PHONE_NO = Z.FRND_PHONE_NO
-	                            and     Y.MBR_NO = X.MBR_NO
-	                            and     Z.MBR_NO =  #{mbrNo}
-	
-	    		                union all
-	                            
-	                            -- 친구의 친구 관계 조건
-	    		                select  ROOM_NO
-	    		                from
-	    		                        ROOM_MBR X
-	    		                    ,   FRND Y
-	    		                    ,   FRND Z
-	    		                where   
-	                                    1 = 1
-	                            and     Y.FRND_PHONE_NO = Z.FRND_PHONE_NO
-	                            and     Y.MBR_NO = X.MBR_NO
-	                            and     Z.MBR_NO =  #{mbrNo}			                
-			                )
-		group by
+			, 	A.ROOM_START_TIME
+			, 	A.ROOM_MBR_NUM_LIMIT
+			, 	A.ROOM_REG_DATE
+			, 	A.ROOM_COLOR
+			, 	A.RELATION_MBR	-- 관계있는 방멤버 번호
+			, 	A.RELATION_CD	-- 관계코드(1: 친구 관계인 방, 2: 친구의친구 관계인 방, 99: 관계 없는 방)
+		from 	( 	-- 친구가 있는 방 조회
+					select 	
+							A.ROOM_NO
+						, 	A.ROOM_START_TIME
+						, 	A.ROOM_MBR_NUM_LIMIT
+						, 	A.ROOM_REG_DATE
+						, 	A.ROOM_COLOR
+						, 	C.MBR_NO 	as RELATION_MBR
+						, 	1 			as RELATION_CD
+					from 	( 	-- 방 조회
+								select
+										A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
+								from
+										ROOM A
+									, 	ROOM_PATH X1
+									, 	ROOM_PATH X2
+								where   
+										1 = 1
+								and     A.ROOM_START_TIME > now() 	-- 출발시간 조건
+								AND 	A.ROOM_NO = X1.ROOM_NO
+								AND 	A.ROOM_NO = X2.ROOM_NO
+								and 	X1.PATH_RANK = 0			-- 출발지 조건
+								and 	sqrt(pow( #{startLat} - X1.PATH_LAT, 2) + pow( #{startLng} - X1.PATH_LNG, 2)) <=  #{startRange}
+								AND 	X2.PATH_RANK = 99			-- 목적지 조건
+								and     sqrt(pow( #{endLat} - X2.PATH_LAT, 2) + pow( #{endLng} - X2.PATH_LNG, 2)) <=  #{endRange}
+							) A
+						, 	ROOM_MBR B
+						, 	MBR C
+					where 
+							1 = 1
+					and 	A.ROOM_NO 		= B.ROOM_NO
+					and 	B.MBR_NO 		= C.MBR_NO
+					and 	C.MBR_PHONE_NO 	in (	select 	FRND_PHONE_NO
+													from 	FRND 
+													where 	MBR_NO = #{mbrNo} )
+					
+					union all
+		
+					-- 친구의 친구가 있는 방 조회
+					select 	
+							A.ROOM_NO
+						, 	A.ROOM_START_TIME
+						, 	A.ROOM_MBR_NUM_LIMIT
+						, 	A.ROOM_REG_DATE
+						, 	A.ROOM_COLOR
+						, 	C.MBR_NO 	as RELATION_MBR
+						, 	2 			as RELATION_CD
+					from 	( 	-- 방 조회
+								select
+										A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
+								from
+										ROOM A
+									, 	ROOM_PATH X1
+									, 	ROOM_PATH X2
+								where   
+										1 = 1
+								and     A.ROOM_START_TIME > now() 	-- 출발시간 조건
+								AND 	A.ROOM_NO = X1.ROOM_NO
+								AND 	A.ROOM_NO = X2.ROOM_NO
+								and 	X1.PATH_RANK = 0			-- 출발지 조건
+								and 	sqrt(pow( #{startLat} - X1.PATH_LAT, 2) + pow( #{startLng} - X1.PATH_LNG, 2)) <=  #{startRange}
+								AND 	X2.PATH_RANK = 99			-- 목적지 조건
+								and     sqrt(pow( #{endLat} - X2.PATH_LAT, 2) + pow( #{endLng} - X2.PATH_LNG, 2)) <=  #{endRange}
+							) A
+						, 	ROOM_MBR B
+						, 	MBR C
+						,	FRND D
+					where 
+							1 = 1
+					and 	A.ROOM_NO 		= B.ROOM_NO
+					and 	B.MBR_NO 		= C.MBR_NO
+					and 	C.MBR_NO 		= D.MBR_NO
+					and		D.FRND_PHONE_NO in (	select	FRND_PHONE_NO
+													from	FRND
+													where 	MBR_NO = #{mbrNo} )
+		
+					union all
+					
+					-- 관계 없는 방 조회
+					select 
+								A.ROOM_NO
+							, 	A.ROOM_START_TIME
+							, 	A.ROOM_MBR_NUM_LIMIT
+							, 	A.ROOM_REG_DATE
+							, 	A.ROOM_COLOR
+							, 	NULL 	 	as RELATION_MBR
+							, 	99 			as RELATION_CD
+					from
+							ROOM A
+						, 	ROOM_PATH X1
+						, 	ROOM_PATH X2
+					where   
+							1 = 1
+					and     A.ROOM_START_TIME > now() 	-- 출발시간 조건
+					AND 	A.ROOM_NO = X1.ROOM_NO
+					AND 	A.ROOM_NO = X2.ROOM_NO
+					and 	X1.PATH_RANK = 0			-- 출발지 조건
+					and 	sqrt(pow( #{startLat} - X1.PATH_LAT, 2) + pow( #{startLng} - X1.PATH_LNG, 2)) <=  #{startRange}
+					AND 	X2.PATH_RANK = 99			-- 목적지 조건
+					and     sqrt(pow( #{endLat} - X2.PATH_LAT, 2) + pow( #{endLng} - X2.PATH_LNG, 2)) <=  #{endRange}
+				) A
+		
+		group by 
 				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
-		having
-				count( B.MBR_NO ) < A.ROOM_MBR_NUM_LIMIT
-		order by
-				A.ROOM_START_TIME
- 		]]>
+		order by 
+				A.RELATION_CD, A.ROOM_START_TIME
+		limit 	#{lastRoomIdx}, 8				
+	]]>
 	</select>
 	
 	
@@ -113,7 +154,7 @@
 		    , 	A.ROOM_MBR_NUM_LIMIT
 		    , 	A.ROOM_REG_DATE
 		    ,	A.ROOM_COLOR
-		    ,	count( B.MBR_NO ) as roomMbrCount
+		    ,	count( B.MBR_NO ) as ROOM_MBR_COUNT
 		from
 				ROOM A
 			, 	ROOM_MBR B
@@ -137,7 +178,7 @@
 		    , 	A.ROOM_MBR_NUM_LIMIT
 		    , 	A.ROOM_REG_DATE
 		    ,	A.ROOM_COLOR
-		    ,	count( B.MBR_NO ) as roomMbrCount
+		    ,	count( B.MBR_NO ) as ROOM_MBR_COUNT
 		from 	
 				ROOM A
 			, 	ROOM_MBR B

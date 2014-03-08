@@ -21,8 +21,10 @@ public class Room extends BaseRoom implements Serializable {
 	 * protected Date		roomRegDate;
 	 * protected int		roomColor;
 	 */
+	protected int 				relationMbr;
+	protected int 				relationCd;
 	protected int 				roomMbrCount;
-	protected List<RoomMbr>		roomMbrList;
+	protected List<RoomMbr>	roomMbrList;
 	protected List<RoomPath> 	roomPathList;
 	protected int				differenceTime;
 	
@@ -50,6 +52,21 @@ public class Room extends BaseRoom implements Serializable {
 		return (Room) super.setRoomColor(roomColor);
 	}
 	
+	
+	public int getRelationMbr() {
+		return relationMbr;
+	}
+	public Room setRelationMbr(int relationMbr) {
+		this.relationMbr = relationMbr;
+		return this;
+	}
+	public int getRelationCd() {
+		return relationCd;
+	}
+	public Room setRelationCd(int relationCd) {
+		this.relationCd = relationCd;
+		return this;
+	}
 	public int getRoomMbrCount() {
 		return roomMbrCount;
 	}
