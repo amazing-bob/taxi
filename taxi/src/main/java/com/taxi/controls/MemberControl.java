@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taxi.services.member.MemberService;
 import com.taxi.vo.JsonResult;
 import com.taxi.vo.auth.MyInfo;
-import com.taxi.vo.member.Mbr;
 
 
 @Controller
@@ -199,22 +198,18 @@ public class MemberControl {
 	
 	@RequestMapping("/leaveMember")
     @ResponseBody
-    public Object leaveMember(MyInfo myInfo) throws Exception {
+    public Object leaveMember(int mbrNo) throws Exception {
         JsonResult jsonResult = new JsonResult();
          
+        
+        System.out.println(mbrNo+"=============넘어온회원번호");
         try {
-        	
-        	
-        	
-        	memberService.leaveMember(myInfo.getMbrNo());
+        	memberService.leaveMember(mbrNo);
         	jsonResult.setStatus("success");
-             
-             
         } catch (Throwable e) {
             e.printStackTrace();
             StringWriter out = new StringWriter();
             e.printStackTrace(new PrintWriter(out));
-             
             jsonResult.setStatus("fail");
             jsonResult.setData(out.toString());
         }
