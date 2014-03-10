@@ -20,7 +20,6 @@
 	            , c.ROOM_MBR_NAME 		as roomMbrName
 	            , c.ROOM_MBR_ST         as roomMbrSt
 	            , c.REL_FRND_PHONE_NO 	as relFrndPhoneNo
-	            , d.REL_FRND_NAME  		as relFrndName
 	            , c.MUTUAL_YN 			as mutualYn
 			  	, c.ROOM_MBR_RANK 		as roomMbrRank 
 	     from (
@@ -84,8 +83,7 @@
 	                        a.ROOM_NO,
 	                        a.MBR_NO,
 	                        b.FRND_NAME,
-	                        b.FRND_PHONE_NO,
-	                        a.REL_FRND_NAME
+	                        b.FRND_PHONE_NO
 	                   from
 	                        ROOM_MBR a
 	                      , FRND b
@@ -121,7 +119,6 @@
             , 	c.MBR_NAME 				as roomMbrName
             , 	a.ROOM_MBR_ST         	as roomMbrSt
             , 	a.REL_FRND_PHONE_NO 	as relFrndPhoneNo
-            , 	a.REL_FRND_NAME  		as relFrndName
             , 	a.MUTUAL_YN 			as mutualYn
 		  	, 	a.ROOM_MBR_RANK 		as roomMbrRank 		
 		from
@@ -147,12 +144,12 @@
         insert into ROOM_MBR
         	( ROOM_NO, MBR_NO, GCM_REG_ID
         	, ROOM_MBR_NO, ROOM_MBR_ST
-        	, REL_FRND_PHONE_NO, REL_FRND_NAME
+        	, REL_FRND_PHONE_NO
         	, MUTUAL_YN, ROOM_MBR_RANK)
         values
         	( #{roomNo}, #{mbrNo}, #{gcmRegId}
         	, #{roomMbrNo}, #{roomMbrSt}
-        	, #{relFrndPhoneNo}, #{relFrndName}
+        	, #{relFrndPhoneNo}
         	, #{mutualYn}, #{roomMbrRank} )
     </insert>
     
@@ -209,7 +206,6 @@
 		    ,   X1.MBR_NO   		as roomMbrNo
 			,   '1' 		        as roomMbrSt
             ,   null 				as relFrndPhoneNo
-            ,   null 				as relFrndName
             ,   'Y'  				as mutualYn
 		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
 		from
@@ -237,7 +233,6 @@
 		    ,   X1.MBR_NO   		as roomMbrNo
 		    ,   '1' 		        as roomMbrSt
             ,   X3.FRND_PHONE_NO 	as relFrndPhoneNo
-            ,   X3.FRND_NAME 		as relFrndName
             ,   'Y'  				as mutualYn
 		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
 

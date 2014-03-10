@@ -12,7 +12,7 @@
 	    select 	
                 a.MBR_NO						as mbrNo
 	    	,	a.MBR_PHONE_NO 					as mbrPhoneNo
-	    	,	a.MBR_DEVICE_NO 				as mbrDeviceNo
+	    	,	a.MBR_UUID 						as mbrUuid
 	    	, 	a.MBR_NAME 						as mbrName
 	    	, 	a.MBR_PHOTO_URL 				as mbrPhotoUrl
 	    	, 	a.MBR_GENDER 					as mbrGender
@@ -59,9 +59,9 @@
 		 * 작성자: 이용준 
     -->
     <insert id="addMbr" parameterType="Mbr">
-	    insert into	MBR ( MBR_PHONE_NO, MBR_DEVICE_NO, MBR_NAME, 
+	    insert into	MBR ( MBR_PHONE_NO, MBR_UUID, MBR_NAME, 
 	    			MBR_PHOTO_URL, MBR_GENDER, MBR_REG_DATE, LAST_LOGIN_DATE, MBR_UPDATE_DATE)
-	    values 		(#{mbrPhoneNo}, #{mbrDeviceNo}, #{mbrName}, 
+	    values 		(#{mbrPhoneNo}, #{mbrUuid}, #{mbrName}, 
 	    			 #{mbrPhotoUrl}, #{mbrGender}, now(), now(), now() ) 
 		<selectKey resultType="int" keyProperty="mbrNo">
 			SELECT LAST_INSERT_ID()
