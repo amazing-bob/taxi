@@ -9,7 +9,7 @@
          <foreach collection="list"   item="frnd" separator=",">
 			( #{frnd.mbrNo},#{frnd.frndPhoneNo},#{frnd.frndName},now() )
         </foreach>
-        ON DUPLICATE KEY UPDATE 
+         ON DUPLICATE KEY UPDATE 
         		MBR_NO = VALUES(MBR_NO)
         	, 	FRND_PHONE_NO = VALUES(FRND_PHONE_NO)
     </insert>
@@ -48,5 +48,6 @@
 		and     a.MBR_NO = b.MBR_NO
 		and     a.MBR_NO= #{value} 	    
  	</select>
+ 	
  	
 </mapper>
