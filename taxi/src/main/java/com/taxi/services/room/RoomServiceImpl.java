@@ -1,6 +1,8 @@
 package com.taxi.services.room;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RcntLocDao	rcntLocDao;
 	@Autowired GcmService 	gcmService;
 	
+	
 	/**
 	 * 설  명: 방 정보 조회
 	 * 작성자: 김상헌
@@ -46,16 +49,20 @@ public class RoomServiceImpl implements RoomService {
 		
 	}
 	
+	
 	/**
 	 * 설  명: 방 목록 조회
 	 * 작성자: 김상헌
 	 */
-	public List<Room> searchRooms( int mbrNo,
+	public List<Room> searchRooms( int mbrNo	, int page,
 			double startLat	, double startLng	, int startRange,
 			double endLat	, double endLng		, int endRange ) throws Exception {
 		
+		int lastRoomIdx = page * 8; // 마지막 방 (한페이지당 방 8개)
+		
 		Map<String, Object> paramMap  = new HashMap<String, Object>();
 		paramMap.put("mbrNo"		, mbrNo);
+		paramMap.put("lastRoomIdx"	, lastRoomIdx);
 		paramMap.put("startLat"		, startLat);
 		paramMap.put("startLng"		, startLng);
 		paramMap.put("startRange"	, startRange);

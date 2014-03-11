@@ -70,15 +70,15 @@ var insertFvrtLocTable = function( transaction, fvrtLocList ) {
 					"	(         ?,     ?,           ?,          ?,           ?,          ? );", 
 					// Parameter
 					[
-					 fvrtLocList[i].fvrtLocNo, 
-					 fvrtLocList[i].mbrNo,
-					 fvrtLocList[i].fvrtLocName,
-					 fvrtLocList[i].fvrtLocLat, 
-					 fvrtLocList[i].fvrtLocLng, 
-					 fvrtLocList[i].fvrtLocRank
+						 fvrtLocList[i].fvrtLocNo, 
+						 fvrtLocList[i].mbrNo,
+						 fvrtLocList[i].fvrtLocName,
+						 fvrtLocList[i].fvrtLocLat, 
+						 fvrtLocList[i].fvrtLocLng, 
+						 fvrtLocList[i].fvrtLocRank
 					 ],
 					 // Success
-					 function() {
+					function() {
 						console.log("insertFvrtLocTable  success");
 					},
 					// Fail
@@ -108,11 +108,11 @@ var updateFvrtLocRank = function( transaction , fvrtLocList ) {
 				sql, 
 				// Parameter
 				[
-				 fvrtLocList[i].fvrtLocRank,
-				 fvrtLocList[i].fvrtLocNo
+					 fvrtLocList[i].fvrtLocRank,
+					 fvrtLocList[i].fvrtLocNo
 				 ],
 				 // Success
-				 function() {
+				function() {
 					console.log("updateFvrtLocTable  success");
 				},
 				// Fail
@@ -172,7 +172,7 @@ var deleteFvrtLocTable = function( mbrNo, fvrtLocNo ) {
 				 fvrtLocNo
 				 ],
 				 // Success
-				 function() {
+				function() {
 					console.log("deleteFvrtLocTable  success");
 				},
 				// Fail

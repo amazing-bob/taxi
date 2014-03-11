@@ -19,7 +19,7 @@ public class MyInfo extends Mbr implements Serializable {
 	 * 
 	 * protected int		mbrNo;
 	 * protected String 	mbrPhoneNo;
-	 * protected String 	mbrDeviceNo;
+	 * protected String 	mbrUuid;
 	 * protected String 	mbrName;
 	 * protected String 	mbrPhotoUrl;
 	 * protected String 	mbrGender;
@@ -55,8 +55,8 @@ public class MyInfo extends Mbr implements Serializable {
 	public MyInfo setMbrPhoneNo(String mbrPhoneNo) {
 		return (MyInfo) super.setMbrPhoneNo(mbrPhoneNo);
 	}
-	public MyInfo setMbrDeviceNo(String mbrDeviceNo) {
-		return (MyInfo) super.setMbrDeviceNo(mbrDeviceNo);
+	public MyInfo setMbrUuid(String mbrUuid) {
+		return (MyInfo) super.setMbrUuid(mbrUuid);
 	}
 	public MyInfo setMbrName(String mbrName) {
 		return (MyInfo) super.setMbrName(mbrName);

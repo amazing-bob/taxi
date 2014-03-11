@@ -12,7 +12,6 @@ public class BaseRoomMbr implements Serializable {
 	protected int 		roomMbrNo;
 	protected String 	roomMbrSt;
 	protected String 	relFrndPhoneNo;
-	protected String 	relFrndName;
 	protected String 	mutualYn;
 	protected int 		roomMbrRank;
 	
@@ -57,13 +56,6 @@ public class BaseRoomMbr implements Serializable {
 	}
 	public BaseRoomMbr setRelFrndPhoneNo(String relFrndPhoneNo) {
 		this.relFrndPhoneNo = relFrndPhoneNo;
-		return this;
-	}
-	public String getRelFrndName() {
-		return relFrndName;
-	}
-	public BaseRoomMbr setRelFrndName(String relFrndName) {
-		this.relFrndName = relFrndName;
 		return this;
 	}
 	public String getMutualYn() {

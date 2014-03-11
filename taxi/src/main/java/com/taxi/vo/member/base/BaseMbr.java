@@ -12,13 +12,13 @@ public class BaseMbr implements Serializable {
 	
 	protected int		mbrNo;
 	protected String 	mbrPhoneNo;
-	protected String 	mbrDeviceNo;
+	protected String 	mbrUuid;
 	protected String 	mbrName;
 	protected String 	mbrPhotoUrl;
 	protected String 	mbrGender;
-	protected Date 		mbrRegDate;
-	protected Date 		lastLoginDate;
-	protected Date 		mbrUpdateDate;
+	protected Date 	mbrRegDate;
+	protected Date 	lastLoginDate;
+	protected Date 	mbrUpdateDate;
 	
 	
 	public int getMbrNo() {
@@ -35,11 +35,11 @@ public class BaseMbr implements Serializable {
 		this.mbrPhoneNo = mbrPhoneNo;
 		return this;
 	}
-	public String getMbrDeviceNo() {
-		return mbrDeviceNo;
+	public String getMbrUuid() {
+		return mbrUuid;
 	}
-	public BaseMbr setMbrDeviceNo(String mbrDeviceNo) {
-		this.mbrDeviceNo = mbrDeviceNo;
+	public BaseMbr setMbrUuid(String mbrUuid) {
+		this.mbrUuid = mbrUuid;
 		return this;
 	}
 	public String getMbrName() {

@@ -68,15 +68,16 @@ public class RoomControl {
 	 */
 	@RequestMapping("/searchRooms")
 	@ResponseBody
-	public JsonResult searchRooms( int mbrNo,
-			String startLat	, String startLng	, int startRange,
-			String endLat	, String endLng		, int endRange ) throws Exception {
+	public JsonResult searchRooms( int mbrNo		, int page,
+			String 	startLat	, String startLng	, int startRange,
+			String  endLat		, String endLng		, int endRange ) throws Exception {
 		
 		JsonResult jsonResult = new JsonResult();
 		
 		try {
 			List<Room> roomList = roomService.searchRooms( 
 													mbrNo,
+													page,
 													Double.parseDouble(startLat),
 													Double.parseDouble(startLng),
 													startRange,
