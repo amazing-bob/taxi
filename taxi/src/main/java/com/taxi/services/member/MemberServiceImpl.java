@@ -53,8 +53,9 @@ public class MemberServiceImpl implements MemberService {
 	 */
     @Override
 	public MyInfo getMyInfo(int mbrNo) throws Exception {
+    	Mbr mbr = new Mbr().setMbrNo(mbrNo);
     	
-		return mbrDao.getMyInfo(mbrNo);
+		return mbrDao.getMyInfo(mbr);
 	}
     
     

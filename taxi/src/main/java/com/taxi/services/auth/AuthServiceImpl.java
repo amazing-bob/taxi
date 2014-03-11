@@ -1,6 +1,8 @@
 package com.taxi.services.auth;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.taxi.dao.auth.LoginDao;
 import com.taxi.dao.member.MbrDao;
 import com.taxi.vo.auth.MyInfo;
+import com.taxi.vo.member.Mbr;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -20,23 +23,11 @@ public class AuthServiceImpl implements AuthService {
 	 * 작성자: 이용준
 	 */
 	@Override
-	public MyInfo hasMember(int mbrNo) throws Exception {
-		MyInfo myInfo = mbrDao.getMyInfo(mbrNo);
+	public MyInfo hasMember(Mbr mbr) throws Exception {
+		MyInfo myInfo = mbrDao.getMyInfo(mbr);
 		
 		return myInfo;
 	}
 
 
-	
-/*	//====================== AS-IS =======================//
- 
-	@Autowired MemberService memberService;
-
-	public LoginInfo getLoginInfo(String mbrId) throws Exception {
-		
-		LoginInfo loginInfo = mbrDao.getLoginInfo(mbrId);
-		return loginInfo;
-	}
-*/
-	
 }

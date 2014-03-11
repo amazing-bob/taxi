@@ -56,9 +56,7 @@ public class AuthControl {
 		
 		try {
 			
-			int mbrNo = mbr.getMbrNo();
-			
-			MyInfo myInfo = authService.hasMember(mbrNo);
+			MyInfo myInfo = authService.hasMember(mbr);
 			List<Frnd> 		frndList 	= null;
 			List<FvrtLoc> 	fvrtLocList = null;
 			List<RcntLoc> 	rcntLocList = null;
@@ -66,6 +64,8 @@ public class AuthControl {
 			
 			
 			if ( myInfo != null && myInfo.getMbrNo() > 0 ) {
+				int mbrNo = myInfo.getMbrNo();
+				
 				frndList 	= friendService.getFrndList(mbrNo);
 				fvrtLocList = locationService.getFavoriteList(mbrNo);
 				rcntLocList = locationService.getRecentDestination(mbrNo);
@@ -136,13 +136,22 @@ public class AuthControl {
 				e.printStackTrace();
 			}
 
-			int mbrNo = memberService.signUp(mbr, keywordNo, frndListParam);
-		
+			int 			mbrNo		= 0;	
 			MyInfo 			myInfo 		= null;
 			List<Frnd> 		frndList 	= null;
 			List<FvrtLoc> 	fvrtLocList = null;
 			List<RcntLoc> 	rcntLocList = null;
 			List<Black> 	blackList 	= null;
+			
+			myInfo = authService.hasMember(mbr);
+			
+			if ( myInfo != null && myInfo.getMbrNo() > 0 ) {
+				mbrNo = myInfo.getMbrNo();
+				
+			} else {
+				mbrNo = memberService.signUp(mbr, keywordNo, frndListParam);
+				
+			}
 			
 			if ( mbrNo > 0 ) {
 				myInfo 		= memberService.getMyInfo(mbrNo);

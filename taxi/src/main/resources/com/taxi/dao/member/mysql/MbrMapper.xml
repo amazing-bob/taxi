@@ -8,7 +8,7 @@
 		 * 설  명: myInfo 조회하기
 		 * 작성자: 이용준     
     -->
-    <select id="getMyInfo" parameterType="int" resultType="MyInfo">
+    <select id="getMyInfo" parameterType="Mbr" resultType="MyInfo">
 	    select 	
                 a.MBR_NO						as mbrNo
 	    	,	a.MBR_PHONE_NO 					as mbrPhoneNo
@@ -49,7 +49,18 @@
 			on  a.MBR_NO = c.MBR_NO
 	    where 	1 = 1
 	    	and	a.MBR_NO = b.MBR_NO
-	    	and a.MBR_NO = #{value}
+	    <choose>
+	        <when test="mbrNo > 0">
+			and a.MBR_NO = #{mbrNo}
+	        </when>
+	        <when test="mbrPhoneNo != null and mbrUuid != null">
+			and a.MBR_PHONE_NO 	= #{mbrPhoneNo}
+			and a.MBR_UUID 		= #{mbrUuid}
+	        </when>
+	        <otherwise>
+			and 1 != 1
+	        </otherwise>
+	    </choose>
 	    	
 	</select>
 

@@ -9,10 +9,10 @@ import com.taxi.vo.member.Mbr;
 public interface MbrDao {
 
 	/**
-	 * 설  명: myInfo 조회하기
+	 * 설  명: myInfo 조회하기( 'mbrNo'로 조회 또는 'mbrPhoneNo','mbrUuid'로 조회 )
 	 * 작성자: 이용준 
 	 */
-	MyInfo getMyInfo(int mbrNo) throws Exception;
+	MyInfo getMyInfo(Mbr mbr) throws Exception;
 	
 	/**
 	 * 설  명: 회원추가
@@ -21,15 +21,5 @@ public interface MbrDao {
 	int addMbr(Mbr mbr) throws Exception;
 	
 	void deleteMbr(int mbrNo);
-	
-	
-/*	//====================== AS-IS =======================//
- 	
-	LoginInfo getLoginInfo(String mbrId) throws Exception;
-
-	int signUp(Mbr mbr) throws Exception;
-
-	int deleteMbr(String mbrId) throws Exception;
-*/
 	
 }
