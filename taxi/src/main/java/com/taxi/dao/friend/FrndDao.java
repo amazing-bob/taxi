@@ -18,5 +18,8 @@ public interface FrndDao {
 	 * 작성자: 김상헌
 	 */
 	List<Frnd> getFrndList(int mbrNo);
+
+
+
 	
 }
