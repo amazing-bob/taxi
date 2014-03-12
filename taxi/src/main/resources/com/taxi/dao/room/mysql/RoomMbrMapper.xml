@@ -199,22 +199,24 @@
 	    -- 내 친구 관계
 		select  #{roomNo}   		as roomNo
 		    ,   #{mbrNo}  			as mbrNo
-			,   X2.MBR_NAME         as mbrName
-            ,   X2.MBR_PHONE_NO     as mbrPhotoNo
-            ,   X2.MBR_PHOTO_URL    as mbrPhotoUrl
+			,   A.MBR_NAME  		as mbrName
+            ,   A.MBR_PHONE_NO 		as mbrPhotoNo
+            ,   A.MBR_PHOTO_URL 	as mbrPhotoUrl
 			,	#{gcmRegId} 		as gcmRegId
 		    ,   X1.MBR_NO   		as roomMbrNo
 			,   '1' 		        as roomMbrSt
             ,   null 				as relFrndPhoneNo
             ,   'Y'  				as mutualYn
-		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
+		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = #{roomNo}) as roomMbrRank
 		from
-				ROOM_MBR X1
+				MBR A
+			, 	ROOM_MBR X1
 			, 	MBR X2
 		where   1 = 1
-			and X1.MBR_NO = X2.MBR_NO
-		    and X1.ROOM_NO = #{roomNo}
-		    and X2.MBR_PHONE_NO in (
+		and 	A.MBR_NO 		= #{mbrNo}
+		and 	X1.MBR_NO 		= X2.MBR_NO
+		and 	X1.ROOM_NO 		= #{roomNo}
+		and 	X2.MBR_PHONE_NO in (
 			                            select  Y.FRND_PHONE_NO
 			                            from    FRND Y
 			                            where   1 = 1
@@ -226,30 +228,53 @@
 		-- 내 친구의 친구 관계
 		select  #{roomNo}   		as roomNo
 		    ,   #{mbrNo}  			as mbrNo
-			,   X2.MBR_NAME         as mbrName
-            ,   X2.MBR_PHONE_NO     as mbrPhotoNo
-            ,   X2.MBR_PHOTO_URL    as mbrPhotoUrl
+			,   A.MBR_NAME  		as mbrName
+            ,   A.MBR_PHONE_NO 		as mbrPhotoNo
+            ,   A.MBR_PHOTO_URL 	as mbrPhotoUrl
 		    ,	#{gcmRegId} 		as gcmRegId
 		    ,   X1.MBR_NO   		as roomMbrNo
 		    ,   '1' 		        as roomMbrSt
             ,   X3.FRND_PHONE_NO 	as relFrndPhoneNo
             ,   'Y'  				as mutualYn
-		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = X1.ROOM_NO) as roomMbrRank
+		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = #{roomNo}) as roomMbrRank
 
 		from
-				ROOM_MBR X1
+				MBR A
+			, 	ROOM_MBR X1
 			, 	MBR X2
 		    ,   FRND X3
 		where   1 = 1
-		and     X1.MBR_NO = X2.MBR_NO
-		and     X1.MBR_NO = X3.MBR_NO
-		and 	X1.ROOM_NO = #{roomNo}
+		and 	A.MBR_NO 		= #{mbrNo}
+		and     X1.MBR_NO 		= X2.MBR_NO
+		and     X1.MBR_NO 		= X3.MBR_NO
+		and 	X1.ROOM_NO 		= #{roomNo}
 		and 	X3.FRND_PHONE_NO in (
 			                            select  Y.FRND_PHONE_NO
 			                            from    FRND Y
 			                            where   1 = 1
 			                                and Y.MBR_NO = #{mbrNo}
 			                        )
+
+		union all
+
+		-- 나와 관계없는 경우
+		select  #{roomNo}   		as roomNo
+		    ,   #{mbrNo}  			as mbrNo
+			,   A.MBR_NAME  		as mbrName
+            ,   A.MBR_PHONE_NO 		as mbrPhotoNo
+            ,   A.MBR_PHOTO_URL 	as mbrPhotoUrl
+		    ,	#{gcmRegId} 		as gcmRegId
+		    ,   null 				as roomMbrNo
+		    ,   '0' 		        as roomMbrSt
+            ,   null 				as relFrndPhoneNo
+            ,   null  				as mutualYn
+		    ,	(select max(ROOM_MBR_RANK) + 1 from ROOM_MBR where ROOM_NO = #{roomNo}) as roomMbrRank
+
+		from
+				MBR A
+		where   1 = 1
+		and 	A.MBR_NO = 1	
+				                        
 		limit 1
 	</select>
     
