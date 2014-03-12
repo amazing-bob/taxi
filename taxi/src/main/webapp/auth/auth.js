@@ -362,11 +362,12 @@ var clickSignupBtn = function(){
 		var mbrPhotoUrl = "../images/randomIconImage/TAXI_RANDOM_icon_"+mbrPhotoNo+".png";
 		
 		console.log(mbrPhotoUrl);
-		//모바일버전
-		//signUp( phoneNo, device.uuid, mbrName , keywordNo);
+		if (device) {
+			signUp( phoneNo, device.uuid, mbrName , keywordNo , mbrPhotoUrl);
+		} else {
+			signUp( phoneNo, null, mbrName , keywordNo , mbrPhotoUrl);
+		}
 		
-		//웹버전
-		signUp( phoneNo, "abcdefg", mbrName , keywordNo , mbrPhotoUrl );
 
 	} else {
 		console.log("clickSignupBtn 예외발생");
