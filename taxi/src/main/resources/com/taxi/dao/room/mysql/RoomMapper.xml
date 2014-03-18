@@ -136,6 +136,9 @@
 		
 		group by 
 				A.ROOM_NO, A.ROOM_START_TIME, A.ROOM_MBR_NUM_LIMIT, A.ROOM_REG_DATE, A.ROOM_COLOR
+		having
+				A.ROOM_MBR_NUM_LIMIT > (select count(X.MBR_NO) from ROOM_MBR X 
+										where X.ROOM_NO = A.ROOM_NO )				
 		order by 
 				A.RELATION_CD, A.ROOM_START_TIME
 		limit 	#{lastRoomIdx}, 8				
