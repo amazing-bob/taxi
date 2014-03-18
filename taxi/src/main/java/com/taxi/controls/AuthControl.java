@@ -113,7 +113,7 @@ public class AuthControl {
 			// Mbr 받기
 			Mbr mbr = gson.fromJson(jsonObject, new TypeToken<Mbr>() {}.getType());
 			//임시 이미지 셋팅.
-			mbr.setMbrPhotoUrl("../images/photo/m01.jpg");
+			//mbr.setMbrPhotoUrl("../images/photo/m01.jpg");
 			
 			int keywordNo = 0;
 			List<Frnd> frndListParam = null;
