@@ -576,17 +576,7 @@ span.spanOkBtn{
     font-size: 15px;    
     text-shadow: none; 
 } 
-  
-div#divRegisterBlacklist{ 
-    width: 50%; 
-    float: left; 
-    text-align: center; 
-    position: absolute; 
-    margin-left: 50%; 
-    height: 45px;
-    line-height: 45px;
-}
- 
+
 
 
 
