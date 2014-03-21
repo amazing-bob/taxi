@@ -363,6 +363,35 @@ $(document).ready(function() {
 		}
 	});
 	
+		
+	// 참여하기 팝업 관련
+	$("#joinRoom_popup a.aCancelBtn").on("click", function(event) {
+		event.stopPropagation();
+		$("#joinRoom_popup").popup("close", {
+			transition : "pop"
+		});
+
+		return false;
+	});
+	$("#joinRoom_popup a.aOkBtn").on("click", function(event){
+		event.stopPropagation();
+		var outRoomNo = $("#joinRoom_popup").data("outRoomNo");
+		var joinRoomNo = $("#joinRoom_popup").data("joinRoomNo");
+		
+		outRoomToJoinRoom(myInfo.mbrNo, outRoomNo, joinRoomNo);
+
+		return false;
+	});
+	$("#joinRoom_popup").on("popupafterclose", function(event, ui) {
+		$(this).data("isOpen", false);
+	});
+	$("#joinRoom_popup").on("popupafteropen", function(event, ui) {
+		$(this).data("isOpen", true);
+	});
+	
+	
+	
+	
 }); //ready()
 
 
@@ -870,11 +899,6 @@ var searchRooms = function( mbrNo, page ) {
 
 					}
 					
-					/////////////////////////////////
-					console.log("------------------------------");
-					console.log(searchRoomList);
-					console.log(realignRoomList);
-					console.log(roomList);
 					// 기존의 방리스트에 조회해온 리스트 추가
                     if ( realignRoomList && realignRoomList.length > 0 ) { 
                         var roomListLen = roomList.length; 
@@ -882,9 +906,6 @@ var searchRooms = function( mbrNo, page ) {
                         	roomList[roomListLen + i] = realignRoomList[i]; 
                         } 
                     }
-                    console.log(roomList);
-                    console.log("------------------------------");
-					////////////////////////////////////				
 
 					// 내방 여부에 따른 화면 세팅
 					if ( isRoomMbr() ) { 
@@ -945,13 +966,15 @@ var createRoomList = function( roomList, isRoomMbr ) {
 	$("#ulRoomList").children().remove();
 	$("#scroller").css("width", 0+"px");
 
-	if (roomList && roomList.length > 0) { 
+	if (roomList && roomList.length > 0) { // 검색된 방이 있는 경우
 		var roomMbrList = null;
 		var divRoomMbrThumb = null;
 
 		for ( var i in roomList ) {
 			roomMbrList =  roomList[i].roomMbrList;
 
+			console.log(roomList[i])
+			
 			divRoomMbrThumb = $("<div>")
 									.addClass("divRoomMbrThumbs");
 			for ( var j in roomMbrList ) {
@@ -1023,11 +1046,44 @@ var createRoomList = function( roomList, isRoomMbr ) {
 															.text(roomList[i].roomPathList[1].pathName) ) )
 									.append(
 											$("<div>")
-												.addClass("divCanvas")
+												.addClass("relMapPaper")
+												.attr("id","relationMap")
 												.append(
-														$("<canvas>")
-															.addClass("canvas")
-															.attr("id", "myCanvas_" + i) ) ) ) )
+														$("<div>")
+															.addClass("relFace0")
+															.attr("id", "relMbr0")
+															.append(
+																	$("<span>")
+																	.attr("class","relMbr0Name")
+															))
+												.append(
+														$("<div>")
+															.addClass("relFace1")
+															.attr("id", "relMbr1")
+															.append(
+																	$("<span>")
+																	.attr("class","relMbr1Name")
+															))
+												.append(
+														$("<div>")
+															.addClass("relFace2")
+															.attr("id", "relMbr2")
+															.append(
+																	$("<span>")
+																	.attr("class","relMbr2Name")
+															))
+												.append(
+														$("<div>")
+															.addClass("relFace3")
+															.attr("id", "relMbr3")
+															.append(
+																	$("<span>")
+																	.attr("class","relMbr3Name")
+															))
+												.append(
+														$("<div id='relLine"+i+"'   style='position:absolute; width:100%; height:100%;'>")
+												)
+									) ) )
 				.append(
 						$("<div>")
 							.addClass("divBtnArea")
@@ -1042,15 +1098,31 @@ var createRoomList = function( roomList, isRoomMbr ) {
 										.on("click", function(event) {
 											event.stopPropagation();
 											
-											var roomNo = $(this).parents("li").data("roomNo");
+											var joinRoomNo = $(this).parents("li").data("roomNo");
 											
-//											push.initialise("joinRoom", roomNo);
-											joinRoom('111111111111111111111111111', roomNo); //////////////////////////////////////////// Web용 임시
+											if ( isRoomMbr ) {
+												var outRoomNo = getSessionItem("myRoom").roomNo;
+												
+												$("#joinRoom_popup").data("outRoomNo", outRoomNo);
+												$("#joinRoom_popup").data("joinRoomNo", joinRoomNo);
+												
+												$("#joinRoom_popup").popup("open", {
+													transition : "pop"
+												});
+												
+											} else {
+//												push.initialise("joinRoom", joinRoomNo);
+												joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시	
+											}
 											
 											return false;
 										}) ) )
 				.appendTo( $("#ulRoomList") );
 
+			//방관계도 그리기
+			relLineUp(roomMbrList,i)
+			
+			
 			$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
 
 			showRelationInfo(roomList[i], i);
@@ -1077,8 +1149,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 				null );
 		
 		$("#btnAddViewRoom").css("visibility","visible");
-		
-	} else { // 방이 있는 경우
+	} else { // 검색된 방이 없는 경우
 		var btnText = "방 만들기";
 		if ( isRoomMbr ) {
 			btnText  = "내방가기";
@@ -1382,9 +1453,9 @@ var showAddRoomTimePicker = function() {
  * 설  명: 방 참여하기
  * 작성자: 김상헌
  */
-var joinRoom = function(regId, roomNo) {
-	console.log("joinRoom(regId, roomNo)");
-//	console.log(regId, roomNo);
+var joinRoom = function(regId, joinRoomNo) {
+	console.log("joinRoom(regId, joinRoomNo");
+//	console.log(regId, joinRoomNo);
 
 	if ( isRoomMbr() ) {
 		Toast.shortshow("이미 방에 참여 중입니다.");
@@ -1392,7 +1463,7 @@ var joinRoom = function(regId, roomNo) {
 	} else {
     	var locationSession = getSessionItem("locationSession");
     	var params = {
-	    		roomNo 			: roomNo,
+	    		roomNo 			: joinRoomNo,
 	    		mbrNo			: myInfo.mbrNo,
 	            startLocName 	: locationSession.startName,
 	            startLocLng 	: locationSession.startX,
@@ -1416,7 +1487,7 @@ var joinRoom = function(regId, roomNo) {
 								},
 								// Success Callback
 								function() {
-									changeHref("../room/room.html", { roomNo : roomNo });
+									changeHref("../room/room.html", { roomNo : joinRoomNo });
 								});
 
 					} else {
@@ -1425,6 +1496,41 @@ var joinRoom = function(regId, roomNo) {
 					}
 				}, "json");
 	}
+};
+
+/**
+ * 설  명: 기존 방을 나가고 새로운 방에 참여하기
+ * 작성자: 김상헌
+ */
+var outRoomToJoinRoom = function(mbrNo, outRoomNo, joinRoomNo) {
+	console.log("outRoomToJoinRoom(mbrNo, outRoomNo, joinRoomNo");
+	console.log(mbrNo, outRoomNo, joinRoomNo);
+	
+		$.getJSON( 
+				// URL
+				rootPath + "/room/outRoom.do",
+				// Params
+				{
+					mbrNo 	: mbrNo,
+					roomNo 	: outRoomNo
+				},
+				// Success
+				function( result ) {
+					if(result.status == "success") {
+						// myRoom SessionStorage에 방 정보 제거
+						removeSessionItem("myRoom");
+		
+//						push.initialise("joinRoom", joinRoomNo);
+						joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시
+		
+					} else {
+						alert("실행중 오류발생!"); 
+						console.log(result.data);
+					}
+				});
+	
+
+	
 };
 
 
@@ -1654,10 +1760,10 @@ var showRelationInfo = function(roomInfo, idx) {
 	var canvas = document.getElementById("myCanvas_" + idx);
 
 	if ( contentWidth < 340 || contentHeight < 580 ) {
-		drawRelationCanvas(roomInfo, canvas, 1);
+//		drawRelationCanvas(roomInfo, canvas, 1);
 
 	} else {
-		drawRelationCanvas(roomInfo, canvas, 2);
+//		drawRelationCanvas(roomInfo, canvas, 2);
 
 	}
 
@@ -1713,3 +1819,54 @@ function slideMenuPanel() {
 	return false;
 	
 }
+
+
+/**
+ *   설   명  :  관계도 선 그리기
+ *   작성자 : 장종혁
+ */
+var relLineUp = function(roomMbrData,roomCnt){
+	
+	console.log("relLineUp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+	console.log(roomMbrData)
+	
+	console.log($(".relMapPaper")[0].children[0]);
+	
+	var faceCoordinate = new Array();
+	
+		// 위치값 보정
+		var w=35;
+		var h=35;
+		
+		faceCoordinate[0] = {
+				height : $(".relMapPaper")[0].children[0].clientHeight,
+				width : $(".relMapPaper")[0].children[0].clientWidth,
+				offsetHeight : $(".relMapPaper")[0].children[0].offsetTop+h,
+				offsetLeft : $(".relMapPaper")[0].children[0].offsetLeft+w
+		};
+		
+		faceCoordinate[1] = {
+				height : $(".relMapPaper")[0].children[1].clientHeight,
+				width : $(".relMapPaper")[0].children[1].clientWidth,
+				offsetHeight : $(".relMapPaper")[0].children[1].offsetTop+h,
+				offsetLeft : $(".relMapPaper")[0].children[1].offsetLeft+w
+		};
+		
+		faceCoordinate[2] = {
+				height : $(".relMapPaper")[0].children[2].clientHeight,
+				width : $(".relMapPaper")[0].children[2].clientWidth,
+				offsetHeight : $(".relMapPaper")[0].children[2].offsetTop+h,
+				offsetLeft : $(".relMapPaper")[0].children[2].offsetLeft+w
+		};
+		
+		faceCoordinate[3] = {
+				height : $(".relMapPaper")[0].children[3].clientHeight,
+				width : $(".relMapPaper")[0].children[3].clientWidth,
+				offsetHeight : $(".relMapPaper")[0].children[3].offsetTop+h,
+				offsetLeft : $(".relMapPaper")[0].children[3].offsetLeft+w
+		};
+		
+	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt)
+}
+
+
