@@ -394,7 +394,7 @@ var initStartTime = function() {
 	console.log();
 	var curr = new Date().getFullYear();
 	var opt = {
-	}
+	};
 	opt.date = {
 		preset : 'date'
 	};
@@ -1097,7 +1097,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 				.appendTo( $("#ulRoomList") );
 
 			//방관계도 그리기
-			relLineUp(roomMbrList,i)
+			relLineUp(roomMbrList,i);
 			
 			
 			$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
@@ -1527,19 +1527,33 @@ var favoriteList = function() {
     		function( favoriteLocationList ) {
 	            var ul = $("#favoriteUl");
 	            
-	            $("#favoriteUl #favoriteList").remove();
+	            $("#favoriteUl .favoriteList").remove();
 	            for (var i in favoriteLocationList) {
 	                $("<li>")
-	                    .attr("id" 			, "favoriteList")
-	                    .attr("data-theme" 	,"d")
+	                    .addClass("favoriteList")
+	                    .attr("data-theme" 	, "d")
 	                    .attr("data-icon" 	, "false")
-	                    .attr("data-rel","popup")
+	                    .attr("data-rel" 	, "popup")
 	                    .data("endX" 		, favoriteLocationList[i].fvrtLocLng)
 	                    .data("endY" 		, favoriteLocationList[i].fvrtLocLat)
 	                    .data("locName" 	, favoriteLocationList[i].fvrtLocName)
+	                    .data("locNo"		, favoriteLocationList[i].fvrtLocNo)
 	                    .click( function(event){
 	                    	
 	                    	$('.fvrbtn').remove();
+	                    	
+	                    	var textWidth = (window.contentWidth)*0.75;
+	                    	for(var i=0;i<$('.fvrTag').length;i++){
+	                    		
+	                    		
+	                    		$('.fvrTag')[i].style.width=textWidth+"px";
+	                    		$('.fvrTag')[i].style.textOverflow="ellipsis";
+	                    	}
+	                    	
+	                    	var textNo = $(this).data("locNo");
+	                    	$("#"+textNo).css("width","50%");
+	                    	var textNo = $(this).data("locNo");
+	                    	var text = $("#favoriteLink"+textNo).text();
 	                    	
 	                    	var loc = {
 	                    			 locX : $(this).data("endX"),
@@ -1548,11 +1562,13 @@ var favoriteList = function() {
 	                    	 };
 	                    	 
 	                      	 
-	                    	$(".fvlx"+$(this).data("endX")).append(
+	                    	$(".fvlx"+$(this).data("locNo")).append(
                              		$("<a>")
                             		.addClass("ui-btn ui-icon-arrow-r ui-btn-icon-left ui-corner-all ui-shadow ui-btn-inline fvrbtn")
-                            		.css("float","right")
+                            		.css("position","absolute")
+                            		.css("right","1%")
                             		.css("border","0.5px dotted  gray")
+                            		.css("bottom","11%")
                             		.text("목적지")
                             		.click( function(event){
                             			
@@ -1574,8 +1590,9 @@ var favoriteList = function() {
                             .append(
                             		$("<a>")
                             		.addClass("ui-btn ui-icon-arrow-r ui-btn-icon-left ui-corner-all ui-shadow ui-btn-inline fvrbtn")
-                            		.css("float","right")
-                            		.css("margin-right","40px")
+                            		.css("position","absolute")
+                            		.css("right","17%")
+                            		.css("bottom","10%")
                             		.css("border","0.5px dotted  gray")
                             		.text("출발지")
                             		.click(function(event) {
@@ -1625,9 +1642,11 @@ var favoriteList = function() {
 	            		})
 	                    .append(
 	                    		$("<a>")
-	                            	.attr("id", "favoriteLink")
-	                            	.addClass("fvrTag  fvlx"+favoriteLocationList[i].fvrtLocLng)
+	                            	.attr("id",favoriteLocationList[i].fvrtLocNo)
+	                            	.addClass("fvrTag  fvlx"+favoriteLocationList[i].fvrtLocNo)
+	                            	.attr("position","relative")
 	                                .attr("href","#")
+	                                .attr("width","100%")
 	                                .text( favoriteLocationList[i].fvrtLocName)
 	                                .append(
 	                                		$("<img>")
@@ -1643,84 +1662,6 @@ var favoriteList = function() {
 	    			transition : "pop"
 	    		});
     		});
-//    $.getJSON(
-//    		// URL
-//    		rootPath + "/location/getFavoriteList.do",
-//    		// Parameter
-//    		{ mbrNo : myInfo.mbrNo },
-//    		// Success
-//    		function(result) {
-//		        if(result.status == "success") {
-//		            var fvrtLoc = result.data;
-//		            var ul = $("#favoriteUl");
-//		
-//		            $("#favoriteUl #favoriteList").remove();
-//		            for (var i in fvrtLoc) {
-//		                $("<li>")
-//		                    .attr("id", "favoriteList")
-//		                    .attr("data-theme","d")
-//		                    .attr("data-icon", "false")
-//		                    .data("endX", fvrtLoc[i].fvrtLocLng)
-//		                    .data("endY", fvrtLoc[i].fvrtLocLat)
-//		                    .data("locName", fvrtLoc[i].fvrtLocName)
-////		                    .on("touchend", function(event) {
-//		                    .click( function(event){
-//		                    	setEndLocationSession(
-//		                     			$(this).data("endX"),
-//		                     			$(this).data("endY"),
-//		                     			$(this).data("locName"),
-//		                    			"",
-//		                    			function () {
-//		                		    		checkEndLocation();
-//		                		    		map.moveTo( new olleh.maps.Coord($(this).data("endX"), $(this).data("endY")) );
-//		                                    $("#divFavoriteLoc_popup").popup("close");
-//		                		    	});
-//		                     	return false;
-//		                    })
-//		                    .append(
-//		                    		$("<a>")
-//		                            	.attr("id", "favoriteLink")
-//		                                .attr("href","#")
-//		                                .text( fvrtLoc[i].fvrtLocName)
-//		                                .append(
-//		                                		$("<img>")
-//		                                			.addClass("ui-li-icon ui-corner-none")
-//			                                        .attr("src", "../images/common/star-th.png")
-//		                                )
-//		                    )
-//		                    .appendTo(ul);
-//		                $("#favoriteUl").listview("refresh");
-//		            }
-//		
-//		            $("#divFavoriteLoc_popup").popup("open", {
-//		    			transition : "pop"
-//		    		});
-//		        } else {
-//			        // 즐겨찾기 없을경우 + 버튼 추가
-//		
-//		        }
-//		    });
-};
-
-
-/**
- * 설  명: 관계도 그리기
- * 작성자: 김상헌
- */
-var showRelationInfo = function(roomInfo, idx) {
-	console.log("showRelationInfo(roomInfo, idx)");
-//	console.log(roomInfo, idx);
-
-	var canvas = document.getElementById("myCanvas_" + idx);
-
-	if ( contentWidth < 340 || contentHeight < 580 ) {
-//		drawRelationCanvas(roomInfo, canvas, 1);
-
-	} else {
-//		drawRelationCanvas(roomInfo, canvas, 2);
-
-	}
-
 };
 
 
@@ -1806,7 +1747,7 @@ var relLineUp = function(roomMbrData, roomCnt){
 				offsetLeft : $(".relMapPaper")[0].children[3].offsetLeft+w
 		};
 		
-	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt)
-}
+	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt);
+};
 
 

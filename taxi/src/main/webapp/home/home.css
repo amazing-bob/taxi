@@ -495,12 +495,6 @@ div#divAddRoom:hover { background: #c6ecf8;  box-shadow: 0px 1px -1px #c6ecf8; z
 }
 
 
-
-
-
-
-
-
 /* 팝업 공통 */
 .ulPopup{ 
   border-radius: 3px 3px 0px 0px;
@@ -578,22 +572,11 @@ span.spanOkBtn{
 } 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* 즐겨찾는 위치 */
 #favoriteUl{
 	height: auto;
 }
-#favoriteList{
+.favoriteList{
     height: 40px;
 	overflow: hidden;
 }
