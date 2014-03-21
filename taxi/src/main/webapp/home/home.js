@@ -416,7 +416,7 @@ var initStartTime = function() {
 	console.log();
 	var curr = new Date().getFullYear();
 	var opt = {
-	}
+	};
 	opt.date = {
 		preset : 'date'
 	};
@@ -973,7 +973,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 		for ( var i in roomList ) {
 			roomMbrList =  roomList[i].roomMbrList;
 
-			console.log(roomList[i])
+			console.log(roomList[i]);
 			
 			divRoomMbrThumb = $("<div>")
 									.addClass("divRoomMbrThumbs");
@@ -1111,7 +1111,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 												});
 												
 											} else {
-//												push.initialise("joinRoom", joinRoomNo);
+												//push.initialise("joinRoom", joinRoomNo);
 												joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시	
 											}
 											
@@ -1120,7 +1120,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 				.appendTo( $("#ulRoomList") );
 
 			//방관계도 그리기
-			relLineUp(roomMbrList,i)
+			relLineUp(roomMbrList,i);
 			
 			
 			$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
@@ -1520,7 +1520,7 @@ var outRoomToJoinRoom = function(mbrNo, outRoomNo, joinRoomNo) {
 						// myRoom SessionStorage에 방 정보 제거
 						removeSessionItem("myRoom");
 		
-//						push.initialise("joinRoom", joinRoomNo);
+						//push.initialise("joinRoom", joinRoomNo);
 						joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시
 		
 					} else {
@@ -1539,8 +1539,6 @@ var outRoomToJoinRoom = function(mbrNo, outRoomNo, joinRoomNo) {
  * 작성자: 김상헌
  * 수정내용 : 스와이프시 왼쪽:출발지 오른쪽 : 목적지 & 버튼 추가
  * 수정자 : 장종혁
- * 수정내용 : UI변경
- * 수정자 : 김태경
  */
 var favoriteList = function() {
     console.log("favoriteList()");
@@ -1552,7 +1550,6 @@ var favoriteList = function() {
     		function( favoriteLocationList ) {
 	            var ul = $("#favoriteUl");
 	            
-	            //즐겨찾기 li태그 만들어주는 부분.
 	            $("#favoriteUl .favoriteList").remove();
 	            for (var i in favoriteLocationList) {
 	                $("<li>")
@@ -1588,6 +1585,7 @@ var favoriteList = function() {
 	                    			 locName : $(this).data("locName")
 	                    	 };
 	                    	 
+	                      	 
 	                    	$(".fvlx"+$(this).data("locNo")).append(
                              		$("<a>")
                             		.addClass("ui-btn ui-icon-arrow-r ui-btn-icon-left ui-corner-all ui-shadow ui-btn-inline fvrbtn")
@@ -1667,7 +1665,6 @@ var favoriteList = function() {
 	                     	return false;
 	            		})
 	                    .append(
-	                    		
 	                    		$("<a>")
 	                            	.attr("id",favoriteLocationList[i].fvrtLocNo)
 	                            	.addClass("fvrTag  fvlx"+favoriteLocationList[i].fvrtLocNo)
@@ -1827,8 +1824,8 @@ function slideMenuPanel() {
  */
 var relLineUp = function(roomMbrData,roomCnt){
 	
-	console.log("relLineUp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-	console.log(roomMbrData)
+	console.log("relLineUp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	console.log(roomMbrData);
 	
 	console.log($(".relMapPaper")[0].children[0]);
 	
@@ -1866,7 +1863,7 @@ var relLineUp = function(roomMbrData,roomCnt){
 				offsetLeft : $(".relMapPaper")[0].children[3].offsetLeft+w
 		};
 		
-	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt)
-}
+	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt);
+};
 
 
