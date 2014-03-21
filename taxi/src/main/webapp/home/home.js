@@ -1433,6 +1433,8 @@ var joinRoom = function(regId, roomNo) {
  * 작성자: 김상헌
  * 수정내용 : 스와이프시 왼쪽:출발지 오른쪽 : 목적지 & 버튼 추가
  * 수정자 : 장종혁
+ * 수정내용 : UI변경
+ * 수정자 : 김태경
  */
 var favoriteList = function() {
     console.log("favoriteList()");
@@ -1444,19 +1446,35 @@ var favoriteList = function() {
     		function( favoriteLocationList ) {
 	            var ul = $("#favoriteUl");
 	            
-	            $("#favoriteUl #favoriteList").remove();
+	            //즐겨찾기 li태그 만들어주는 부분.
+	            $("#favoriteUl .favoriteList").remove();
 	            for (var i in favoriteLocationList) {
 	                $("<li>")
-	                    .attr("id" 			, "favoriteList")
+	                    .addClass("favoriteList")
 	                    .attr("data-theme" 	,"d")
 	                    .attr("data-icon" 	, "false")
 	                    .attr("data-rel","popup")
 	                    .data("endX" 		, favoriteLocationList[i].fvrtLocLng)
 	                    .data("endY" 		, favoriteLocationList[i].fvrtLocLat)
 	                    .data("locName" 	, favoriteLocationList[i].fvrtLocName)
+	                    .data("locNo"		, favoriteLocationList[i].fvrtLocNo)
 	                    .click( function(event){
 	                    	
 	                    	$('.fvrbtn').remove();
+	                    	
+	                    	var textWidth = (window.contentWidth)*0.75;
+	                    	for(var i=0;i<$('.fvrTag').length;i++){
+	                    		
+	                    		
+	                    		$('.fvrTag')[i].style.width=textWidth+"px";
+	                    		$('.fvrTag')[i].style.textOverflow="ellipsis";
+	                    	}
+	                    	
+	                    	var textNo = $(this).data("locNo");
+	                    	console.log("========"+textNo+"=======");
+	                    	$("#"+textNo).css("width","50%");
+	                    	var textNo = $(this).data("locNo");
+	                    	var text = $("#favoriteLink"+textNo).text();
 	                    	
 	                    	var loc = {
 	                    			 locX : $(this).data("endX"),
@@ -1464,12 +1482,13 @@ var favoriteList = function() {
 	                    			 locName : $(this).data("locName")
 	                    	 };
 	                    	 
-	                      	 
-	                    	$(".fvlx"+$(this).data("endX")).append(
+	                    	$(".fvlx"+$(this).data("locNo")).append(
                              		$("<a>")
                             		.addClass("ui-btn ui-icon-arrow-r ui-btn-icon-left ui-corner-all ui-shadow ui-btn-inline fvrbtn")
-                            		.css("float","right")
+                            		.css("position","absolute")
+                            		.css("right","1%")
                             		.css("border","0.5px dotted  gray")
+                            		.css("bottom","11%")
                             		.text("목적지")
                             		.click( function(event){
                             			
@@ -1491,8 +1510,9 @@ var favoriteList = function() {
                             .append(
                             		$("<a>")
                             		.addClass("ui-btn ui-icon-arrow-r ui-btn-icon-left ui-corner-all ui-shadow ui-btn-inline fvrbtn")
-                            		.css("float","right")
-                            		.css("margin-right","40px")
+                            		.css("position","absolute")
+                            		.css("right","17%")
+                            		.css("bottom","10%")
                             		.css("border","0.5px dotted  gray")
                             		.text("출발지")
                             		.click(function(event) {
@@ -1541,10 +1561,13 @@ var favoriteList = function() {
 	                     	return false;
 	            		})
 	                    .append(
+	                    		
 	                    		$("<a>")
-	                            	.attr("id", "favoriteLink")
-	                            	.addClass("fvrTag  fvlx"+favoriteLocationList[i].fvrtLocLng)
+	                            	.attr("id",favoriteLocationList[i].fvrtLocNo)
+	                            	.addClass("fvrTag  fvlx"+favoriteLocationList[i].fvrtLocNo)
+	                            	.attr("position","relative")
 	                                .attr("href","#")
+	                                .attr("width","100%")
 	                                .text( favoriteLocationList[i].fvrtLocName)
 	                                .append(
 	                                		$("<img>")
