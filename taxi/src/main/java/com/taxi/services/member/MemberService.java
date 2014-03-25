@@ -26,6 +26,13 @@ public interface MemberService {
 	void leaveMember(int mbrNo)throws Exception;
 
 	
+	/**
+	 * 설  명 : 회원 사진 주소 업데이트
+	 * 작성자 : 장종혁
+	 */
+	int updateMbrPhotoUrl(Mbr mbr)throws Exception;
+	
+	
 /*	//====================== AS-IS =======================//
  
 	void signUp(Mbr mbr) throws Exception ;

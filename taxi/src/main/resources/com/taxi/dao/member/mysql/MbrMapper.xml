@@ -84,7 +84,14 @@
         delete from MBR  
         where MBR_NO=#{value}  
     </delete> 
-    
+
+	<update id="updateMbrPhotoUrl" parameterType="Mbr"> 
+	    update MBR
+	    set MBR_PHOTO_URL = #{mbrPhotoUrl}
+	    where MBR_NO = #{mbrNo}
+	</update>
+	
+	
 </mapper>
 
 

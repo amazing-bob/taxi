@@ -22,4 +22,6 @@ public interface MbrDao {
 	
 	void deleteMbr(int mbrNo);
 	
+	int updateMbrPhotoUrl(Mbr mbr)throws Exception;
+	
 }
