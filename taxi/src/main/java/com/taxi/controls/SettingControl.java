@@ -87,11 +87,11 @@ public class SettingControl {
 		    path = sc.getAttribute("rootRealPath") +userPhoto.getName(); 
 
 		    String filename = this.getNewFileName();
-			path = sc.getAttribute("rootRealPath") + "userProfileImg/" + filename+".jpg";
+			path = sc.getAttribute("rootRealPath") + "userProfileImg/" + filename+".png";
 			userPhoto.transferTo(new File(path));
 			
 			mbr.setMbrNo(mbrNo);
-			mbr.setMbrPhotoUrl(rtPath+"/userProfileImg/" + filename+".jpg");
+			mbr.setMbrPhotoUrl(rtPath+"/userProfileImg/" + filename+".png");
 			
 			System.out.println(mbr.getMbrPhotoUrl());
 			
