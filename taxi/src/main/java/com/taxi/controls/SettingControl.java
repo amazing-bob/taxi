@@ -1,5 +1,6 @@
 package com.taxi.controls;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -9,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.taxi.services.setting.SettingService;
 import com.taxi.vo.JsonResult;
@@ -23,6 +26,8 @@ public class SettingControl {
 	@Autowired ServletContext sc;
 	@Autowired SettingService settingService;
 	
+	long currTime = 0;
+	int count = 0; 
 	
 	@RequestMapping("/logout")
 	@ResponseBody
@@ -60,88 +65,49 @@ public class SettingControl {
 		return jsonResult;
 
 	}
-/*	//====================== AS-IS =======================//
- 
-	@RequestMapping(value="/getRange")
-    @ResponseBody
-    public Object getRange( HttpSession session,
-                                    LoginInfo loginInfo ) throws Exception {
-         
-        JsonResult jsonResult = new JsonResult();
- 
-        try {
-             
-            loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-           
-                jsonResult.setStatus("success");
-                jsonResult.setData(settingService.getRange(loginInfo.getMbrId()));
-                 
-            } catch (Throwable e) {
-            	e.printStackTrace();
-                StringWriter out = new StringWriter();
-                e.printStackTrace(new PrintWriter(out));
-                 
-                jsonResult.setStatus("fail");
-                jsonResult.setData(out.toString());
-            }
-            return jsonResult;          
-    }
-	
-	
-	@RequestMapping(value="/updateRange",method=RequestMethod.POST)
+
+
+	@RequestMapping(value="/uploadUserPhoto", method=RequestMethod.POST)
 	@ResponseBody
-	public Object updateRange(Setting setting, HttpSession session) throws Exception{
-
+	public Object uploadUserPhoto(@RequestParam("file")MultipartFile userPhoto) throws Exception {
 		JsonResult jsonResult = new JsonResult();
+		
+			System.out.println(userPhoto.getSize());
+		    
+		    try {
+		    String path = new String();
+		    path = sc.getAttribute("rootRealPath") +userPhoto.getName(); 
 
-		try{
-			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
-			setting.setMbrId(loginInfo.getMbrId());
-			settingService.updateRange(setting);
-			jsonResult.setStatus("success");
-		}catch(Throwable e){
-			e.printStackTrace();
+		    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+		    System.out.println(path);
+		    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+		    
+		    String filename = this.getNewFileName();
+			path = sc.getAttribute("rootRealPath") + "userProfileImg/" + filename+".jpg";
+			userPhoto.transferTo(new File(path));
+			
+		
+		} catch (Throwable e) {
 			StringWriter out = new StringWriter();
 			e.printStackTrace(new PrintWriter(out));
-
+			e.printStackTrace();
 			jsonResult.setStatus("fail");
 			jsonResult.setData(out.toString());
 		}
-
-		return jsonResult;
-
-	}
-
-//	@RequestMapping("/deleteFvrtLoc")
-//	@ResponseBody
-//	public Object deleteFvrtLoc(int fvrtLocNo)throws Exception{
-//		JsonResult jsonResult = new JsonResult();
-//		try {
-//			settingService.removeFvrtLoc(fvrtLocNo);
-//			jsonResult.setStatus("success");
-//
-//
-//		} catch (Throwable e) {
-//			StringWriter out = new StringWriter();
-//			e.printStackTrace(new PrintWriter(out));
-//
-//			jsonResult.setStatus("fail");
-//			jsonResult.setData(out.toString());
-//		}
-//		return jsonResult;
-//	}
-
-	@RequestMapping("/logout")
-	@ResponseBody
-	public Object logout(SessionStatus status) throws Exception {
-		System.out.println("logout()");
-		status.setComplete();
-		JsonResult jsonResult = new JsonResult();
-		jsonResult.setStatus("success");
-
 		return jsonResult;
 	}
-*/	
+	
+	
+	synchronized private String getNewFileName() {
+		long millis = System.currentTimeMillis(); //1000
+		if (currTime != millis) {
+			currTime = millis;
+			count = 0;
+		}
+		return "userProfileImg_" + millis + "_" + (++count);
+	}
+	
+	
 	
 }
 
