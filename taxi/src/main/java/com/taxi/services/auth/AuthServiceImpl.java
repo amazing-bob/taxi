@@ -1,21 +1,18 @@
 package com.taxi.services.auth;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.taxi.dao.auth.LoginDao;
+import com.taxi.dao.auth.AccountDao;
 import com.taxi.dao.member.MbrDao;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.member.Mbr;
 
+
 @Service
 public class AuthServiceImpl implements AuthService {
-	@Autowired LoginDao loginDao;
-	@Autowired MbrDao mbrDao;
+	@Autowired AccountDao 	accountDao;
+	@Autowired MbrDao 		mbrDao;
 	
 	
 	/**

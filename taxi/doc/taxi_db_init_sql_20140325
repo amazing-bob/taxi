@@ -1,0 +1,578 @@
+-- Drop Table
+-- 콜택시회사정보
+DROP TABLE IF EXISTS `CALL_COMP` RESTRICT;
+-- 안심서비스(로컬DB)
+DROP TABLE IF EXISTS `SAFE` RESTRICT;
+-- 설정정보
+DROP TABLE IF EXISTS `SETTING` RESTRICT;
+-- 블랙회원정보
+DROP TABLE IF EXISTS `BLACK` RESTRICT;
+-- 동승회원정보
+DROP TABLE IF EXISTS `SHARED` RESTRICT;
+-- 키워드연결정보
+DROP TABLE IF EXISTS `KEYWORD_REL` RESTRICT;
+-- 키워드정보
+DROP TABLE IF EXISTS `KEYWORD` RESTRICT;
+-- 최근위치정보
+DROP TABLE IF EXISTS `RCNT_LOC` RESTRICT;
+-- 즐겨찾는위치정보
+DROP TABLE IF EXISTS `FVRT_LOC` RESTRICT;
+-- 친구정보
+DROP TABLE IF EXISTS `FRND` RESTRICT;
+-- 피드
+DROP TABLE IF EXISTS `FEED` RESTRICT;
+-- 방회원정보
+DROP TABLE IF EXISTS `ROOM_MBR` RESTRICT;
+-- 방경로정보
+DROP TABLE IF EXISTS `ROOM_PATH` RESTRICT;
+-- 방정보
+DROP TABLE IF EXISTS `ROOM` RESTRICT;
+-- 로그인정보
+DROP TABLE IF EXISTS `ACCOUNT` RESTRICT;
+-- 회원정보
+DROP TABLE IF EXISTS `MBR` RESTRICT;
+
+
+-- Create Table
+-- 설정정보
+CREATE TABLE `SETTING` (
+	`MBR_NO`              INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	`START_RANGE`         INTEGER     NULL     COMMENT '단위: m(미터)', -- 출발지반경
+	`END_RANGE`           INTEGER     NULL     COMMENT '단위: m(미터)', -- 목적지반경
+	`PUSH_YN`             VARCHAR(5)  NULL     COMMENT '진동&벨알림', -- 푸쉬알림여부
+	`ROOM_MBR_NUM_LIMIT`  INTEGER     NULL     COMMENT '방인원수제한', -- 방인원수제한
+	`SAFE_GUARD_PHONE_NO` VARCHAR(30) NULL     COMMENT '안심보호자휴대폰번호', -- 안심보호자휴대폰번호
+	`SAFE_GUARD_NAME`     VARCHAR(50) NULL     COMMENT '안심보호자이름', -- 안심보호자이름
+	`SAFE_TIME_INTERVAL`  INTEGER     NULL     COMMENT '단위: ms(밀리세컨드)' -- 안심알림시간간격
+)
+COMMENT '설정정보';
+
+-- 설정정보
+ALTER TABLE `SETTING`
+	ADD CONSTRAINT `PK_SETTING` -- 설정정보 기본키
+		PRIMARY KEY (
+			`MBR_NO` -- 회원번호
+		);
+
+-- 친구정보
+CREATE TABLE `FRND` (
+	`MBR_NO`        INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	`FRND_PHONE_NO` VARCHAR(30) NOT NULL COMMENT '친구휴대폰번호', -- 친구휴대폰번호
+	`FRND_NAME`     VARCHAR(50) NULL     COMMENT '친구이름', -- 친구이름
+	`FRND_REG_DATE` TIMESTAMP   NOT NULL DEFAULT now() COMMENT '친구등록일시' -- 친구등록일시
+)
+COMMENT '친구정보';
+
+-- 친구정보
+ALTER TABLE `FRND`
+	ADD CONSTRAINT `PK_FRND` -- 친구정보 기본키
+		PRIMARY KEY (
+			`MBR_NO`,        -- 회원번호
+			`FRND_PHONE_NO`  -- 친구휴대폰번호
+		);
+
+-- 친구정보 MBR_NO 인덱스
+CREATE INDEX `IX_NN_FRND_MBR_NO`
+	ON `FRND`( -- 친구정보
+		`MBR_NO` ASC -- 회원번호
+	);
+
+-- 친구정보 FRND_PHONE_NO 인덱스
+CREATE INDEX `IX_NN_FRND_FRND_PHONE_NO`
+	ON `FRND`( -- 친구정보
+		`FRND_PHONE_NO` ASC -- 친구휴대폰번호
+	);
+
+-- 피드
+CREATE TABLE `FEED` (
+	`FEED_NO`       INTEGER      NOT NULL COMMENT '피드번호', -- 피드번호
+	`ROOM_NO`       INTEGER      NOT NULL COMMENT '방번호', -- 방번호
+	`MBR_NO`        INTEGER      NOT NULL COMMENT '글작성 회원 번호', -- 회원번호
+	`FEED_CONTENT`  VARCHAR(255) NOT NULL COMMENT '피드내용', -- 피드내용
+	`FEED_REG_DATE` TIMESTAMP    NOT NULL DEFAULT now() COMMENT '피드등록일시' -- 피드등록일시
+)
+COMMENT '피드';
+
+-- 피드
+ALTER TABLE `FEED`
+	ADD CONSTRAINT `PK_FEED` -- 피드 기본키
+		PRIMARY KEY (
+			`FEED_NO` -- 피드번호
+		);
+
+ALTER TABLE `FEED`
+	MODIFY COLUMN `FEED_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '피드번호';
+
+ALTER TABLE `FEED`
+	AUTO_INCREMENT = 1;
+
+-- 회원정보
+CREATE TABLE `MBR` (
+	`MBR_NO`          INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+	`MBR_PHONE_NO`    VARCHAR(30)  NOT NULL COMMENT '회원휴대폰번호', -- 회원휴대폰번호
+	`MBR_UUID`        VARCHAR(255) NULL     COMMENT '회원UUID', -- 회원UUID
+	`MBR_NAME`        VARCHAR(50)  NOT NULL COMMENT '회원이름', -- 회원이름
+	`MBR_PHOTO_URL`   VARCHAR(255) NOT NULL COMMENT '회원사진', -- 회원사진
+	`MBR_GENDER`      VARCHAR(10)  NULL     COMMENT 'M:남성, F:여성', -- 성별
+	`MBR_REG_DATE`    TIMESTAMP    NOT NULL DEFAULT now() COMMENT '회원가입일시', -- 회원가입일시
+	`LAST_LOGIN_DATE` TIMESTAMP    NOT NULL COMMENT '최종로그인일시', -- 최종로그인일시
+	`MBR_UPDATE_DATE` TIMESTAMP    NOT NULL COMMENT '회원정보변경일시' -- 회원정보변경일시
+)
+COMMENT '회원정보';
+
+-- 회원정보
+ALTER TABLE `MBR`
+	ADD CONSTRAINT `PK_MBR` -- 회원정보 기본키
+		PRIMARY KEY (
+			`MBR_NO` -- 회원번호
+		);
+
+-- 회원정보 유니크 인덱스
+CREATE UNIQUE INDEX `IX_UN_MBR_MBR_PHONE_NO_MBR_UUID`
+	ON `MBR` ( -- 회원정보
+		`MBR_PHONE_NO` ASC, -- 회원휴대폰번호
+		`MBR_UUID` ASC      -- 회원UUID
+	);
+
+ALTER TABLE `MBR`
+	MODIFY COLUMN `MBR_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '회원번호';
+
+ALTER TABLE `MBR`
+	AUTO_INCREMENT = 1;
+
+-- 즐겨찾는위치정보
+CREATE TABLE `FVRT_LOC` (
+	`FVRT_LOC_NO`   INTEGER      NOT NULL COMMENT '즐겨찾는위치번호', -- 즐겨찾는위치번호
+	`MBR_NO`        INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+	`FVRT_LOC_NAME` VARCHAR(255) NOT NULL COMMENT '즐겨찾는위치명', -- 즐겨찾는위치명
+	`FVRT_LOC_LAT`  DOUBLE       NOT NULL COMMENT '즐겨찾는위치위도', -- 즐겨찾는위치위도
+	`FVRT_LOC_LNG`  DOUBLE       NOT NULL COMMENT '즐겨찾는위치경도', -- 즐겨찾는위치경도
+	`FVRT_LOC_RANK` INTEGER      NOT NULL COMMENT '즐겨찾는위치우선순위' -- 즐겨찾는위치우선순위
+)
+COMMENT '즐겨찾는위치정보';
+
+-- 즐겨찾는위치정보
+ALTER TABLE `FVRT_LOC`
+	ADD CONSTRAINT `PK_FVRT_LOC` -- 즐겨찾는위치정보 기본키
+		PRIMARY KEY (
+			`FVRT_LOC_NO` -- 즐겨찾는위치번호
+		);
+
+ALTER TABLE `FVRT_LOC`
+	MODIFY COLUMN `FVRT_LOC_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '즐겨찾는위치번호';
+
+ALTER TABLE `FVRT_LOC`
+	AUTO_INCREMENT = 1;
+
+-- 방정보
+CREATE TABLE `ROOM` (
+	`ROOM_NO`            INTEGER   NOT NULL COMMENT '방번호', -- 방번호
+	`ROOM_START_TIME`    TIMESTAMP NOT NULL COMMENT '출발시간', -- 출발시간
+	`ROOM_MBR_NUM_LIMIT` INTEGER   NOT NULL COMMENT '방인원수제한', -- 방인원수제한
+	`ROOM_REG_DATE`      TIMESTAMP NOT NULL DEFAULT now() COMMENT '방등록일시', -- 방등록일시
+	`ROOM_COLOR`         INTEGER   NOT NULL COMMENT '방화면 전환 색' -- 방색
+)
+COMMENT '방정보';
+
+-- 방정보
+ALTER TABLE `ROOM`
+	ADD CONSTRAINT `PK_ROOM` -- 방정보 기본키
+		PRIMARY KEY (
+			`ROOM_NO` -- 방번호
+		);
+
+ALTER TABLE `ROOM`
+	MODIFY COLUMN `ROOM_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '방번호';
+
+-- 방회원정보
+CREATE TABLE `ROOM_MBR` (
+	`ROOM_NO`           INTEGER     NOT NULL COMMENT '방번호', -- 방번호
+	`MBR_NO`            INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	`GCM_REG_ID`        TEXT        NOT NULL COMMENT 'gcm 디바이스 아이디', -- GCM아이디
+	`ROOM_MBR_NO`       INTEGER     NULL     COMMENT '방멤버회원번호', -- 방멤버회원번호
+	`ROOM_MBR_ST`       VARCHAR(5)  NULL     COMMENT '0:무관, 1:친구, 2:동승자, 3:키워드', -- 방회원구분
+	`REL_FRND_PHONE_NO` VARCHAR(30) NULL     COMMENT '연결친구전화번호', -- 연결친구전화번호
+	`MUTUAL_YN`         VARCHAR(5)  NULL     COMMENT 'null:무관, Y:쌍방, N:일방', -- 연결친구분
+	`ROOM_MBR_RANK`     INTEGER     NOT NULL COMMENT '방에 들어온 순서(1, 2, 3, 4)' -- 회원참여순서
+)
+COMMENT '방회원정보';
+
+-- 방회원정보
+ALTER TABLE `ROOM_MBR`
+	ADD CONSTRAINT `PK_ROOM_MBR` -- 방회원정보 기본키
+		PRIMARY KEY (
+			`ROOM_NO`, -- 방번호
+			`MBR_NO`   -- 회원번호
+		);
+
+ALTER TABLE `ROOM_MBR`
+	MODIFY COLUMN `ROOM_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '방번호';
+
+ALTER TABLE `ROOM_MBR`
+	AUTO_INCREMENT = 1;
+
+-- 방경로정보
+CREATE TABLE `ROOM_PATH` (
+	`ROOM_NO`   INTEGER      NOT NULL COMMENT '방번호', -- 방번호
+	`PATH_RANK` INTEGER      NOT NULL COMMENT '0:출발지, 1:첫번째경유지, 2:두번째경유지, 3:세번째경유지 , 99: 목적지', -- 경로순번
+	`PATH_NAME` VARCHAR(255) NOT NULL COMMENT '경로위치명', -- 경로위치명
+	`PATH_LAT`  DOUBLE       NOT NULL COMMENT '경로위도', -- 경로위도
+	`PATH_LNG`  DOUBLE       NOT NULL COMMENT '경로경도' -- 경로경도
+)
+COMMENT '방경로정보';
+
+-- 방경로정보
+ALTER TABLE `ROOM_PATH`
+	ADD CONSTRAINT `PK_ROOM_PATH` -- 방경로정보 기본키
+		PRIMARY KEY (
+			`ROOM_NO`,   -- 방번호
+			`PATH_RANK`  -- 경로순번
+		);
+
+-- 방경로정보 ROOM_NO 인덱스
+CREATE INDEX `IX_NN_ROOM_PATH_ROOM_NO`
+	ON `ROOM_PATH`( -- 방경로정보
+		`ROOM_NO` ASC -- 방번호
+	);
+
+-- 계정정보
+CREATE TABLE `ACCOUNT` (
+	`ACCOUNT_NO`       INTEGER     NOT NULL COMMENT '계정번호', -- 계정번호
+	`ACCOUNT_EMAIL`    VARCHAR(40) NOT NULL COMMENT '계정이메일', -- 계정이메일
+	`ACCOUNT_PASSWORD` VARCHAR(50) NULL     COMMENT '계정비밀번호', -- 계정비밀번호
+	`MBR_NO`           INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	`ACCOUNT_ST`       VARCHAR(5)  NOT NULL COMMENT 'G:일반, F:페이스북' -- 계정구분
+)
+COMMENT '계정정보';
+
+-- 계정정보
+ALTER TABLE `ACCOUNT`
+	ADD CONSTRAINT `PK_ACCOUNT` -- 계정정보 기본키
+		PRIMARY KEY (
+			`ACCOUNT_NO` -- 계정번호
+		);
+
+-- 계정정보 유니크 인덱스
+CREATE UNIQUE INDEX `UIX_ACCOUNT`
+	ON `ACCOUNT` ( -- 계정정보
+		`ACCOUNT_EMAIL` ASC -- 계정이메일
+	);
+
+ALTER TABLE `ACCOUNT`
+	MODIFY COLUMN `ACCOUNT_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '계정번호';
+
+ALTER TABLE `ACCOUNT`
+	AUTO_INCREMENT = 1;
+
+-- 블랙회원정보
+CREATE TABLE `BLACK` (
+	`MBR_NO`             INTEGER   NOT NULL COMMENT '회원번호', -- 회원번호
+	`BLACK_MBR_NO`       INTEGER   NOT NULL COMMENT '블랙회원번호', -- 블랙회원번호
+	`BLACK_MBR_REG_DATE` TIMESTAMP NOT NULL DEFAULT now() COMMENT '블랙회원등록일시' -- 블랙회원등록일시
+)
+COMMENT '블랙회원정보';
+
+-- 블랙회원정보
+ALTER TABLE `BLACK`
+	ADD CONSTRAINT `PK_BLACK` -- 블랙회원정보 기본키
+		PRIMARY KEY (
+			`MBR_NO`,       -- 회원번호
+			`BLACK_MBR_NO`  -- 블랙회원번호
+		);
+
+-- 동승회원정보
+CREATE TABLE `SHARED` (
+	`MBR_NO`           INTEGER   NOT NULL COMMENT '회원번호', -- 회원번호
+	`SHARED_NO`        INTEGER   NOT NULL COMMENT '동승회원번호', -- 동승회원번호
+	`LAST_SHARED_DATE` TIMESTAMP NOT NULL COMMENT '최근동승일시' -- 최근동승일시
+)
+COMMENT '동승회원정보';
+
+-- 동승회원정보
+ALTER TABLE `SHARED`
+	ADD CONSTRAINT `PK_SHARED` -- 동승회원정보 기본키
+		PRIMARY KEY (
+			`MBR_NO`,    -- 회원번호
+			`SHARED_NO`  -- 동승회원번호
+		);
+
+-- 키워드정보
+CREATE TABLE `KEYWORD` (
+	`KEYWORD_NO`   INTEGER     NOT NULL COMMENT '키워드번호', -- 키워드번호
+	`KEYWORD_NAME` VARCHAR(50) NOT NULL COMMENT '키워드명', -- 키워드명
+	`KEYWORD_ST`   VARCHAR(5)  NOT NULL COMMENT 'H:고등학교, U:대학교, J:직장' -- 키월드구분
+)
+COMMENT '키워드정보';
+
+-- 키워드정보
+ALTER TABLE `KEYWORD`
+	ADD CONSTRAINT `PK_KEYWORD` -- 키워드정보 기본키
+		PRIMARY KEY (
+			`KEYWORD_NO` -- 키워드번호
+		);
+
+ALTER TABLE `KEYWORD`
+	MODIFY COLUMN `KEYWORD_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '키워드번호';
+
+ALTER TABLE `KEYWORD`
+	AUTO_INCREMENT = 1;
+
+-- 키워드연결정보
+CREATE TABLE `KEYWORD_REL` (
+	`MBR_NO`     INTEGER NOT NULL COMMENT '회원번호', -- 회원번호
+	`KEYWORD_NO` INTEGER NOT NULL COMMENT '키워드번호' -- 키워드번호
+)
+COMMENT '키워드연결정보';
+
+-- 키워드연결정보
+ALTER TABLE `KEYWORD_REL`
+	ADD CONSTRAINT `PK_KEYWORD_REL` -- 키워드연결정보 기본키
+		PRIMARY KEY (
+			`MBR_NO`,     -- 회원번호
+			`KEYWORD_NO`  -- 키워드번호
+		);
+
+-- 안심서비스
+CREATE TABLE `SAFE` (
+	`SAFE_NO`             INTEGER     NOT NULL COMMENT '안심서비스번호', -- 안심서비스번호
+	`MBR_NO`              INTEGER     NOT NULL COMMENT '회원번호', -- 회원번호
+	`SAFE_GUARD_PHONE_NO` VARCHAR(30) NOT NULL COMMENT '안심보호자휴대폰번호', -- 안심보호자휴대폰번호
+	`SAFE_GUARD_NAME`     VARCHAR(50) NULL     COMMENT '안심보호자이름', -- 안심보호자이름
+	`SAFE_TIME_INTERVAL`  INTEGER     NOT NULL COMMENT '단위: ms(밀리세컨드)', -- 안심알림시간간격
+	`SAFE_START_DATE`     TIMESTAMP   NOT NULL DEFAULT now() COMMENT '안심시작일시', -- 안심시작일시
+	`SAFE_END_DATE`       TIMESTAMP   NULL     COMMENT '안심종료일시' -- 안심종료일시
+)
+COMMENT '안심서비스';
+
+-- 안심서비스
+ALTER TABLE `SAFE`
+	ADD CONSTRAINT `PK_SAFE` -- 안심서비스 기본키
+		PRIMARY KEY (
+			`SAFE_NO` -- 안심서비스번호
+		);
+
+ALTER TABLE `SAFE`
+	MODIFY COLUMN `SAFE_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '안심서비스번호';
+
+ALTER TABLE `SAFE`
+	AUTO_INCREMENT = 1;
+
+-- 콜택시회사정보
+CREATE TABLE `CALL_COMP` (
+	`CALL_COMP_NO`     INTEGER     NOT NULL COMMENT '콜택시회사번호', -- 콜택시회사번호
+	`CALL_COMP_NAME`   VARCHAR(50) NOT NULL COMMENT '콜택시회사이름', -- 콜택시회사이름
+	`CALL_COMP_TEL_NO` VARCHAR(30) NOT NULL COMMENT '콜택시회사전화번호', -- 콜택시회사전화번호
+	`CALL_COMP_REGION` VARCHAR(50) NULL     COMMENT '콜택시회사지역' -- 콜택시회사지역
+)
+COMMENT '콜택시회사정보';
+
+-- 콜택시회사정보
+ALTER TABLE `CALL_COMP`
+	ADD CONSTRAINT `PK_CALL_COMP` -- 콜택시회사정보 기본키
+		PRIMARY KEY (
+			`CALL_COMP_NO` -- 콜택시회사번호
+		);
+
+ALTER TABLE `CALL_COMP`
+	MODIFY COLUMN `CALL_COMP_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '콜택시회사번호';
+
+ALTER TABLE `CALL_COMP`
+	AUTO_INCREMENT = 1;
+
+-- 최근위치정보
+CREATE TABLE `RCNT_LOC` (
+	`RCNT_LOC_NO`       INTEGER      NOT NULL COMMENT '최근위치번호', -- 최근위치번호
+	`MBR_NO`            INTEGER      NOT NULL COMMENT '회원번호', -- 회원번호
+	`RCNT_LOC_NAME`     VARCHAR(255) NOT NULL COMMENT '최근위치명', -- 최근위치명
+	`RCNT_LOC_LAT`      DOUBLE       NOT NULL COMMENT '최근위치위도', -- 최근위치위도
+	`RCNT_LOC_LNG`      DOUBLE       NOT NULL COMMENT '최근위치경도', -- 최근위치경도
+	`RCNT_LOC_REG_DATE` TIMESTAMP    NOT NULL DEFAULT now() COMMENT '최근위치등록일시', -- 최근위치등록일시
+	`RCNT_LOC_ST`       VARCHAR(5)   NOT NULL COMMENT 'S:출발지, E:목적지' -- 즐겨찾는위치구분
+)
+COMMENT '최근위치정보';
+
+-- 최근위치정보
+ALTER TABLE `RCNT_LOC`
+	ADD CONSTRAINT `PK_RCNT_LOC` -- 최근위치정보 기본키
+		PRIMARY KEY (
+			`RCNT_LOC_NO` -- 최근위치번호
+		);
+
+ALTER TABLE `RCNT_LOC`
+	MODIFY COLUMN `RCNT_LOC_NO` INTEGER NOT NULL AUTO_INCREMENT COMMENT '최근위치번호';
+
+ALTER TABLE `RCNT_LOC`
+	AUTO_INCREMENT = 1;
+
+-- 방회원정보
+ALTER TABLE `ROOM_MBR`
+	ADD CONSTRAINT `FK_MBR_TO_ROOM_MBR` -- 회원정보 -> 방회원정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		),
+	ADD INDEX `IX_FN_MBR_TO_ROOM_MBR_MBR_NO` (
+		`MBR_NO` ASC -- 회원번호
+	);
+
+-- 설정정보
+ALTER TABLE `SETTING`
+	ADD CONSTRAINT `FK_MBR_TO_SETTING` -- 회원정보 -> 설정정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 친구정보
+ALTER TABLE `FRND`
+	ADD CONSTRAINT `FK_MBR_TO_FRND` -- 회원정보 -> 친구정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 피드
+ALTER TABLE `FEED`
+	ADD CONSTRAINT `FK_ROOM_TO_FEED` -- 방정보 -> 피드
+		FOREIGN KEY (
+			`ROOM_NO` -- 방번호
+		)
+		REFERENCES `ROOM` ( -- 방정보
+			`ROOM_NO` -- 방번호
+		);
+
+-- 피드
+ALTER TABLE `FEED`
+	ADD CONSTRAINT `FK_MBR_TO_FEED` -- 회원정보 -> 피드
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 즐겨찾는위치정보
+ALTER TABLE `FVRT_LOC`
+	ADD CONSTRAINT `FK_MBR_TO_FVRT_LOC` -- 회원정보 -> 즐겨찾는위치정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 방회원정보
+ALTER TABLE `ROOM_MBR`
+	ADD CONSTRAINT `FK_ROOM_TO_ROOM_MBR` -- 방정보 -> 방회원정보
+		FOREIGN KEY (
+			`ROOM_NO` -- 방번호
+		)
+		REFERENCES `ROOM` ( -- 방정보
+			`ROOM_NO` -- 방번호
+		);
+
+-- 방경로정보
+ALTER TABLE `ROOM_PATH`
+	ADD CONSTRAINT `FK_ROOM_TO_ROOM_PATH` -- 방정보 -> 방경로정보
+		FOREIGN KEY (
+			`ROOM_NO` -- 방번호
+		)
+		REFERENCES `ROOM` ( -- 방정보
+			`ROOM_NO` -- 방번호
+		);
+
+-- 계정정보
+ALTER TABLE `ACCOUNT`
+	ADD CONSTRAINT `FK_MBR_TO_ACCOUNT` -- 회원정보 -> 계정정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 블랙회원정보
+ALTER TABLE `BLACK`
+	ADD CONSTRAINT `FK_MBR_TO_BLACK` -- 회원정보 -> 블랙회원정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 블랙회원정보
+ALTER TABLE `BLACK`
+	ADD CONSTRAINT `FK_MBR_TO_BLACK2` -- 회원정보 -> 블랙회원정보2
+		FOREIGN KEY (
+			`BLACK_MBR_NO` -- 블랙회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 동승회원정보
+ALTER TABLE `SHARED`
+	ADD CONSTRAINT `FK_MBR_TO_SHARED` -- 회원정보 -> 동승회원정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 동승회원정보
+ALTER TABLE `SHARED`
+	ADD CONSTRAINT `FK_MBR_TO_SHARED2` -- 회원정보 -> 동승회원정보2
+		FOREIGN KEY (
+			`SHARED_NO` -- 동승회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 키워드연결정보
+ALTER TABLE `KEYWORD_REL`
+	ADD CONSTRAINT `FK_MBR_TO_KEYWORD_REL` -- 회원정보 -> 키워드연결정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 키워드연결정보
+ALTER TABLE `KEYWORD_REL`
+	ADD CONSTRAINT `FK_KEYWORD_TO_KEYWORD_REL` -- 키워드정보 -> 키워드연결정보
+		FOREIGN KEY (
+			`KEYWORD_NO` -- 키워드번호
+		)
+		REFERENCES `KEYWORD` ( -- 키워드정보
+			`KEYWORD_NO` -- 키워드번호
+		);
+
+-- 안심서비스
+ALTER TABLE `SAFE`
+	ADD CONSTRAINT `FK_MBR_TO_SAFE` -- 회원정보 -> 안심서비스
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);
+
+-- 최근위치정보
+ALTER TABLE `RCNT_LOC`
+	ADD CONSTRAINT `FK_MBR_TO_RCNT_LOC` -- 회원정보 -> 최근위치정보
+		FOREIGN KEY (
+			`MBR_NO` -- 회원번호
+		)
+		REFERENCES `MBR` ( -- 회원정보
+			`MBR_NO` -- 회원번호
+		);

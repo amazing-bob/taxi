@@ -10,7 +10,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.taxi.dao.auth.LoginDao;
+import com.taxi.dao.auth.AccountDao;
 import com.taxi.dao.black.BlackDao;
 import com.taxi.dao.feed.FeedDao;
 import com.taxi.dao.friend.FrndDao;
@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
     @Autowired FeedDao 		  feedDao; 
     @Autowired RoomMbrDao 	  roomMbrDao; 
     @Autowired SettingDao 	  settingDao; 
-    @Autowired LoginDao       loginDao;
+    @Autowired AccountDao     accountDao;
     @Autowired BlackDao       blackDao;
     @Autowired SharedDao      sharedDao;
     @Autowired KeywordRelDao  keywordRelDao;
@@ -118,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
         settingDao.deleteSetting(mbrNo);
        
         
-        loginDao.deleteLoginData(mbrNo);
+        accountDao.deleteAccount(mbrNo);
         blackDao.deleteBlackList(mbrNo);
         sharedDao.deleteSharedList(mbrNo);
         keywordRelDao.deleteKeywordRelData(mbrNo);

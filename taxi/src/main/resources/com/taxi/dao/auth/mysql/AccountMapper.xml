@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.taxi.dao.auth.LoginDao">
+<mapper namespace="com.taxi.dao.auth.AccountDao">
     
-	<delete id="deleteLoginData" parameterType="int">
-	    delete from LOGIN  
+	<delete id="deleteAccount" parameterType="int">
+	    delete from ACCOUNT
         where MBR_NO=#{value}
 	</delete>
  
