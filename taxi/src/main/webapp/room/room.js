@@ -160,7 +160,6 @@ var registerEvent = function() {
 	});
 	$("#popupExit_popup a.aOkBtn").click( function(event){
 		event.stopPropagation();
-		
 		var mbrNo = myInfo.mbrNo;
 		var roomNo = getSessionItem("myRoom").roomNo;
 		outRoom(mbrNo, roomNo);
@@ -173,6 +172,15 @@ var registerEvent = function() {
 	$("#popupExit_popup").on("popupafteropen", function(event, ui) {
 		$(this).data("isOpen", true);
 	});
+	/**
+	 *  설    명 : 방 나가기 취소시 뒷 배경 제거  
+	 *   작성자 : 장종혁
+	 */
+	$(".divCancelBtn").on("click",function(){
+		event.stopPropagation();
+		showhideBlackBackground("hide");
+	});
+	
 	
 
 	// 블랙리스트 관련
