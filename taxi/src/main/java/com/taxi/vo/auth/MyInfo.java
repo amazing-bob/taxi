@@ -35,11 +35,10 @@ public class MyInfo extends Mbr implements Serializable {
 	protected String 	safeGuardPhoneNo;
 	protected String 	safeGuardName;
 	protected int 		safeTimeInterval;
-	// Login 관련
-	protected int 		loginNo;
-	protected String 	loginEmail;
-	protected String 	loginSt;
-	protected String 	loginPassword;
+	// Account 관련
+	protected int 		accountNo;
+	protected String 	accountEmail;
+	protected String 	accountSt;
 	// Room 관련
 	protected boolean 	isRoomMbr;
 	protected Room 		myRoom;
@@ -76,7 +75,7 @@ public class MyInfo extends Mbr implements Serializable {
 	public MyInfo setMbrUpdateDate(Date mbrUpdateDate) {
 		return (MyInfo) super.setMbrUpdateDate(mbrUpdateDate);
 	}
-	
+
 	
 	public int getStartRange() {
 		return startRange;
@@ -127,32 +126,25 @@ public class MyInfo extends Mbr implements Serializable {
 		this.safeTimeInterval = safeTimeInterval;
 		return this;
 	}
-	public int getLoginNo() {
-		return loginNo;
+	public int getAccountNo() {
+		return accountNo;
 	}
-	public MyInfo setLoginNo(int loginNo) {
-		this.loginNo = loginNo;
+	public MyInfo setAccountNo(int accountNo) {
+		this.accountNo = accountNo;
 		return this;
 	}
-	public String getLoginEmail() {
-		return loginEmail;
+	public String getAccountEmail() {
+		return accountEmail;
 	}
-	public MyInfo setLoginEmail(String loginEmail) {
-		this.loginEmail = loginEmail;
+	public MyInfo setAccountEmail(String accountEmail) {
+		this.accountEmail = accountEmail;
 		return this;
 	}
-	public String getLoginSt() {
-		return loginSt;
+	public String getAccountSt() {
+		return accountSt;
 	}
-	public MyInfo setLoginSt(String loginSt) {
-		this.loginSt = loginSt;
-		return this;
-	}
-	public String getLoginPassword() {
-		return loginPassword;
-	}
-	public MyInfo setLoginPassword(String loginPassword) {
-		this.loginPassword = loginPassword;
+	public MyInfo setAccountSt(String accountSt) {
+		this.accountSt = accountSt;
 		return this;
 	}
 	public boolean isRoomMbr() {

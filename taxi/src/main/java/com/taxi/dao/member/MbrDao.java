@@ -20,6 +20,12 @@ public interface MbrDao {
 	 */
 	int addMbr(Mbr mbr) throws Exception;
 	
-	void deleteMbr(int mbrNo);
+	void deleteMbr(int mbrNo) throws Exception;
+
+	/**
+	 * 설  명: 회원 정보 변경 (전화번호, UUID) 
+	 * 작성자: 김상헌 
+	 */
+	void updatePhoneNoUuid(Mbr mbr) throws Exception;
 	
 }

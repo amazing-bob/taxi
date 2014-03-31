@@ -4,11 +4,87 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.taxi.dao.auth.AccountDao">
+	<resultMap id="accountResultMap" type="Account">
+    	<result 	column="ACCOUNT_NO" 		property="accountNo"		 />
+    	<result 	column="ACCOUNT_EMAIL" 		property="accountEmail"	 />
+    	<result 	column="ACCOUNT_PASSWORD" 	property="accountPassword" />
+    	<result 	column="MBR_NO" 			property="mbrNo"		 />
+    	<result 	column="ACCOUNT_ST" 		property="accountSt"		 />
+    </resultMap>
+    
     
 	<delete id="deleteAccount" parameterType="int">
 	    delete from ACCOUNT
         where MBR_NO=#{value}
 	</delete>
+	
+	
+	<!--
+		 * 설   명: 계정 추가하기
+		 * 작성자: 김상헌
+	-->
+	<insert id="insertAccount" parameterType="Account">
+	    insert into ACCOUNT
+	    	( ACCOUNT_EMAIL		, ACCOUNT_PASSWORD	, MBR_NO	, ACCOUNT_ST )
+	    values 
+	    	( #{accountEmail}	, #{accountPassword}, #{mbrNo}	, #{accountSt} )
+	</insert>	
+	
+	
+	<!--
+		 * 설   명: 사용중인 계정 정보 가져오기
+		 * 작성자: 김상헌
+	-->
+	<select id="getUsedAccount" parameterType="String" resultMap="accountResultMap">
+		select	
+				ACCOUNT_NO
+			, 	ACCOUNT_EMAIL
+			, 	ACCOUNT_PASSWORD
+			, 	MBR_NO
+			, 	ACCOUNT_ST
+		from 	
+				ACCOUNT
+		where 	1 = 1
+		and 	ACCOUNT_EMAIL = #{accountEmail}
+	</select>
+	
+	<!-- 
+		 * 설   명: 나의 계정 정보 가져오기
+		 * 작성자: 김상헌	
+	-->
+	<select id="getMyAccount" parameterType="int" resultMap="accountResultMap">
+		select	
+				ACCOUNT_NO
+			, 	ACCOUNT_EMAIL
+			, 	ACCOUNT_PASSWORD
+			, 	MBR_NO
+			, 	ACCOUNT_ST
+		from 	
+				ACCOUNT
+		where 	1 = 1
+		and 	MBR_NO = #{mbrNo}
+	</select>
+	
+	
+	<!-- 
+		 * 설  명: 계정 로그인 확인
+		 * 작성자: 김상헌	
+	-->
+	<select id="loginAccount" parameterType="Account" resultMap="accountResultMap">
+		select	
+				ACCOUNT_NO
+			, 	ACCOUNT_EMAIL
+			, 	ACCOUNT_PASSWORD
+			, 	MBR_NO
+			, 	ACCOUNT_ST
+		from 	
+				ACCOUNT
+		where 	1 = 1
+		and 	ACCOUNT_EMAIL 		= #{accountEmail}
+		and 	ACCOUNT_PASSWORD 	= #{accountPassword}
+	</select>
+	
+
  
 </mapper> 
 

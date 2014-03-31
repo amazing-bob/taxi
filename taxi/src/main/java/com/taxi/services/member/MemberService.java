@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.friend.Frnd;
-import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.member.Mbr;
-
 
 
 public interface MemberService {
@@ -25,22 +23,10 @@ public interface MemberService {
 
 	void leaveMember(int mbrNo)throws Exception;
 
-	
-/*	//====================== AS-IS =======================//
- 
-	void signUp(Mbr mbr) throws Exception ;
-	  
-    void addFavoritePlace(FvrtLoc fvrtLoc) throws Exception;
-    
-    List<FvrtLoc> getFavoritePlaces(String mbrId) throws Exception;
-    
-    void changeFavoritePlaces(FvrtLoc fvrtLocList) throws Exception;	
-    
-    void removeFavoritePlace(int fvrtLocNo) throws Exception;
-	
-    void leaveMember(String mbrId) throws Exception;
+	/**
+	 * 설  명: 회원 정보 변경 (전화번호, UUID) 
+	 * 작성자: 김상헌 
+	 */
+	void updatePhoneNoUuid(int previousMbrNo, String presentPhoneNo, String presentUuid) throws Exception;
 
-	void frndRefresh(Mbr mbr) throws Exception ;
-*/
-	
 }

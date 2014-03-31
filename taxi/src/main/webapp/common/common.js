@@ -208,7 +208,7 @@ var changeHref = function (url, jsonObject) {
  * 작성자: 김상헌
  */
 var getMyInfo = function() {
-	console.log("getMyInfo{()");
+	console.log("getMyInfo()");
 	
 	var hrefArr = window.location.href.split("/auth/");
 	var curHtml = hrefArr[hrefArr.length-1];

@@ -126,7 +126,20 @@ public class MemberServiceImpl implements MemberService {
         rcntLocDao.deleteRcntLocList(mbrNo);
         mbrDao.deleteMbr(mbrNo);
         
-		
+	}
+
+
+	/**
+	 * 설  명: 회원 정보 변경 (전화번호, UUID) 
+	 * 작성자: 김상헌 
+	 */
+	@Override
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
+	public void updatePhoneNoUuid(int previousMbrNo, String presentPhoneNo, String presentUuid) throws Exception {
+		Mbr mbr = new Mbr().setMbrNo( previousMbrNo )
+							.setMbrPhoneNo( presentPhoneNo )
+							.setMbrUuid( presentUuid );
+		mbrDao.updatePhoneNoUuid( mbr );
 	}
 
 }

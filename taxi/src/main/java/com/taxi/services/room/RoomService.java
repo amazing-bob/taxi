@@ -58,6 +58,12 @@ public interface RoomService {
 	 * 작성자: 장종혁
 	 */
 	void removeRoom(List<Room> pastRoomList) throws Exception;
+
+	/**
+	 * 설  명: 해당 방멤버와 피드에서 mbrNo를 변경
+	 * 작성자: 김상헌
+	 */
+	void changeMbrNoInRoomMbrFeed(int roomNo, int originMbrNo, int changeMbrNo) throws Exception;
 	
 	
 	

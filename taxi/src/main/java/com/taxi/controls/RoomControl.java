@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.taxi.services.location.LocationService;
 import com.taxi.services.room.RoomService;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.auth.LoginInfo;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.LocationSession;

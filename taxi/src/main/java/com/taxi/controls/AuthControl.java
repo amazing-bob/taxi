@@ -26,13 +26,16 @@ import com.taxi.services.black.BlackService;
 import com.taxi.services.friend.FriendService;
 import com.taxi.services.location.LocationService;
 import com.taxi.services.member.MemberService;
+import com.taxi.services.room.RoomService;
 import com.taxi.vo.JsonResult;
+import com.taxi.vo.auth.Account;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.black.Black;
 import com.taxi.vo.friend.Frnd;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.member.Mbr;
+import com.taxi.vo.room.Room;
 
 
 @Controller
@@ -44,6 +47,8 @@ public class AuthControl {
 	@Autowired LocationService 	locationService;
 	@Autowired BlackService		blackService;
 	@Autowired FriendService    friendService;
+	@Autowired RoomService 		roomService;
+	
 	
 	/**
 	 * 설  명: 회원가입 여부 조회 
@@ -184,5 +189,117 @@ public class AuthControl {
 		
 		return jsonResult;
 	}
+	
+	
+	/**
+	 * 설  명: 추가 계정 만들기
+	 * 작성자: 김상헌 
+	 */
+	@RequestMapping("/createAccount")
+	@ResponseBody
+	public Object craeteAccount(Account account) {
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			authService.createAccount(account);
+			MyInfo myInfo = memberService.getMyInfo( account.getMbrNo() );
+			
+			jsonResult.setData(myInfo);
+			jsonResult.setStatus("success");
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData(e.getMessage());
+		}
+		
+		return jsonResult;
+	}
 
+	
+	/**
+	 * 설  명: 계정 로그인
+	 * 작성자: 김상헌
+	 */
+	@RequestMapping("/loginAccount")
+	@ResponseBody
+	public Object loginAccount( Account account ) {
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			MyInfo 			changeMyInfo = authService.loginAccountReturnMyInfo(account);
+			Room 			myRoom 		= null;
+			List<Frnd> 		frndList 	= null;
+			List<FvrtLoc> 	fvrtLocList = null;
+			List<RcntLoc> 	rcntLocList = null;
+			List<Black> 	blackList 	= null;
+			
+			
+			if ( changeMyInfo != null && changeMyInfo.getMbrNo() > 0 ) {
+				int mbrNo = changeMyInfo.getMbrNo();
+				
+				myRoom 		= roomService.getMyRoom(mbrNo);
+				frndList 	= friendService.getFrndList(mbrNo);
+				fvrtLocList = locationService.getFavoriteList(mbrNo);
+				rcntLocList = locationService.getRecentDestination(mbrNo);
+				blackList 	= blackService.getBlackList(mbrNo, 0);
+				
+			}
+			
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("myInfo" 		, changeMyInfo);
+			resultMap.put("myRoom"		, myRoom);
+			resultMap.put("frndList"	, frndList);
+			resultMap.put("fvrtLocList"	, fvrtLocList);
+			resultMap.put("rcntLocList"	, rcntLocList);
+			resultMap.put("blackList"	, blackList);
+			
+			
+			jsonResult.setData(resultMap);
+			jsonResult.setStatus("success");
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData( e.getMessage() );
+		}
+		
+		return jsonResult;
+	}
+	
+	
+	/**
+	 * 설  명: 이메일 유효성 검사
+	 * 작성자: 김상헌
+	 */
+	@RequestMapping("/validSignupAccount")
+	@ResponseBody
+	public Object validAccount( Account account ) {
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			boolean isVaildAccount = authService.validAccount(account);
+
+			if ( isVaildAccount ) {
+				jsonResult.setStatus("success");
+				jsonResult.setData(true);
+				
+			} else {
+				jsonResult.setStatus("success");
+				jsonResult.setData(false);
+				
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData( e.getMessage() );
+			
+		}
+		
+		return jsonResult;
+	}
 }

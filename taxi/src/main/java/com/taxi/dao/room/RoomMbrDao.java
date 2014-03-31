@@ -55,18 +55,11 @@ public interface RoomMbrDao {
 	 * 작성자: 김상헌 
 	 */
 	List<RoomMbr> getAlramGcmTargetRoomMbrList(int roomNo) throws Exception;
+
+	/**
+	 * 설  명: 해당 방멤버의 mbrNo를 변경 
+	 * 작성자: 김상헌
+	 */
+	void changeMbrNoInRoomMbr(Map<String, Object> paramMap) throws Exception;
 	
-/*	//====================== AS-IS =======================//
- 
-
-	int deleteRoomMbr(String mbrId) throws Exception;
-
-	RoomMbr getRoomMbrInfo(Map<String, Object> paramMap) throws Exception;
-	
-	List<RoomMbr> getRoomMbrDetailList(int roomNo) throws Exception;
-
-
-	int outRoom(Map<String, Object> paramMap) throws Exception;
-	
-*/
 }

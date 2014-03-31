@@ -21,7 +21,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.taxi.services.location.LocationService;
 import com.taxi.vo.JsonResult;
-import com.taxi.vo.auth.LoginInfo;
 import com.taxi.vo.location.FvrtLoc;
 import com.taxi.vo.location.RcntLoc;
 import com.taxi.vo.member.Mbr;

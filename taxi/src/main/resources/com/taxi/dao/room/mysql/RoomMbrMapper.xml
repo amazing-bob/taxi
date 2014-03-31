@@ -339,5 +339,21 @@
 			</when>
 		</choose>
 	</select>
+	
+	
+	<!--
+		 * 설  명: 해당 방멤버의 mbrNo를 변경 
+		 * 작성자: 김상헌
+	-->
+	<update id="changeMbrNoInRoomMbr" parameterType="map">
+	    update 	
+	    		ROOM_MBR
+	    set 
+	    		MBR_NO = #{changeMbrNo}
+		where
+				1 = 1
+		and 	ROOM_NO = #{roomNo}  
+		and 	MBR_NO 	= #{originMbrNo}
+	</update>
 		
 </mapper>

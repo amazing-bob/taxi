@@ -1,18 +1,18 @@
 console.log("settings...");
 
 var that = this;
-var myInfo;
+//var myInfo;
 
 var fvrtLocNo;
 
 $(document).ready(function() {
 
-	myInfo = getLocalItem("myInfo");
+//	myInfo = getLocalItem("myInfo");
 	getUpdatedTime();
 	initAjaxLoading();
 	document.addEventListener("deviceready", onDeviceReady, false);
 	registerEvent();
-	
+	displayAccountInfoArea();
 
 });
 /**
@@ -22,8 +22,6 @@ $(document).ready(function() {
 var registerEvent = function(){
 	
 	console.log(myInfo.mbrPhotoUrl);
-	
-	checkAccount();
 	
 	$("#seach").click(function() {
 		myInfo = getLocalItem("myInfo");
@@ -104,6 +102,18 @@ var registerEvent = function(){
 	});
 	$.mobile.loadPage( "settings.html", { showLoadMsg: false } );
 	
+	//계정연동 버튼 회원연동화면으로 이동
+	$("#btnAccountLogin").click(function() {
+		
+		if ( myInfo.accountNo && myInfo.accountNo != 0 ) { 
+			alert("이미 계정연동이 되었습니다.");
+//			Toast.shortshow("이미 계정연동이 되었습니다.");
+			
+		} else {
+			changeHref("../auth/signup.html");
+		}
+	});
+	
 	/*친구목록갱신 버튼*/
 /*	$("#btnRefresh").on( "click", ".show-page-loading-msg", function() {
 		
@@ -129,6 +139,27 @@ function onDeviceReady() {
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
 
 }
+
+
+/**
+ * 설  명: 계정정보영역 내용 보여기
+ * 작성자: 김상헌
+ */
+var displayAccountInfoArea = function() {
+	console.log("displayAccountInfoArea()");
+	
+	$("#imgMbrPhoto").attr( "src", myInfo.mbrPhotoUrl );
+	$("#spanMbrName").text(myInfo.mbrName);
+	$("#spanPhoneNo").text(myInfo.mbrPhoneNo);
+	
+	if ( myInfo.accountNo && myInfo.accountNo > 0 ) {
+		$("#btnAccountLogin").text(myInfo.accountEmail);
+		
+	} else {
+		$("#btnAccountLogin").text("TAXI 계정 연동");
+				
+	}
+};
 
 
 /**
@@ -215,7 +246,7 @@ var updateFrndList = function(){
 				// Transaction Execute
 				function( transaction ) {
 					
-					deleteFrndData (	transaction, myInfo.mbrNo);	
+					deleteAllFrndTable (transaction);	
 					insertFrndTable( 	transaction, result.data.frndList);
 					
 				},function(){
@@ -503,20 +534,7 @@ var setFvrtLocNo = function(fvrtLocNo){
 	this.fvrtLocNo = fvrtLocNo;
 };
 
-/**
- * 내 용:회원 가입 여부에 따른 로그인 텍스트 변경(TAXI 계정 or email)
- * 작성자:김태경
- */
-var checkAccount = function(){
-	console.log(myInfo.loginEmail);
-	if(myInfo.loginEmail){
-		$("#account").text(myInfo.loginEmail);
-		$("#imgMbrPhoto").attr( "src", myInfo.mbrPhotoUrl );
-	}else{
-		$("#account").text("TAXI 계정 로그인");
-		$("#imgMbrPhoto").attr( "src", myInfo.mbrPhotoUrl );
-	}
-};
+
 /**
  * 내용:휴대폰에서 연락처 가져오기
  * 작성자:장종혁

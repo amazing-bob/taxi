@@ -242,4 +242,21 @@ public class RoomServiceImpl implements RoomService {
 		}
 	}
 
+
+	/**
+	 * 설  명: 해당 방멤버와 피드에서 mbrNo를 변경
+	 * 작성자: 김상헌
+	 */
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public void changeMbrNoInRoomMbrFeed(int roomNo, int originMbrNo, int changeMbrNo) throws Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("roomNo"		, roomNo);
+		paramMap.put("originMbrNo"	, originMbrNo);
+		paramMap.put("changeMbrNo"	, changeMbrNo);
+		
+		roomMbrDao.changeMbrNoInRoomMbr(paramMap);
+		feedDao.changeMbrNoInFeed(paramMap);
+	}
+
 }

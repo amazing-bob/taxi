@@ -361,12 +361,11 @@ var clickSignupBtn = function(){
 		var mbrPhotoNo = Math.floor((Math.random()*10)+1);
 		var mbrPhotoUrl = "../images/randomIconImage/TAXI_RANDOM_icon_"+mbrPhotoNo+".png";
 		
-		console.log(mbrPhotoUrl);
-//		if (device) {
-//			signUp( phoneNo, device.uuid, mbrName , keywordNo , mbrPhotoUrl);
-//		} else {
-			signUp( phoneNo, null, mbrName , keywordNo , mbrPhotoUrl);
-//		}
+		if ( window['device'] != undefined ) {
+			signUp( phoneNo, device.uuid, mbrName , keywordNo , mbrPhotoUrl);
+		} else {
+			signUp( phoneNo, "uuid|" + phoneNo, mbrName , keywordNo , mbrPhotoUrl);
+		}
 		
 
 	} else {
