@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.taxi.dao.feed.FeedDao;
 import com.taxi.dao.location.FvrtLocDao;
 import com.taxi.dao.location.RcntLocDao;
+import com.taxi.dao.member.MbrDao;
 import com.taxi.dao.room.RoomDao;
 import com.taxi.dao.room.RoomMbrDao;
 import com.taxi.dao.room.RoomPathDao;
@@ -35,6 +36,7 @@ public class RoomServiceImpl implements RoomService {
 	@Autowired RoomPathDao 	roomPathDao;
 	@Autowired FeedDao 		feedDao;
 	@Autowired RcntLocDao	rcntLocDao;
+	@Autowired MbrDao		mbrDao;
 	@Autowired GcmService 	gcmService;
 	
 	
@@ -161,6 +163,8 @@ public class RoomServiceImpl implements RoomService {
 	/**
 	 * 설  명: 방 참여하기, 방번호 리턴
 	 * 작성자: 김상헌 
+	 * 수정내용 : 푸쉬 보낼 때 참여한 사람의 이름을 보내지 않음.
+	 * 수정자 : 장종혁
 	 */
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class ) 
 	public int joinRoom( RoomMbr roomMbr,RcntLoc startRcntLoc , RcntLoc endRcntLoc) throws Exception { 
@@ -175,6 +179,7 @@ public class RoomServiceImpl implements RoomService {
         	
         	rcntLocDao.addRcntLoc( endRcntLoc );
         	
+        	roomMbr.setMbrName(mbrDao.getUserName(roomMbr.getMbrNo()));
         	
         	// 푸쉬 보낼 준비
         	if(count > 0){

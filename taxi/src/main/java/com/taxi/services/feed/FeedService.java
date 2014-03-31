@@ -11,7 +11,7 @@ public interface FeedService {
 	
 	int addFeed(Feed feed) throws Exception;
 	
-	void deleteFeed(Feed feed) throws Exception;
+	int deleteFeed(Feed feed) throws Exception;
 	
 /*	//====================== AS-IS =======================//
  	
