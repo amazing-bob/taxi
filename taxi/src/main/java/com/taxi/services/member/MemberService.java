@@ -28,5 +28,11 @@ public interface MemberService {
 	 * 작성자: 김상헌 
 	 */
 	void updatePhoneNoUuid(int previousMbrNo, String presentPhoneNo, String presentUuid) throws Exception;
-
+	
+	/**
+	 * 설  명 : 회원 사진 주소 업데이트
+	 * 작성자 : 장종혁
+	 */
+	int updateMbrPhotoUrl(Mbr mbr)throws Exception;
+	
 }

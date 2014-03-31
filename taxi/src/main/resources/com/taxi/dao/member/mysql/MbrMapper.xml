@@ -106,7 +106,29 @@
 				1 = 1
 		and 	MBR_NO = #{mbrNo}
 	</update>
-    
+
+	
+	<!-- 
+		 * 설  명: 회원 사진 주소 업데이트
+		 * 작성자:  장종혁
+	-->
+	<update id="updateMbrPhotoUrl" parameterType="Mbr"> 
+	    update MBR
+	    set MBR_PHOTO_URL = #{mbrPhotoUrl}
+	    where MBR_NO = #{mbrNo}
+	</update>
+	
+	<!-- 
+		* 설   명 : 회원번호로 이름 가져오기
+		* 작성자 : 장종혁
+	 -->
+	 <select id="getUserName" parameterType="int" resultType="String">
+	     SELECT MBR_NAME 			 as mbrName
+	     FROM	 MBR
+	     WHERE  1=1
+	     				AND   MBR_NO = #{value}
+	 </select>
+	
 </mapper>
 
 

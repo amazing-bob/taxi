@@ -1,13 +1,11 @@
 console.log("settings...");
 
 var that = this;
-//var myInfo;
-
 var fvrtLocNo;
+var pictureSource;   // picture source
+var destinationType; // sets the format of returned value
 
 $(document).ready(function() {
-
-//	myInfo = getLocalItem("myInfo");
 	getUpdatedTime();
 	initAjaxLoading();
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -30,12 +28,25 @@ var registerEvent = function(){
 		$("#startRange").find("input[type='radio']").bind("change", function(){
 		});
 	});
-
-//	
 	
 	$("#rangeSave").click(function() {
 		addRange();
 	});
+	
+	$(".save").hover(
+			function(){
+				$(this).css("background","#c6ecf8")
+					   .css("border","1px solid #c6ecf8")
+					   .css("z-index","999");
+//				$(this).style.boxShadow = "0px 1px 5px #c6ecf8";
+			},
+			function(){
+				$(this).css("background","#fafbfd")
+					   .css("border","0.1em solid #eee")
+					   .css("z-index","999");
+//				$(this).style.boxShadow = "0px 1px 5px #dadada";
+			});
+	
 
 	$("#btnLogoutAccept").click(function(){
 		logout();
@@ -85,10 +96,14 @@ var registerEvent = function(){
 	$("#btnFvrtLocUpdate").click(function(){
 		fvrtLocUpdate();
 	});
+	
+	
+	
 	$("#save").click(function(){
 		rankUpdate();
 	});
 
+	
 	$(".content").hide();
 	$("#btnList").show();
 	$("#btnList").click(function () {
@@ -100,6 +115,28 @@ var registerEvent = function(){
 	$("#btnChange").click(function () {
 		$(".contents").toggle("slide");
 	});
+
+	$(".profilePicture").click(function(){
+		$("#popupProfile").popup();
+		$("#popupProfile").css("visibility","visible");
+		$("#popupProfile").popup("open", { transition  : "pop" });
+	});
+
+	$("#btnProfile").click(function(){
+		$("#profilePicture").css('display','block')
+		.css('background-image', 'url(' + myInfo.mbrPhotoUrl + ')');
+		$("#profileName").text("이름 : "+myInfo.mbrName);
+		$("#profilePhoneNo").text("휴대폰 번호 : "+myInfo.mbrPhoneNo);
+	});
+
+	$("#profileGallery").click(function(){
+		getPhoto(pictureSource.PHOTOLIBRARY);
+	});
+
+	$("#profileCamera").click(function(){
+		capturePhoto();
+	});
+	
 	$.mobile.loadPage( "settings.html", { showLoadMsg: false } );
 	
 	//계정연동 버튼 회원연동화면으로 이동
@@ -114,20 +151,9 @@ var registerEvent = function(){
 		}
 	});
 	
-	/*친구목록갱신 버튼*/
-/*	$("#btnRefresh").on( "click", ".show-page-loading-msg", function() {
-		
-		console.log("==================================");
-		$.mobile.loading( "show", {
-			text: "친구목록 갱신중...",
-			textVisible: textVisible,
-			theme: theme,
-			textonly: textonly,
-			html: html
-		});
-	});*/
-	
 };
+
+
 /**
  * deviceready 이벤트
  */
@@ -138,6 +164,9 @@ function onDeviceReady() {
 
 	document.addEventListener("backbutton", touchBackBtnCallbackFunc, false);
 
+	  pictureSource=navigator.camera.PictureSourceType;
+
+	  destinationType=navigator.camera.DestinationType;
 }
 
 
@@ -169,10 +198,6 @@ var displayAccountInfoArea = function() {
 
 function startRangeChk() {
 
-//	myInfo = getSessionItem("myInfo");
-	
-	
-	
 	if(myInfo.startRange == "500"){
 		$("#radio-choice-h-2a").prop("checked", true);
 	}else if(myInfo.startRange =="1000"){
@@ -191,8 +216,6 @@ function startRangeChk() {
  * 작성자:김태경
  */
 function endRangeChk() {
-	
-	
 	
 	if(myInfo.endRange == "500"){
 		$("#radio-choice-h-3a").prop("checked", true);
@@ -216,6 +239,8 @@ var getFrndList = function(){
 	//frndData 새로운 친구 리스트 임시 세션에 저장.
 	getContacts();
 };
+
+
 /**
  * 내용: 휴대폰연락쳐를 서버에 업데이트 로컬디비 동기화.
  * 작성자: 김태경
@@ -269,6 +294,7 @@ var updateFrndList = function(){
 	});
 };
 
+
 /**
  * 내용: 서버디비 회원정보 삭제 로컬 스토리지 세션 스토리지 로컬 디비 삭제 auth.html 이동 재가입 화면
  * 작성자:김태경
@@ -306,6 +332,7 @@ function leaveMember() {
 	"json");
 };
 
+
 /**
  * 내  용:즐겨찾기 서버디비 데이타 삭제 후 로컬디비 동기화.
  * 작성자:김태경
@@ -335,6 +362,8 @@ function deleteFvrtLoc() {
 		}
 	});
 }
+
+
 /**
  * 내용:거리반경 정보 db update 및 localStorage 동기화
  * 작성자:김태경
@@ -356,6 +385,7 @@ function addRange(){
 					//Toast.shortshow("반경설정이 변경되었습니다.");
 					setLocalItem("myInfo", myInfo);
 					changeHref("../settings/settings.html");
+					
 				} else {
 					Toast.shortshow("실행중 오류발생!");
 					console.log(result.data);
@@ -388,6 +418,7 @@ $(document).bind('pageinit', function() {
 		/*$('#sortable').listview('refresh');*/
 	});
 });
+
 
 /**
  * 내  용:로컬디비에서 즐겨찾기 목록 가져오기.
@@ -446,6 +477,7 @@ function fvrtLocUpdate(){
 	rankUpdate(fvrtArr);
 };
 
+
 /**
  * 내  용: 서버디비 우선순위 랭크값 변경 로컬디비에 동기화.
  * 작성자 : 김태경
@@ -485,6 +517,7 @@ function rankUpdate() {
 							//Toast.shortshow("우선순위가 변경되었습니다.");
 							/*$("#sortable").listview('refresh');*/
 							location.href = "../settings/settings.html";
+							
 						});
 			} else {
 				//Toast.shortshow("실행중 오류발생!");
@@ -492,6 +525,7 @@ function rankUpdate() {
 		},
 	});
 };
+
 
 /**
  * 뒤로가기 버튼 처리(블랙리스트 안심서비스 페이지 추가 방참여인 경우 추가)
@@ -505,7 +539,8 @@ var touchBackBtnCallbackFunc = function() {
 	if ( pageId && (   pageId == 'pageFvrtSetting' 
 					|| pageId == 'pageRangeSetting' 
 					|| pageId == 'pageBlakcListSetting'
-					|| pageId == 'pageSafeServiceSetting')
+					|| pageId == 'pageSafeServiceSetting'
+					|| pageId == 'pageProfileSetting')
 		) {
 		changeHref("../settings/settings.html");
 	} else {
@@ -524,13 +559,13 @@ var touchBackBtnCallbackFunc = function() {
 		
 	}
 };
+
+
 /**
  * 내 용: 삭제시 해당 위치 번호 얻어와서 초기화
  * 작업자:김태경
  */
 var setFvrtLocNo = function(fvrtLocNo){
-	console.log(myInfo.mbrNo+"======================================");
-	console.log(fvrtLocNo+"=======================================");
 	this.fvrtLocNo = fvrtLocNo;
 };
 
@@ -547,6 +582,8 @@ var getContacts = function(){
     navigator.contacts.find(fields, extractionContactData, null, options);
     
 };
+
+
 /**
  * 내용:가져온 연락처 임시세션에 저장하기.
  * 작성자:장종혁
@@ -597,6 +634,8 @@ function extractionContactData(contacts) {
     setSessionItem("frndList",frndList);
     that.updateFrndList();
 };
+
+
 /**
  * 내용: 최근갱신 시간 가져오기. 처음호출 시
  * 작성자:김태경
@@ -613,7 +652,9 @@ var getUpdatedTime = function(){
 		
 	}
 	
-}
+};
+
+
 /**
  * 내용: 최근 갱신 시간 가져오기.업데이트 후
  * 작성자 : 김태경
@@ -650,4 +691,117 @@ var getUpdateTime = function(){
 	
 	
 	return text;	
+};
+
+
+/**
+ * 내용: profile 사진 수정 & 사진 서버로 전송
+ * 작성자: 이 용 준
+ */
+function onPhotoURISuccess(imageURI) {
+	
+	var UploadUrl = rootPath + "/setting/uploadUserPhoto.do"
+	
+	var options = new FileUploadOptions();
+
+	options.headers = {	Connection: "close"}
+	options.chunkedMode = false;
+
+	options.fileKey = "file";
+	options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	options.mimeType = "text/plain";
+	
+	var params = {
+			mbrNo 		: myInfo.mbrNo,
+			rootPath    : rootPath
+	};
+
+	options.params = params;
+
+		var ft = new FileTransfer();
+		ft.upload(imageURI, encodeURI(UploadUrl),function(r){ profileImgUploadSuccess(r);}, fail, options);
+}
+
+
+/**
+ *   설  명 : 업로드 성공 시 프로필 사진 바꾸기
+ *   작성자 : 장종혁
+ */
+var profileImgUploadSuccess = function(r) {
+			
+	var result=   JSON.parse(r.response);
+	
+	if(result.status=="success"){
+		var newMyInfoData = myInfo;
+		var imageURI = result.data;
+		
+		newMyInfoData.mbrPhotoUrl = imageURI;
+		
+		setLocalItem("myInfo",newMyInfoData);
+
+			$("#profilePicture").css('display','block')
+				.css('background-image', 'url(' + imageURI + ')');
+	}else{
+			alert("접속이 원할하지 않습니다.\n 잠시 후 다시 시도해 주시기 바랍니다.");
+	}
+};
+
+var fail = function (error) {
+	if(error.code==1){
+		alert("ErrorCode:1\n선택된 파일을 찾을 수 없습니다.\n 다시 시도해 주시기 바랍니다.");
+	}else if(error.code==2){
+		alert("ErrorCode:2\n주소가 유효하지 않습니다. \n 관리자에게 문의 해주시기 바랍니다.");
+	}else if(error.code==3){
+		alert("ErrorCode:3\n서버와의 접속이 원활하지 않습니다.\n 잠시 후 다시 시도해 주시기 바랍니다.");
+	}else if(error.code==4){
+		alert("ErrorCode:4\n파일 읽기가 중지 되었습니다.");
+	}
+};
+
+//사진전송을 위해 라이브러리에서 사진을 가져온다.
+function getPhoto(source) {
+	$("#popupProfile").popup( "close" );
+	//alert("library" + source);
+    navigator.camera.getPicture(onPhotoURISuccess, getPhotofail(source), {
+        quality: 100,
+        targetWidth: 280,
+        targetHeight: 280,
+    	encodingType: Camera.EncodingType.PNG,
+        destinationType: destinationType.FILE_URI,
+        sourceType: source
+    });
+}
+
+//라이브러리에서 사진가져오기 실패하면 - 다시 시도.
+function getPhotofail(source) {
+	
+	console.log(source);
+	
+	//getPhoto(source);
+}
+
+//사진찍기
+function capturePhoto() {
+	$("#popupProfile").popup( "close" );
+    navigator.camera.getPicture(onPhotoURISuccess, capturePhotofail, {   
+    	quality: 100,
+    	targetWidth: 280,
+    	 targetHeight: 280,
+    	encodingType: Camera.EncodingType.PNG,
+        destinationType: destinationType.FILE_URI });
+}
+
+//사진 저장이 실패하면
+function capturePhotofail(message) {
+    //alert('실패 : ' + message);
+    navigator.notification.alert(
+        '사진을 저장할 수 없습니다!',
+        '',
+        '저장실패',
+        '확인'
+    );
+}
+
+function onFail(message) {
+  alert('Failed because: ' + message);
 }

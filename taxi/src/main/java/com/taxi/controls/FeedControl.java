@@ -74,11 +74,12 @@ public class FeedControl {
 	public Object delete(Feed feed) throws Exception {
 		
 		feedService.deleteFeed(feed);
-
+		
 		JsonResult jsonResult = new JsonResult();
 		
 		try {
-			jsonResult.setStatus("success");
+			jsonResult.setStatus("success")
+					   .setData(1);
 			
 		} catch (Throwable e) {
 			e.printStackTrace();

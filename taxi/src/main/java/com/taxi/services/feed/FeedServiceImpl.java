@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.taxi.dao.feed.FeedDao;
+import com.taxi.dao.member.MbrDao;
 import com.taxi.dao.room.RoomMbrDao;
 import com.taxi.services.gcm.GcmService;
 import com.taxi.services.gcm.GcmServiceImpl;
@@ -20,7 +21,8 @@ import com.taxi.vo.feed.Feed;
 @Service
 public class FeedServiceImpl implements FeedService {
 	@Autowired FeedDao 		feedDao;
-	@Autowired RoomMbrDao 	roomMbrDao;	
+	@Autowired RoomMbrDao 	roomMbrDao;
+	@Autowired MbrDao		mbrDao;
 	@Autowired GcmService 	gcmService;
 	
 	/**
@@ -33,13 +35,17 @@ public class FeedServiceImpl implements FeedService {
 	
 	
 	/**
-	 * 설  명: 피드 등록하기
+	 * 설  명: 피드 등록하기 
 	 * 작성자: 김상헌
+	 * 수정내용 : (푸쉬 알림시  작성자 : 작성내용 의 형태로 발송하기 위함)
+	 * 수정자 : 장종혁
 	 */
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
 	public int addFeed(Feed feed) throws Exception {
 		int feeNo = feedDao.addFeed(feed);
+		
+		feed.setMbrName(mbrDao.getUserName(feed.getMbrNo()));
 
 		if(feeNo > 0){
 			Map <String, Object> paramMap = new HashMap<String, Object>();
@@ -52,6 +58,7 @@ public class FeedServiceImpl implements FeedService {
 				map.put("feedAction"	, "addFeed" );
 				map.put("roomNo"		, feed.getRoomNo() );
 				map.put("mbrNo"			, feed.getMbrNo() );
+				map.put("mbrName"		, feed.getMbrName());
 				map.put("feedContent"	, feed.getFeedContent() );
 			}
 			
@@ -68,8 +75,10 @@ public class FeedServiceImpl implements FeedService {
 	 */
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
-	public void deleteFeed(Feed feed) throws Exception {
+	public int deleteFeed(Feed feed) throws Exception {
 		
+		feed.setMbrName(mbrDao.getUserName(feed.getMbrNo()));
+
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("feedNo", feed.getFeedNo());
 		paramMap.put("mbrId", feed.getMbrNo());
@@ -84,11 +93,13 @@ public class FeedServiceImpl implements FeedService {
 				map.put("feedAction"	, "deleteFeed" );
 				map.put("roomNo"		, feed.getRoomNo() );
 				map.put("mbrNo"			, feed.getMbrNo() );
+				map.put("mbrName"		, feed.getMbrName());
 				map.put("feedContent"	, feed.getFeedContent() );
 			}
 			
 			gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.FeedRunnable.class);
 		}
+		return count;
 	}
 
 /*	//====================== AS-IS =======================//

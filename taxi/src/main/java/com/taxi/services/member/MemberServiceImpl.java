@@ -142,4 +142,14 @@ public class MemberServiceImpl implements MemberService {
 		mbrDao.updatePhoneNoUuid( mbr );
 	}
 
+	/**
+	 * 설  명 : 회원 사진 주소 업데이트
+	 * 작성자 : 장종혁
+	 */
+	@Override
+	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
+	public int updateMbrPhotoUrl(Mbr mbr)throws Exception{
+		return mbrDao.updateMbrPhotoUrl(mbr);
+	}
+	
 }
