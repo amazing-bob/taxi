@@ -28,7 +28,7 @@
 		resultType="Feed">
 				select  a.FEED_NO 			as feedNo
 					,	a.FEED_CONTENT 		as feedContent
-					,	a.MBR_ID 			as mbrId
+					,	a.MBR_NO 			as mbrNo
 					,	a.FEED_REG_DATE 	as feedRegDate
 					,	a.ROOM_NO			as roomNo
 					,	c.mbr_name			as mbrName
@@ -38,8 +38,8 @@
 					,	MBR c
 			   where 	1 = 1
 			   	and 	a.ROOM_NO = b.ROOM_NO
-			   	and 	a.MBR_ID = b.MBR_ID
-			   	and 	b.MBR_ID = c.MBR_ID
+			   	and 	a.MBR_NO = b.MBR_NO
+			   	and 	b.MBR_NO = c.MBR_NO
 			   	and 	a.FEED_NO = #{feedNo}
 			   order by FEED_REG_DATE desc
 	</select> 
