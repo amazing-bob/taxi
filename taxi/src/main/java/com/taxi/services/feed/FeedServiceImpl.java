@@ -70,8 +70,9 @@ public class FeedServiceImpl implements FeedService {
 	
 	
 	/**
-	 * 설  명: 피드 삭제하기
+	 * 설  명: 피드 삭제하기 (수정 : 피드 삭제 시 푸쉬 보낼 GCM ID를 안가져 오므로.. 수정함)
 	 * 작성자: 김상헌
+	 * 수정자: 장종혁
 	 */
 	@Transactional(
 			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
@@ -79,11 +80,14 @@ public class FeedServiceImpl implements FeedService {
 		
 		feed.setMbrName(mbrDao.getUserName(feed.getMbrNo()));
 
+		Feed deleteFeedData = feedDao.getFeedInfo(feed);
+		feed.setRoomNo(deleteFeedData.getRoomNo());
+		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("feedNo", feed.getFeedNo());
-		paramMap.put("mbrId", feed.getMbrNo());
+		paramMap.put("mbrNo", feed.getMbrNo());
+		paramMap.put("roomNo", feed.getRoomNo());
 		
-		//feed = feedDao.getFeedInfo(feed);
 		int count = feedDao.deleteFeed(paramMap);
 		
 		if(count > 0){
