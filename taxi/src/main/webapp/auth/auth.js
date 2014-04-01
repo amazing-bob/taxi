@@ -27,18 +27,18 @@ $(document).ready(function() {
 		
 		
 		/* 임시 사용자 로그인 */
-//		console.log("tempLogin()...........");
-//		console.log(rootPath);
-//		setLocalItem("myInfo", {
-//				mbrNo: 1,
-//				mbrName:"회원001",
-//				mbrPhotoUrl: "../images/photo/m01.jpg",
-//				startRange: 500,
-//				endRange: 1000,
-//				fvrtLocList: null,
-//				rcntLocList: null,
-//				keyNoList: null
-//		});
+		console.log("tempLogin()...........");
+		console.log(rootPath);
+		setLocalItem("myInfo", {
+				mbrNo: 25,
+				mbrName:"회원001",
+				mbrPhotoUrl: "../images/photo/m01.jpg",
+				startRange: 500,
+				endRange: 1000,
+				fvrtLocList: null,
+				rcntLocList: null,
+				keyNoList: null
+		});
 		
 		// 웹 버전일 경우만 주석 풀어야됨!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		isSignUp( getLocalItem("myInfo"), /*phoneNo*/ null, /*uuid*/ null );

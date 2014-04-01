@@ -202,7 +202,7 @@ public class RoomControl {
     		String endLocName, double endLocLat, double endLocLng ) throws Exception {
 
         JsonResult jsonResult = new JsonResult();
-        
+
         try {
         	int mbrNo = roomMbr.getMbrNo();
         	
@@ -234,11 +234,9 @@ public class RoomControl {
 
         } catch (Throwable e) {
             e.printStackTrace();
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
 
             jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
+            jsonResult.setData(e.getMessage());
         }
         return jsonResult;
     }
