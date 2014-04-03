@@ -1444,7 +1444,7 @@ var showAddRoomTimePicker = function() {
 	console.log("showAddRoomTimePicker()");
 	
 	if ( isRoomMbr() ) {
-    	Toast.shortshow("이미 방에 참여 중입니다.");
+		showAlertToast("이미 방에 참여 중입니다.");
     	
 	} else {
     	var dateTime = new Date();
@@ -1467,7 +1467,7 @@ var joinRoom = function(regId, joinRoomNo) {
 //	console.log(regId, joinRoomNo);
 
 	if ( isRoomMbr() ) {
-		Toast.shortshow("이미 방에 참여 중입니다.");
+		showAlertToast("이미 방에 참여 중입니다.");
 		
 	} else {
     	var locationSession = getSessionItem("locationSession");
@@ -1534,7 +1534,7 @@ var outRoomToJoinRoom = function(mbrNo, outRoomNo, joinRoomNo) {
 						joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시
 		
 					} else {
-						alert("실행중 오류발생!"); 
+						showAlertToast("실행중 오류발생!"); 
 						console.log(result.data);
 					}
 				});
@@ -1715,7 +1715,7 @@ var touchBackBtnCallbackFunc = function() {
 			navigator.app.exitApp();
 		} else {
 			backPressedTime = tempTime;
-			Toast.shortshow("'뒤로'버튼을 한번 더 누르시면 종료됩니다.");
+			showAlertToast("'뒤로'버튼을 한번 더 누르시면 종료됩니다.");
 		}
 	} else {
 		$("#leftPanel").panel("close");

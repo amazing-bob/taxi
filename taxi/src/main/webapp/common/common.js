@@ -247,7 +247,7 @@ var searchMyRoom = function(callbackFunc) {
 					}
 					
 				} else {
-					alert("요청 처리중 오류 발생");
+					showAlertToast("요청 처리중 오류 발생");
 				}
 				
 				callbackFunc();
@@ -586,7 +586,7 @@ var push = {
             			notification.vibrate(500);
 	            		notification.beep(1);
 	            		
-	            		Toast.shortshow(e.message);
+	            		showAlertToast(e.message);
             			
             		} else if ( e.payload && e.payload.className == "StartAlramRunnable" ) { // 출발 알림 푸쉬
             			console.log("push.onNotificationGCM() message.StartAlramRunnable...");
@@ -594,7 +594,7 @@ var push = {
             			notification.vibrate(500);
 	            		notification.beep(1);
 	            		
-            			Toast.shortshow(e.message);
+	            		showAlertToast(e.message);
             			
             		}
             		
