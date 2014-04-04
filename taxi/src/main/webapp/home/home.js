@@ -894,6 +894,7 @@ var searchRooms = function( mbrNo, page, refreshFlag ) {
 								roomMbrCount: searchRoomList[i].roomMbrCount,
 								isMyRoom 	: isMyRoom,
 								waypoints 	: waypoints,
+								roomMbrNumLimit : result.data[i].roomMbrNumLimit,
 								roomMbrList : roomMbrList,
 								roomPathList: roomPathList
 							};
@@ -986,10 +987,20 @@ var createRoomList = function( roomList, isRoomMbr ) {
 
 			divRoomMbrThumb = $("<div>")
 									.addClass("divRoomMbrThumbs");
-			for ( var j in roomMbrList ) {
-				divRoomMbrThumb.append(
-									$("<img>")
-										.attr("src", roomMbrList[j].mbrPhotoUrl ) );
+			
+			for(var j=roomList[i].roomMbrNumLimit-1;j>=0;j--){
+
+				if(j>=roomMbrList.length){
+					divRoomMbrThumb.append(
+							$("<img>")
+							.attr("src", "../images/common/transparency.png" )
+							.addClass("divRoomVacant") );
+				}else{
+					divRoomMbrThumb.append(
+							$("<img>")
+								.attr("src", roomMbrList[j].mbrPhotoUrl )
+								.css("height","2.0em"));
+				}
 			}
 
 			$("<li>")
@@ -1131,7 +1142,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 				.appendTo( $("#ulRoomList") );
 
 			//방관계도 그리기
-			relLineUp(roomMbrList,i);
+			relLineUp(roomMbrList,i,roomList[i].roomMbrNumLimit);
 			
 			
 			$("#scroller").css("width", parseInt($("#scroller").css("width")) + contentWidth + "px");
@@ -1742,9 +1753,8 @@ function slideMenuPanel() {
  *   설   명  :  관계도 선 그리기
  *   작성자 : 장종혁
  */
-var relLineUp = function(roomMbrData, roomCnt){
+var relLineUp = function(roomMbrData, roomCnt,roomMbrLimit){
 	console.log("relLineUp(roomMbrData, roomCnt)");
-//	console.log(roomMbrData, roomCnt);
 	
 	var faceCoordinate = new Array();
 	
@@ -1780,7 +1790,7 @@ var relLineUp = function(roomMbrData, roomCnt){
 				offsetLeft : $(".relMapPaper")[0].children[3].offsetLeft+w
 		};
 		
-	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt);
+	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt,roomMbrLimit);
 };
 
 /**
