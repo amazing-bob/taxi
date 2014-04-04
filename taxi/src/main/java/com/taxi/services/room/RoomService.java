@@ -14,8 +14,9 @@ public interface RoomService {
 	/**
 	 * 설  명: 방 목록 조회
 	 * 작성자: 김상헌
+	 * @param roomNoArr 
 	 */
-	List<Room> searchRooms(int mbrNo, int page, double startLat, double startLng, int startRange, double endLat, double endLng, int endRange) throws Exception;
+	List<Room> searchRooms(int mbrNo, int page, List<Integer> roomNoList, double startLat, double startLng, int startRange, double endLat, double endLng, int endRange) throws Exception;
 	
 	/**
 	 * 설  명: 방 정보 조회

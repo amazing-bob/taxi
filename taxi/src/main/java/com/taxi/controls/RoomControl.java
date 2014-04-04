@@ -2,6 +2,7 @@ package com.taxi.controls;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,22 +68,36 @@ public class RoomControl {
 	 */
 	@RequestMapping("/searchRooms")
 	@ResponseBody
-	public JsonResult searchRooms( int mbrNo		, int page,
+	public JsonResult searchRooms( 
+			int 	mbrNo		, int page 			, String roomNoArrString,
 			String 	startLat	, String startLng	, int startRange,
 			String  endLat		, String endLng		, int endRange ) throws Exception {
 		
 		JsonResult jsonResult = new JsonResult();
 		
 		try {
+			// stringArr ==> List<Integer> 변
+			roomNoArrString = roomNoArrString.replaceAll("[\\[\\]]", "");
+			String[] roomNoStrArr = roomNoArrString.split(",");
+			List<Integer> roomNoList = new ArrayList();
+			for ( int i = 0; i < roomNoStrArr.length; i++ ) {
+				if ( !"".equals(roomNoStrArr[i]) )
+					roomNoList.add( Integer.parseInt(roomNoStrArr[i]) );
+			}
+
+			// 기존의 방을 제외하고 방 목록 가져오기 
 			List<Room> roomList = roomService.searchRooms( 
 													mbrNo,
 													page,
+													roomNoList,
 													Double.parseDouble(startLat),
 													Double.parseDouble(startLng),
 													startRange,
 													Double.parseDouble(endLat),
 													Double.parseDouble(endLng),
 													endRange );
+			
+			long endTime = System.currentTimeMillis();
 			
 			jsonResult.setData( roomList );
 			jsonResult.setStatus("success");

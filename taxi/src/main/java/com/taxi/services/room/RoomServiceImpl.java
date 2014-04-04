@@ -56,7 +56,7 @@ public class RoomServiceImpl implements RoomService {
 	 * 설  명: 방 목록 조회
 	 * 작성자: 김상헌
 	 */
-	public List<Room> searchRooms( int mbrNo	, int page,
+	public List<Room> searchRooms( int mbrNo	, int page, List<Integer> roomNoList,
 			double startLat	, double startLng	, int startRange,
 			double endLat	, double endLng		, int endRange ) throws Exception {
 		
@@ -65,6 +65,7 @@ public class RoomServiceImpl implements RoomService {
 		Map<String, Object> paramMap  = new HashMap<String, Object>();
 		paramMap.put("mbrNo"		, mbrNo);
 		paramMap.put("lastRoomIdx"	, lastRoomIdx);
+		paramMap.put("roomNoList"	, roomNoList);
 		paramMap.put("startLat"		, startLat);
 		paramMap.put("startLng"		, startLng);
 		paramMap.put("startRange"	, startRange);
