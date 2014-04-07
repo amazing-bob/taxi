@@ -23,7 +23,6 @@
 		* 작성자: 김상헌
 	 -->
 	<select id="getRoomList" parameterType="map" resultMap="roomResultMap">
-
 		select 
 				A.ROOM_NO
 			, 	A.ROOM_START_TIME
@@ -147,9 +146,7 @@
 		</if>
 		order by 
 				A.RELATION_CD, A.ROOM_START_TIME
-
 		limit 	0, 8
-
 	</select>
 	
 	

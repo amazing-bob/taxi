@@ -69,7 +69,7 @@ public class RoomControl {
 	@RequestMapping("/searchRooms")
 	@ResponseBody
 	public JsonResult searchRooms( 
-			int 	mbrNo		, int page 			, String roomNoArrString,
+			int 	mbrNo		, String roomNoArrString,
 			String 	startLat	, String startLng	, int startRange,
 			String  endLat		, String endLng		, int endRange ) throws Exception {
 		
@@ -88,7 +88,6 @@ public class RoomControl {
 			// 기존의 방을 제외하고 방 목록 가져오기 
 			List<Room> roomList = roomService.searchRooms( 
 													mbrNo,
-													page,
 													roomNoList,
 													Double.parseDouble(startLat),
 													Double.parseDouble(startLng),
