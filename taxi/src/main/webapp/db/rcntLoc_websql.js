@@ -81,10 +81,13 @@ var insertRcntLocTable = function( transaction, rcntLocList ) {
 					 ],
 			 		// Success
 					function() {
+						alert("성공")
 						console.log("insertRcntLocTable  success");
 					},
 					// Fail
-					function () {
+					function (e) {
+						alert("실패")
+						console.log(e)
 						console.log("insertRcntLocTable  fail");
 					});
 		}

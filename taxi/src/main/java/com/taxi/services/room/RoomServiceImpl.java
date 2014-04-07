@@ -149,9 +149,18 @@ public class RoomServiceImpl implements RoomService {
         roomPathList.add( endPath.setRoomNo(roomNo) );
         roomPathDao.addRoomPathList( roomPathList ); 
 
-        rcntLocDao.addRcntLoc( startRcntLoc );
-        rcntLocDao.addRcntLoc( endRcntLoc );
-
+        if(rcntLocDao.cntRcntLoc(startRcntLoc)==1){
+        	rcntLocDao.updateRcntLoc(startRcntLoc);
+        }else{
+        	rcntLocDao.addRcntLoc( startRcntLoc );
+        }
+        
+        if(rcntLocDao.cntRcntLoc(endRcntLoc)==1){
+        	rcntLocDao.updateRcntLoc(endRcntLoc);
+        }else{
+        	rcntLocDao.addRcntLoc( endRcntLoc );
+        }
+        
         
         return roomNo;
             

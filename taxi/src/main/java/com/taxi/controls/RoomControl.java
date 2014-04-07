@@ -187,8 +187,16 @@ public class RoomControl {
 			int roomNo = roomService.addRoom( room, roomMbr, startPath, endPath, recentStartLoc, recentEndLoc );
 			
 			Room myRoom = roomService.getRoomInfo(roomNo);
-
-			jsonResult.setData(myRoom);
+			
+			List<RcntLoc> rcntLocList 	= locationService.getRecentDestination(myInfo.getMbrNo());
+			
+			
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+            resultMap.put("myRoom"		, myRoom);
+            resultMap.put("rcntLocList" , rcntLocList);
+            
+            jsonResult.setData(resultMap);
+//			jsonResult.setData(myRoom);
 			jsonResult.setStatus("success");
 
         } catch (Throwable e) {
