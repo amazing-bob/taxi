@@ -1315,9 +1315,18 @@ var addRoom = function( regId ) {
 		            if (result.status == "success") {
 		            	var myRoom = result.data;
 		            	setSessionItem("myRoom", myRoom);
-		            	
-		            	changeHref("../room/room.html", { roomNo : myRoom.roomNo});
-		
+
+		            	executeQuery(
+								// Transaction Execute
+								function(transaction) {
+									deleteAllRcntLocTable(transaction);
+									insertRcntLocTable(transaction, result.data.rcntLocList);
+								},
+								// Success Callback
+								function() {
+									changeHref("../room/room.html", { roomNo : myRoom.roomNo});
+						});
+
 		            } else {
 		            	console.log(result.data);
 		
@@ -1510,6 +1519,7 @@ var joinRoom = function(regId, joinRoomNo) {
 								function(transaction) {
 									deleteAllRcntLocTable(transaction);
 									insertRcntLocTable(transaction, result.data.rcntLocList);
+									console.log(result.data)
 								},
 								// Success Callback
 								function() {

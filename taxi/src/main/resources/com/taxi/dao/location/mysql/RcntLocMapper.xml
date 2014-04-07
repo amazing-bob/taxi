@@ -44,7 +44,28 @@
 			( #{mbrNo}, #{rcntLocName}, #{rcntLocLat}, #{rcntLocLng}, now(), #{rcntLocSt} )  
     </insert> 
     
-	     
+	
+	<!-- 
+		* 설  명 : 최근 목적지 중복 검사
+		* 작성자 : 장종혁
+	 -->
+	 <select id="cntRcntLoc" parameterType="RcntLoc" resultType="int">
+	     select count(*) from RCNT_LOC 
+	     where MBR_NO=#{mbrNo} and RCNT_LOC_NAME=#{rcntLocName} and RCNT_LOC_LAT=#{rcntLocLat} and 
+	     RCNT_LOC_LNG = #{rcntLocLng} and RCNT_LOC_ST= #{rcntLocSt}
+	 </select>
+	
+	<!-- 
+		* 설  명 : 최근 목적지 중복 데이터 업데이트
+		* 작성자 : 장종혁
+	 -->
+	<update id="updateRcntLoc" parameterType="RcntLoc">
+	    update RCNT_LOC 
+	    set RCNT_LOC_REG_DATE = now() 
+	    where MBR_NO=#{mbrNo} and RCNT_LOC_NAME=#{rcntLocName} and RCNT_LOC_LAT=#{rcntLocLat} and 
+	     RCNT_LOC_LNG = #{rcntLocLng} and RCNT_LOC_ST= #{rcntLocSt}
+	</update>
+	 
 <!-- //====================== AS-IS =======================// -->
 <!--
 	

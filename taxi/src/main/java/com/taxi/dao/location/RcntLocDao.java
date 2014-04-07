@@ -23,6 +23,17 @@ public interface RcntLocDao {
 	 */
 	int addRcntLoc(RcntLoc rcntLoc);
 	
+	/**
+	 * 설  명 : 최근목적지 중복 검사
+	 * 작성자 : 장종혁
+	 */
+	int cntRcntLoc(RcntLoc rcntLoc);
+	
+	/**
+	* 설  명 : 최근 목적지 중복 데이터 업데이트
+	* 작성자 : 장종혁
+	 */
+	int updateRcntLoc(RcntLoc rcntLoc);
 	
 /*	//====================== AS-IS =======================//
  	
