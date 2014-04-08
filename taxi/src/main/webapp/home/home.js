@@ -1701,25 +1701,28 @@ var favoriteList = function() {
  */
 var FINSH_INTERVAL_TIME = 2000;
 var backPressedTime = 0;
-
 var touchBackBtnCallbackFunc = function() {
 	console.log("touchBackBtnCallbackFunc()");
 	
 	var tempTime = new Date().getTime();
 	var intervalTime = tempTime - backPressedTime;
-	if ( $(".divBlackBackground").css("visibility") == "hidden") {
+	
+	// 반투명 필름이 보이는 경우는 팝업이나 패널을 닫고,
+	// 2초 동안 두번 연속 클릭 시 어플 종
+	if ( $(".divBlackBackground").css("visibility") == "visible" ) {
+		$("div.divBlackBackground").trigger("click");
+		
+	} else {
 		if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
 			navigator.app.exitApp();
+			
 		} else {
 			backPressedTime = tempTime;
 			showAlertToast("'뒤로'버튼을 한번 더 누르시면 종료됩니다.");
+			
 		}
-	} else {
-		$("#leftPanel").panel("close");
-		$("#divFavoriteLoc_popup").popup("close");
-		$("#divAddRoomCondition_popup").popup("close");
-		$("#joinRoom_popup").popup("close");
 	}
+	
 };
 
 
