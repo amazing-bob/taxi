@@ -558,7 +558,6 @@ var getNavigationGeolocation = function(timeOut,callType){
  		);
 };
 
-
 /**
  *  설 명 : 맵 그리기
  *  작성자 : 장종혁
