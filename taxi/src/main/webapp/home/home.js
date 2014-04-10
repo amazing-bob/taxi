@@ -196,12 +196,48 @@ $(document).ready(function() {
 		event.stopPropagation();
 		$("#startInput").val("");
 		$("#aStartSearchClear").css("visibility", "hidden");
+		
+		var originLoc = getSessionItem("locationSession");
+		var newLoc = {
+				endName: originLoc.endName,
+				endPrefix: originLoc.endPrefix,
+				endX: originLoc.endX,
+				endY: originLoc.endY,
+				startName: null,
+				startPrefix: null,
+				startX: null,
+				startY: null
+		};
+		
+		setSessionItem("locationSession",newLoc);
+		
+		startMarker.setMap(null);
+		startCircle.setMap(null);
+		
 		return false;
 	});
 	$("#aEndSearchClear").click(function(event) {
 		event.stopPropagation();
 		$("#endInput").val("");
 		$("#aEndSearchClear").css("visibility", "hidden");
+		
+		var originLoc = getSessionItem("locationSession");
+		var newLoc = {
+				endName: null,
+				endPrefix: null,
+				endX: null,
+				endY: null,
+				startName: originLoc.startName,
+				startPrefix: originLoc.startPrefix,
+				startX: originLoc.startX,
+				startY: originLoc.startY
+		};
+		
+		setSessionItem("locationSession",newLoc);
+		
+		endMarker.setMap(null);
+		endCircle.setMap(null);
+		
 		return false;
 	});
 	
