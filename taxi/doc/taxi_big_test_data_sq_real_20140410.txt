@@ -1,0 +1,519 @@
+delimiter $$
+
+DROP PROCEDURE IF EXISTS buru1020.insert_big_test_data$$
+CREATE PROCEDURE buru1020.insert_big_test_data()
+BEGIN
+	
+	DECLARE mbr_cnt 	INT DEFAULT 90000;
+	DECLARE room_cnt 	INT DEFAULT 0;
+	DECLARE done		INT DEFAULT 0;	
+	DECLARE m_idx 		INT DEFAULT 0;
+	DECLARE f_idx 		INT DEFAULT 0;
+
+	DECLARE i_mbr_no	INT DEFAULT 0;	-- 마지막 회원번호
+	DECLARE i_room_no	INT DEFAULT 0;	-- 마지막 방번호
+	DECLARE v_mbr_no	INT DEFAULT 0;	-- 추가되는 회원번호
+	DECLARE v_room_no 	INT DEFAULT 1; 	-- 추가되는 방번호
+	
+	
+
+	DECLARE cur_mbr_no CURSOR FOR
+		SELECT 	MBR_NO
+		FROM 	MBR
+		ORDER BY MBR_NO desc
+		LIMIT 	1;
+	DECLARE cur_room_no CURSOR FOR
+		SELECT 	ROOM_NO
+		FROM 	ROOM
+		ORDER BY ROOM_NO DESC
+		LIMIT 	1;
+
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+	OPEN cur_mbr_no;
+	OPEN cur_room_no;
+	FETCH cur_mbr_no INTO i_mbr_no;
+	FETCH cur_room_no INTO i_room_no;
+
+	SET v_mbr_no = i_mbr_no;
+	SET v_room_no = i_room_no;
+
+	WHILE m_idx < mbr_cnt DO
+		SET v_mbr_no = v_mbr_no + 1;
+
+		-- 회원정보 INSERT
+		INSERT INTO MBR 
+			( MBR_NO, MBR_PHONE_NO, MBR_UUID, MBR_NAME, MBR_PHOTO_URL, MBR_REG_DATE, LAST_LOGIN_DATE, MBR_UPDATE_DATE )
+		VALUES 
+			( v_mbr_no, CONCAT('010|', v_mbr_no), CONCAT('UUID|', v_mbr_no), CONCAT('회원', v_mbr_no), CONCAT('/IMG', v_mbr_no, '.JPG'), NOW(), NOW(), NOW() );
+
+		-- 친구정보 INSERT
+		INSERT INTO FRND 
+			( MBR_NO, FRND_PHONE_NO, FRND_NAME, FRND_REG_DATE )
+		VALUES 
+			( v_mbr_no, CONCAT('010|', v_mbr_no), CONCAT('회원', v_mbr_no), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     1), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     2), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     3), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     4), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     5), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     6), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     7), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     8), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',     9), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),  
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    10), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    11), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    12), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    13), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    14), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    15), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    16), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    17), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    18), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    19), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    20), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    21), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    22), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    23), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    24), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    25), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    26), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    27), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    28), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    29), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    30), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    31), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    32), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    33), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    34), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    35), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    36), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    37), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    38), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    39), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    40), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    41), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    42), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    43), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    44), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    45), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    46), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    47), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    48), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    49), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    50), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    51), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    52), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    53), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    54), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    55), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    56), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    57), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    58), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    59), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    60), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    61), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    62), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    63), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    64), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    65), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    66), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    67), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    68), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    69), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    70), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    71), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    72), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    73), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    74), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    75), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    76), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    77), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    78), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    79), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    80), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    81), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    82), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    83), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    84), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    85), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    86), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    87), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    88), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    89), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    90), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    91), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    92), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    93), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    94), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    95), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    96), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    97), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    98), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',    99), CONCAT('친구', v_mbr_no, '|', f_idx), now() ), 
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   100), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   101), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   102), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   103), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   104), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   105), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   106), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   107), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   108), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   109), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   110), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   111), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   112), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   113), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   114), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   115), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   116), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   117), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   118), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   119), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   120), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   121), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   122), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   123), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   124), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   125), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   126), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   127), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   128), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   129), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   130), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   131), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   132), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   133), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   134), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   135), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   136), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   137), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   138), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   139), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   140), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   141), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   142), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   143), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   144), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   145), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   146), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   147), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   148), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   149), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   150), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   151), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   152), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   153), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   154), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   155), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   156), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   157), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   158), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   159), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   160), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   161), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   162), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   163), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   164), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   165), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   166), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   167), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   168), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   169), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   170), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   171), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   172), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   173), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   174), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   175), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   176), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   177), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   178), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   179), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   180), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   181), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   182), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   183), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   184), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   185), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   186), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   187), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   188), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   189), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   190), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   191), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   192), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   193), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   194), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   195), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   196), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   197), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   198), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   199), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   200), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   201), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   202), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   203), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   204), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   205), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   206), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   207), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   208), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   209), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   210), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   211), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   212), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   213), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   214), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   215), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   216), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   217), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   218), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   219), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   220), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   221), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   222), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   223), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   224), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   225), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   226), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   227), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   228), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   229), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   230), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   231), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   232), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   233), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   234), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   235), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   236), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   237), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   238), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   239), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   240), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   241), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   242), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   243), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   244), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   245), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   246), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   247), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   248), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   249), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   250), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   251), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   252), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   253), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   254), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   255), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   256), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   257), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   258), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   259), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   260), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   261), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   262), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   263), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   264), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   265), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   266), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   267), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   268), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   269), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   270), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   271), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   272), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   273), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   274), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   275), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   276), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   277), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   278), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   279), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   280), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   281), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   282), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   283), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   284), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   285), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   286), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   287), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   288), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   289), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   290), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   291), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   292), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   293), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   294), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   295), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   296), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   297), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   298), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   299), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   300), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   301), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   302), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   303), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   304), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   305), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   306), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   307), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   308), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   309), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   310), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   311), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   312), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   313), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   314), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   315), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   316), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   317), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   318), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   319), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   320), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   321), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   322), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   323), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   324), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   325), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   326), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   327), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   328), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   329), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   330), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   331), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   332), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   333), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   334), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   335), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   336), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   337), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   338), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   339), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   340), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   341), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   342), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   343), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   344), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   345), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   346), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   347), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   348), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   349), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   350), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   351), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   352), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   353), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   354), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   355), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   356), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   357), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   358), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   359), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   360), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   361), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   362), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   363), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   364), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   365), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   366), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   367), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   368), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   369), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   370), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   371), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   372), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   373), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   374), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   375), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   376), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   377), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   378), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   379), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   380), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   381), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   382), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   383), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   384), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   385), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   386), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   387), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   388), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   389), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   390), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   391), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   392), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   393), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   394), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   395), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   396), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   397), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   398), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   399), CONCAT('친구', v_mbr_no, '|', f_idx), now() ),
+			( v_mbr_no, CONCAT('011|', v_mbr_no, '|',   400), CONCAT('친구', v_mbr_no, '|', f_idx), now() );
+
+		-- 방정보 INSERT
+		SET room_cnt = mbr_cnt DIV 3;
+		
+		IF m_idx < room_cnt THEN
+			SET v_room_no = v_room_no + 1;
+
+			-- 방 insert
+			INSERT INTO ROOM 
+				( ROOM_NO, ROOM_START_TIME, ROOM_MBR_NUM_LIMIT, ROOM_REG_DATE, ROOM_COLOR )
+			VALUES 
+				( v_room_no, ADDDATE(NOW(), '20'), 4, NOW(), (v_room_no % 3) );
+
+			-- 출발지&목적지 insert
+			INSERT INTO ROOM_PATH
+				( ROOM_NO, PATH_RANK, PATH_NAME, PATH_LAT, PATH_LNG )
+			VALUES
+				( v_room_no,  0, '강남역', 1944444.7947507137, 958252.2212954559 ),
+				( v_room_no, 99, '혜화역', 1953790.8525704339, 956023.6917773776 );
+
+			-- 방장 insert
+			INSERT INTO ROOM_MBR 
+				( ROOM_NO, MBR_NO, GCM_REG_ID, ROOM_MBR_RANK )
+			VALUES 
+				( v_room_no, v_mbr_no, CONCAT('gcm|', v_mbr_no), 1 );
+			
+		ELSEIF ( (room_cnt * 2) <= m_idx AND m_idx < (room_cnt * 3) ) THEN
+			IF (room_cnt * 2) = m_idx THEN
+				SET v_room_no = i_room_no;
+			END IF;
+
+			SET v_room_no = v_room_no + 1;
+
+			-- 방참여회원 INSERT
+			INSERT INTO ROOM_MBR
+				( ROOM_NO, MBR_NO, GCM_REG_ID, ROOM_MBR_NO, ROOM_MBR_ST, MUTUAL_YN, ROOM_MBR_RANK )
+			VALUES
+				( v_room_no, v_mbr_no - (room_cnt * 1), CONCAT('gcm|', (v_mbr_no- (room_cnt * 1)) ) , (v_mbr_no - (room_cnt * 2)), 0, NULL, 2 ),
+				( v_room_no, v_mbr_no				  , CONCAT('gcm|', v_mbr_no)					, (v_mbr_no - (room_cnt * 1)), 0, NULL, 3 );
+
+		END IF;
+
+		
+		SET m_idx = m_idx + 1;
+	END WHILE;
+
+	SELECT v_mbr_no, v_room_no;
+	
+	CLOSE cur_room_no;
+	CLOSE cur_mbr_no;
+	
+
+END $$
+
+delimiter ;
+call buru1020.insert_big_test_data();
+
+-- SELECT * FROM MBR;
+-- SELECT * FROM FRND;
+
+-- desc mbr;
+-- desc frnd;
+-- desc room;
+-- desc room_path;
+-- desc room_mbr;
