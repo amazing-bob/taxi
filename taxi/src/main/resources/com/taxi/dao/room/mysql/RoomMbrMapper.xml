@@ -88,7 +88,7 @@
 	                        ROOM_MBR a
 	                      , FRND b
 	                  where 1 = 1
-	                  	and a.MBR_NO = B.MBR_NO
+	                  	and a.MBR_NO = b.MBR_NO
 						and a.REL_FRND_PHONE_NO = b.FRND_PHONE_NO
 						and a.ROOM_NO = #{value}
 					group by  
