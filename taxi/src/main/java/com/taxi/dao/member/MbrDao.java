@@ -1,5 +1,7 @@
 package com.taxi.dao.member;
 
+import java.util.Map;
+
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.member.Mbr;
 
@@ -39,5 +41,32 @@ public interface MbrDao {
 	 *  작성자 : 장종혁
 	 */
 	String getUserName(int mbrNo);
+	
+	/**
+	 *	설 명 : 회원 이름 변경 (이름,회원번호)
+	 * 	작성자 : 김태경
+	 */
+	void profileNameUpdate(Map<String, Object> paramMap);
+	
+	/**
+	 * 	설명 : 회원 전화번호 변경(전화번호,회원전호)
+	 * 	작성자 : 김태경
+	 */
+	void profilePhoneNumberUpdate(Map<String, Object> paramMap);
+	
+	
+	/**
+	 * 	설 명 : 회원 전화번호 가져오기 (회원번호 )
+	 *  작성자 : 김태경
+	 */
+	String getUserPhoneNumber(int mbrNo);
+
+	
+	/**
+	 * 	설 명 : 회원전화번호에 따른 회원 가져오기(전화번호)
+	 *  작성자 : 김태경
+	 */
+	
+	int checkUserPhoneNumber(String newPhoneNumber);
 
 }

@@ -375,7 +375,7 @@ var clickKeyWordPage = function(){
 var clickSignupBtn = function(){
 	console.log("clickSignupBtn()");
 
-	getContacts();
+//	getContacts();
 	
 	var phoneNo = $("#txtPhone").val();
 	var mbrName = $("#txtName").val();

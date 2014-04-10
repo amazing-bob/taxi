@@ -152,4 +152,46 @@ public class MemberServiceImpl implements MemberService {
 		return mbrDao.updateMbrPhotoUrl(mbr);
 	}
 	
+	/**
+	 *	설 명 : 회원 이름 업데이트 
+	 * 	작성자 : 김태경
+	 */
+	@Override
+	public String updateMbrName(String newName , int mbrNo) {
+		
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("newName", newName);
+		paramMap.put("mbrNo", mbrNo);
+		mbrDao.profileNameUpdate(paramMap);
+		
+		return mbrDao.getUserName(mbrNo);
+	};
+
+	/**
+	 *  설 명 : 회원 전화번호 업데이트
+	 * 	작성자 : 김태경
+	 */
+	@Override
+	public String updateMbrPhoneNo(String newPhoneNumber , int mbrNo) {
+		
+		
+		int count = mbrDao.checkUserPhoneNumber(newPhoneNumber);
+		String result;
+		if(count == 0){
+			
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("newPhoneNumber", newPhoneNumber);
+			paramMap.put("mbrNo", mbrNo);
+			mbrDao.profilePhoneNumberUpdate(paramMap);
+			
+			result = mbrDao.getUserPhoneNumber(mbrNo);
+		}else{
+			
+			result = null;
+		}
+		
+		
+		return result;
+	}
+	
 }

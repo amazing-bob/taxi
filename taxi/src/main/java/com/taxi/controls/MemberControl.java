@@ -197,4 +197,66 @@ public class MemberControl {
         return jsonResult;
     }
 	
+	/**
+	 * 내용 : 프로필 이름변경
+	 * 작성자 : 김태경
+	 */
+	@RequestMapping("/profileNameUpdate")
+    @ResponseBody
+    public Object profileNameUpdate(String newName , int mbrNo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+         
+        
+        System.out.println(newName+"=============변경될이름");
+        System.out.println(mbrNo+"=============변경회원");
+        try {
+        	
+        	String result = memberService.updateMbrName(newName , mbrNo);
+        	
+        	if(result != null){
+        		jsonResult.setData(result);
+        		jsonResult.setStatus("success");
+        	}
+        	
+        	
+        	
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+         
+        return jsonResult;
+    }
+	
+	/**
+	 * 내용:프로필 전화번호 변경
+	 * 작성자 : 김태경
+	 */
+	@RequestMapping("/profilePhoneNumberUpdate")
+    @ResponseBody
+    public Object profilePhoneNumberUpdate(String newPhoneNumber , int mbrNo) throws Exception {
+        JsonResult jsonResult = new JsonResult();
+         
+        
+        System.out.println(newPhoneNumber+"=============변경될번호");
+        System.out.println(mbrNo+"=============변경될회원");
+        try {
+        	
+        	String result = memberService.updateMbrPhoneNo(newPhoneNumber , mbrNo);
+        	jsonResult.setData(result);
+    		jsonResult.setStatus("success");
+        	
+        } catch (Throwable e) {
+            e.printStackTrace();
+            StringWriter out = new StringWriter();
+            e.printStackTrace(new PrintWriter(out));
+            jsonResult.setStatus("fail");
+            jsonResult.setData(out.toString());
+        }
+         
+        return jsonResult;
+    }
 }

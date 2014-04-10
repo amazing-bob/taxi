@@ -128,6 +128,67 @@
 	     WHERE  1=1
 	     				AND   MBR_NO = #{value}
 	 </select>
+	 
+	  <!-- 
+	 	* 설  명 : 회원이름 변경
+	 	* 작성자 : 김태경
+	  -->
+	 <update id="profileNameUpdate" parameterType="Map">
+	     update
+	     		MBR
+	     set
+	     		MBR_NAME = #{newName}
+	     where
+	     		1 = 1
+	     and	MBR_NO = #{mbrNo}
+	     		
+	 </update>
+	 
+	 
+	 <!-- 
+	 	* 설  명 : 전화번호 변경
+	 	* 작성자 : 김태경
+	  -->
+	 <update id="profilePhoneNumberUpdate" parameterType="Map">
+
+	     update
+	     		MBR
+	     set
+	     		MBR_PHONE_NO = #{newPhoneNumber}
+	     where
+	     		1 = 1
+	     and	MBR_NO = #{mbrNo}
+	
+	     
+	 </update>
+	 
+	 <!-- 
+	 	* 설  명 : 회원번호로 전화번호 가져오기
+	 	* 작성자 : 김태경
+	  -->
+	 <select id="getUserPhoneNumber" parameterType="String" resultType="String">
+	     select
+	     		MBR_PHONE_NO
+	     from
+	     		MBR
+	     where
+	     		1 = 1
+	     and	MBR_NO = #{mbrNo}
+	     		
+	     
+	 </select>
+	 <!-- 
+	 	* 설 명 : 전화번호 유무 확인
+	 	* 작성자 : 김태경
+	  -->
+	 <select id="checkUserPhoneNumber" parameterType="String" resultType="int">
+	     select count(mbr_No)
+	     from
+	     		MBR
+	     where
+	     		1 = 1
+	     and   MBR_PHONE_NO = #{newPhoneNumber}
+	 </select>
 	
 </mapper>
 

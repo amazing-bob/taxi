@@ -35,4 +35,16 @@ public interface MemberService {
 	 */
 	int updateMbrPhotoUrl(Mbr mbr)throws Exception;
 	
+	/**
+	 * 설  명 : 회원 이름 변경
+	 * 작성자 : 김태경
+	 */
+	String updateMbrName(String newName , int mbrNo);
+	
+	/**
+	 * 설  명 : 회원 전화번호 변경
+	 * 작성자 : 김태경
+	 */
+	String updateMbrPhoneNo(String newPhoneNumber , int mbrNo);
+	
 }
