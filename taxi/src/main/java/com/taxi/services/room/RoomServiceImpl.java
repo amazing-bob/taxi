@@ -179,40 +179,45 @@ public class RoomServiceImpl implements RoomService {
 		try { 
 			Room roomInfo = roomDao.getRoomInfo( roomMbr.getRoomNo() );
 			
-			if ( roomInfo.getRoomMbrCount() < roomInfo.getRoomMbrNumLimit() ) {
-	        	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
-	        	
-	        	int count =  roomMbrDao.addRoomMbr(roomMbr); 
-	        	
-	
-	        	rcntLocDao.addRcntLoc( startRcntLoc );
-	        	
-	        	rcntLocDao.addRcntLoc( endRcntLoc );
-	        	
-	        	roomMbr.setMbrName(mbrDao.getUserName(roomMbr.getMbrNo()));
-	        	
-	        	// 푸쉬 보낼 준비
-	        	if(count > 0){
-	        		Map <String, Object> paramMap = new HashMap<String, Object>();
-					paramMap.put("roomNo", roomMbr.getRoomNo());
-					paramMap.put("mbrNo", roomMbr.getMbrNo());
-					
-					List<Map<String, Object>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
-					for (Map<String, Object> map : gcmTargetMapList) {
-						map.put("roomAction"	, "joinRoom" );
-						map.put("mbrNo"			, roomMbr.getMbrNo() );
-						map.put("roomNo"		, roomMbr.getRoomNo() );
-						map.put("mbrName"		, roomMbr.getMbrName() );
-						map.put("mbrPhoneNo"	, roomMbr.getMbrPhoneNo() );
-						map.put("mbrPhotoUrl"	, roomMbr.getMbrPhotoUrl() );
-					}
-					
-					gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
-	        	}
-			} else {
-				throw new Exception("방의 인원수 제한을 초과 하였습니다.");
-				
+			Date curDate = new Date();
+			if ( curDate.after( roomInfo.getRoomStartTime() ) ) {
+				throw new Exception("방의 출발시간이 지났습니다.");
 			}
+			if ( roomInfo.getRoomMbrCount() >= roomInfo.getRoomMbrNumLimit() ) {
+				throw new Exception("방의 인원수 제한을 초과 하였습니다.");
+			}
+			
+			
+			
+        	roomMbr = roomMbrDao.getVirtualRoomMbr(roomMbr);
+        	
+        	int count =  roomMbrDao.addRoomMbr(roomMbr); 
+        	
+
+        	rcntLocDao.addRcntLoc( startRcntLoc );
+        	
+        	rcntLocDao.addRcntLoc( endRcntLoc );
+        	
+        	roomMbr.setMbrName(mbrDao.getUserName(roomMbr.getMbrNo()));
+        	
+        	// 푸쉬 보낼 준비
+        	if(count > 0){
+        		Map <String, Object> paramMap = new HashMap<String, Object>();
+				paramMap.put("roomNo", roomMbr.getRoomNo());
+				paramMap.put("mbrNo", roomMbr.getMbrNo());
+				
+				List<Map<String, Object>> gcmTargetMapList =  roomMbrDao.getGcmTargetMapList(paramMap);
+				for (Map<String, Object> map : gcmTargetMapList) {
+					map.put("roomAction"	, "joinRoom" );
+					map.put("mbrNo"			, roomMbr.getMbrNo() );
+					map.put("roomNo"		, roomMbr.getRoomNo() );
+					map.put("mbrName"		, roomMbr.getMbrName() );
+					map.put("mbrPhoneNo"	, roomMbr.getMbrPhoneNo() );
+					map.put("mbrPhotoUrl"	, roomMbr.getMbrPhotoUrl() );
+				}
+				
+				gcmService.asyncSend(gcmTargetMapList, GcmServiceImpl.RoomRunnable.class);
+        	}
         	
         	return roomMbr.getRoomNo();
               
