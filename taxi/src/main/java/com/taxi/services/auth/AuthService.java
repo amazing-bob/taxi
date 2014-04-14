@@ -20,10 +20,10 @@ public interface AuthService {
 	void createAccount(Account account) throws Exception;
 
 	/**
-	 * 설  명: 계정 로그인하고 MyInfo 리턴
+	 * 설  명: 계정 로그인하고 mbrNo 리턴
 	 * 작성자: 김상헌 
 	 */
-	MyInfo loginAccountReturnMyInfo(Account presentAccount) throws Exception;
+	int loginAccountReturnMyInfo(Account presentAccount) throws Exception;
 
 	/**
 	 * 설  명: 계정 유효성 검사

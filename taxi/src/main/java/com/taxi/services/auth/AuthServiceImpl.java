@@ -63,12 +63,12 @@ public class AuthServiceImpl implements AuthService {
 
 
 	/**
-	 * 설  명: 계정 로그인하고 MyInfo 리턴
+	 * 설  명: 계정 로그인하고 mbrNo 리턴
 	 * 작성자: 김상헌 
 	 */
 	@Override
 	@Transactional( propagation=Propagation.REQUIRED, rollbackFor=Throwable.class )
-	public MyInfo loginAccountReturnMyInfo(Account presentAccount) throws Exception {
+	public int loginAccountReturnMyInfo(Account presentAccount) throws Exception {
 		Account previousAccount = accountDao.loginAccount(presentAccount);
 		
 		if ( previousAccount != null ) {
@@ -99,10 +99,8 @@ public class AuthServiceImpl implements AuthService {
 											/* presentPhoneNo */presentMyInfo.getMbrPhoneNo(), 
 											/* presentUuid */ 	presentMyInfo.getMbrUuid() );
 			
-			// 변경된 MyInfo 조회 하고 리턴
-			MyInfo changedMyInfo = memberService.getMyInfo(previousMbrNo);
-			
-			return changedMyInfo;
+			// 변경된 mbrNo 리턴
+			return previousMbrNo;
 			
 		} else {
 			throw new Exception("계정 이메일 혹은 비밀번호가 맞지 않습니다.");

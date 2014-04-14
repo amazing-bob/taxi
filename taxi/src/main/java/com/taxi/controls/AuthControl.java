@@ -228,7 +228,8 @@ public class AuthControl {
 		JsonResult jsonResult = new JsonResult();
 		
 		try {
-			MyInfo 			changeMyInfo = authService.loginAccountReturnMyInfo(account);
+			int 			mbrNo	 	= authService.loginAccountReturnMyInfo(account);
+			MyInfo 			changeMyInfo = null;
 			Room 			myRoom 		= null;
 			List<Frnd> 		frndList 	= null;
 			List<FvrtLoc> 	fvrtLocList = null;
@@ -236,9 +237,8 @@ public class AuthControl {
 			List<Black> 	blackList 	= null;
 			
 			
-			if ( changeMyInfo != null && changeMyInfo.getMbrNo() > 0 ) {
-				int mbrNo = changeMyInfo.getMbrNo();
-				
+			if ( mbrNo > 0 ) {
+				changeMyInfo = memberService.getMyInfo(mbrNo);
 				myRoom 		= roomService.getMyRoom(mbrNo);
 				frndList 	= friendService.getFrndList(mbrNo);
 				fvrtLocList = locationService.getFavoriteList(mbrNo);
