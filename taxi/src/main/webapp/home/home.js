@@ -877,8 +877,10 @@ var searchRooms = function( mbrNo, refreshFlag ) {
 	var locationSession = getSessionItem("locationSession");
 	
 	var roomNoArr = new Array();
-	for (var i in roomList) {
-		roomNoArr[i] = roomList[i].roomNo;
+	if ( !refreshFlag ) {
+		for (var i in roomList) {
+			roomNoArr[i] = roomList[i].roomNo;
+		}
 	}
 
 	var params = {
@@ -971,7 +973,7 @@ var searchRooms = function( mbrNo, refreshFlag ) {
 							};
 
 						}
-											
+
 						if ( refreshFlag ) {
 							// 기존의 방리스트 초기화 후 조회해 리스트 추가 
 							roomList = new Array();
