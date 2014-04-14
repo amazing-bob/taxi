@@ -1060,7 +1060,11 @@ var createRoomList = function( roomList, isRoomMbr ) {
 
 		for ( var i in roomList ) {
 			roomMbrList =  roomList[i].roomMbrList;
-
+			var rmName0 = "";
+			var rmName1 = "";
+			var rmName2 = "";
+			var rmName3 = "";
+			
 			divRoomMbrThumb = $("<div>")
 									.addClass("divRoomMbrThumbs");
 			
@@ -1076,7 +1080,14 @@ var createRoomList = function( roomList, isRoomMbr ) {
 							$("<img>")
 								.attr("src", roomMbrList[j].mbrPhotoUrl )
 								.css("height","2.0em"));
+					if(j==0){rmName0= roomMbrList[j].mbrName;}
+					if(j==1){rmName1= roomMbrList[j].mbrName;}
+					if(j==2){rmName2= roomMbrList[j].mbrName;}
+					if(j==3){rmName3= roomMbrList[j].mbrName;}
+				
 				}
+				
+				
 			}
 
 			$("<li>")
@@ -1150,7 +1161,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 															.attr("id", "relMbr0")
 															.append(
 																	$("<span>")
-																	.attr("class","relMbr0Name")
+																	.attr("class","relMbr0Name").text(rmName0)
 															))
 												.append(
 														$("<div>")
@@ -1158,7 +1169,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 															.attr("id", "relMbr1")
 															.append(
 																	$("<span>")
-																	.attr("class","relMbr1Name")
+																	.attr("class","relMbr1Name").text(rmName1)
 															))
 												.append(
 														$("<div>")
@@ -1166,7 +1177,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 															.attr("id", "relMbr2")
 															.append(
 																	$("<span>")
-																	.attr("class","relMbr2Name")
+																	.attr("class","relMbr2Name").text(rmName2)
 															))
 												.append(
 														$("<div>")
@@ -1174,7 +1185,7 @@ var createRoomList = function( roomList, isRoomMbr ) {
 															.attr("id", "relMbr3")
 															.append(
 																	$("<span>")
-																	.attr("class","relMbr3Name")
+																	.attr("class","relMbr3Name").text(rmName3)
 															))
 												.append(
 														$("<div id='relLine"+i+"'   style='position:absolute; width:100%; height:100%;'>")

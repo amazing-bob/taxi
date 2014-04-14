@@ -95,12 +95,14 @@ var drawRelFace = function(roomInfo, roomMbrData){
 	for(var i = 0;i<4;i++){
 		if(i<roomInfo.roomMbrNumLimit){
 			if(roomMbrData.length<=i){
+				$("#relMbr"+i+"Name").text("");
 				$(".relFace")[i].style.backgroundImage = "url(../images/common/transparency.png)";
 				$(".relFace")[i].style.display="";
 				$(".relFace")[i].style.width = "80px";
 				$(".relFace")[i].style.height = "80px";
 				$(".relFace")[i].style.margin = "0px 0px 0px -5px";
 			}else{
+				$("#relMbr"+i+"Name").text(roomMbrData[i].mbrName);
 				$(".relFace")[i].style.display="";
 				$(".relFace")[i].style.backgroundImage = "url("+roomMbrData[i].mbrPhotoUrl+")";
 			}
@@ -222,8 +224,6 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 					var frndOfFrndNamedata = new Array();
 					frndOfFrndNamedata = getSessionItem("relFrndFrnd");
 					
-					console.log(faceCoordinate);
-					
 					for(var i=0;i<frndFrndSerchData.length;i++){
 						var s = frndFrndSerchData[i].relS;
 						var e = frndFrndSerchData[i].relE;
@@ -231,10 +231,6 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 						var positionY = 0;
 						var className = "";
 
-						console.log(i);
-						console.log(frndFrndSerchData[i]);
-						console.log(frndOfFrndNamedata[i]);
-						
 						if(s==0){
 							
 								if(e==1){
@@ -242,7 +238,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2 -20;
 									className = "ftx01";
-									var t01 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t01 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									t01.node.setAttribute("class",className);
 									
 								}else if(e==2){
@@ -250,7 +246,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 -30;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2;
 									className = "ftx02";
-									var t02 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t02 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									t02.node.setAttribute("class",className);
 									
 								}else if(e==3){
@@ -258,7 +254,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 -45;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2-45;
 									className = "ftx03";
-									var t03 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t03 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									t03.node.setAttribute("class",className);
 									
 									var c03 = paper.circle(positionX-8, positionY+3, 5);
@@ -272,7 +268,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 -45;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2+45;
 									className = "ftx12";
-									var t12 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t12 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									
 									var c12 = paper.circle(positionX-8, positionY-3, 5);
 									c12.node.setAttribute("class","c"+className);
@@ -281,7 +277,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 +15;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2;
 									className = "ftx13";
-									var t13 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t13 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									
 								}
 							
@@ -291,7 +287,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2+20;
 									className = "ftx13";
-									var t23 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t23 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									
 								}
 						
@@ -332,7 +328,7 @@ var drawRelLine = function(roomMbrData, faceCoordinate){
  *    작성자 : 장종혁
  */
 var drawHomeRelFace = function(roomMbrData, roomCnt,roomMbrLimit){
-	
+
 	for(var i = 0;i<4;i++){
 		if(i<roomMbrLimit){
 			if(roomMbrData.length<=i){
@@ -449,21 +445,17 @@ var drawHomeRelLine = function(roomMbrData, faceCoordinate,paper){
 		if(frndFrndSerchData.length>0){
 				
 				serchFrndTable(frndFrndSerchData, function(relFrndRes) {
-					
 					if(relFrndRes.length==frndFrndSerchData.length){
-					
 					
 					var frndOfFrndNamedata = new Array();
 					frndOfFrndNamedata = getSessionItem("relFrndFrnd");
-					
+
 					for(var i=0;i<frndFrndSerchData.length;i++){
 						var s = frndFrndSerchData[i].relS;
 						var e = frndFrndSerchData[i].relE;
 						var positionX = 0;
 						var positionY = 0;
 						var className = "";
-
-
 						
 						if(s==0){
 							
@@ -472,7 +464,7 @@ var drawHomeRelLine = function(roomMbrData, faceCoordinate,paper){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2 -20;
 									className = "ftx01";
-									var t01 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t01 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									t01.node.setAttribute("class",className);
 									
 								}else if(e==2){
@@ -480,7 +472,7 @@ var drawHomeRelLine = function(roomMbrData, faceCoordinate,paper){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 -30;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2;
 									className = "ftx02";
-									var t02 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t02 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									t02.node.setAttribute("class",className);
 									
 								}else if(e==3){
@@ -488,10 +480,10 @@ var drawHomeRelLine = function(roomMbrData, faceCoordinate,paper){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 -45;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2-45;
 									className = "ftx03";
-									var t03 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t03 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									t03.node.setAttribute("class",className);
 				
-									var c03 = paper.circle(positionX-30, positionY+3, 5);
+									var c03 = paper.circle(positionX-5, positionY+3, 5);
 									c03.node.setAttribute("class","c"+className);
 									
 								}
@@ -502,16 +494,16 @@ var drawHomeRelLine = function(roomMbrData, faceCoordinate,paper){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 -45;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2+45;
 									className = "ftx12";
-									var t12 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t12 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									
-									var c12 = paper.circle(positionX-35, positionY-3, 5);
+									var c12 = paper.circle(positionX-6, positionY-3, 5);
 									c12.node.setAttribute("class","c"+className);
 									
 								}else if(e==3){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2 +15;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2;
 									className = "ftx13";
-									var t13 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t13 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									
 								}
 							
@@ -521,7 +513,7 @@ var drawHomeRelLine = function(roomMbrData, faceCoordinate,paper){
 									positionX = (faceCoordinate[s].offsetLeft + faceCoordinate[e].offsetLeft)/2;
 									positionY = (faceCoordinate[s].offsetHeight + faceCoordinate[e].offsetHeight)/2+20;
 									className = "ftx13";
-									var t23 = paper.text(positionX, positionY, frndOfFrndNamedata[i]);
+									var t23 = paper.text(positionX, positionY, frndOfFrndNamedata[i].frndName);
 									
 								}
 						
