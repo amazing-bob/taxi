@@ -32,35 +32,6 @@ public class LocationControl {
 	@Autowired ServletContext sc;
 	@Autowired LocationService locationService;
 	
-	
-	/**
-	 * 설  명: 최근 목적지 가져오기
-     * 작성자: 김상헌 
-	 */
-	@RequestMapping("/getRecentDestination")
-    @ResponseBody
-    public Object getRecentDestination(Mbr mbr) throws Exception {
-        JsonResult jsonResult = new JsonResult();
-        try {
-        	List<RcntLoc> recentLocList = locationService.getRecentDestination(mbr.getMbrNo());
-        	
-            jsonResult.setData( recentLocList );
-            jsonResult.setStatus("success");
-             
-        } catch (Throwable e) {
-        	e.printStackTrace();
-            StringWriter out = new StringWriter();
-            e.printStackTrace(new PrintWriter(out));
-             
-            jsonResult.setStatus("fail");
-            jsonResult.setData(out.toString());
-        }
-        
-        return jsonResult;          
-	
-	}
-	
-	
 	/**
 	 * 설  명 : 즐겨찾기 목록 가져오기
 	 * 작성자 : 장종혁
