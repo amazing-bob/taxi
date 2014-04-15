@@ -30,4 +30,17 @@ public interface AuthService {
 	 * 작성자: 김상헌
 	 */
 	boolean validAccount(Account account) throws Exception;
+
+	/**
+	 * 설  명: 비밀번호 찾기 위한 메일 보내기 
+	 * 작성자: 김상헌 
+	 */
+	Account sendEmailForFindPassword(String accountEmail) throws Exception;
+	
+	/**
+	 * 설  명: 임시 비밀번호 생성
+	 * 작성자: 김상헌 
+	 */
+	String generateTempPassword(int length) throws Exception;
+	
 }

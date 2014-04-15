@@ -2,6 +2,7 @@ package com.taxi.services.auth;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,6 +12,9 @@ import com.taxi.dao.auth.AccountDao;
 import com.taxi.dao.member.MbrDao;
 import com.taxi.services.member.MemberService;
 import com.taxi.services.room.RoomService;
+import com.taxi.util.Utils;
+import com.taxi.util.mail.MailHandler;
+import com.taxi.util.mail.impl.SecureMailHandler;
 import com.taxi.vo.auth.Account;
 import com.taxi.vo.auth.MyInfo;
 import com.taxi.vo.member.Mbr;
@@ -135,6 +139,69 @@ public class AuthServiceImpl implements AuthService {
 			
 		}
 		
+	}
+
+
+	/**
+	 * 설  명: 비밀번호 찾기 위한 메일 보내기 
+	 * 작성자: 김상헌 
+	 */
+	@Override
+	@Transactional(
+			propagation=Propagation.REQUIRED, rollbackFor=Throwable.class)
+	public Account sendEmailForFindPassword( String accountEmail ) throws Exception {
+		Account  account  = accountDao.getUsedAccount(accountEmail);
+		
+		if ( account != null ) {
+			String tmpPassword = generateTempPassword(8);
+			String mdtPasswrod = Utils.getHexMD5( tmpPassword );
+			account.setAccountPassword(mdtPasswrod);
+			accountDao.changePassword(account);
+			
+			try {
+				MailHandler mail = new SecureMailHandler("burugallery@gmail.com", "buru_taxi"); // 보내는 이메일 계정 ID, PWD
+				mail.setMailServer("smtp.gmail.com"); 	// 메일서버 설정
+				mail.setSender("userMail"); 			// 보내는 사람 이메일
+				mail.setSenderName("TAXI같이타자"); 		// 보내는 회원 번호
+				mail.setReceiver( account.getAccountEmail() ); // 받는사람 이메일
+				mail.setSubject("[TAXI같이타자] 임시 비밀번호 입니다."); // 메일 제목
+				mail.setContent("임시 비밀번호: " + tmpPassword); 				// 메일 내용
+				mail.SendMail(); 						// 보내기
+			} catch ( Exception e ) {
+				e.printStackTrace();
+				throw new Exception("메일 전송중 오류가 발생했습니다.");
+			}
+			
+		} else {
+			throw new Exception("해당 계정이 존재하지 않습니다.");
+			
+		}
+		
+		return account;
+	}
+
+
+	/**
+	 * 설  명: 임시 비밀번호 생성
+	 * 작성자: 김상헌 
+	 */
+	@Override
+	public String generateTempPassword( int length ) throws Exception {
+		char[] charSet = {
+					'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+					, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+					, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+				};
+		
+		StringBuffer sb = new StringBuffer();
+		int charIdx = 0;
+		
+		for ( int i = 0; i < length; i++ ) {
+			charIdx = (int) ( charSet.length * Math.random() );
+			sb.append( charSet[charIdx] );
+		}
+		
+		return sb.toString();
 	}
 
 }

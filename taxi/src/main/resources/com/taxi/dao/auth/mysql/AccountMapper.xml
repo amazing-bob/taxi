@@ -5,11 +5,11 @@
 
 <mapper namespace="com.taxi.dao.auth.AccountDao">
 	<resultMap id="accountResultMap" type="Account">
-    	<result 	column="ACCOUNT_NO" 		property="accountNo"		 />
-    	<result 	column="ACCOUNT_EMAIL" 		property="accountEmail"	 />
-    	<result 	column="ACCOUNT_PASSWORD" 	property="accountPassword" />
-    	<result 	column="MBR_NO" 			property="mbrNo"		 />
-    	<result 	column="ACCOUNT_ST" 		property="accountSt"		 />
+    	<result 	column="ACCOUNT_NO" 		property="accountNo"		/>
+    	<result 	column="ACCOUNT_EMAIL" 		property="accountEmail"	 	/>
+    	<result 	column="ACCOUNT_PASSWORD" 	property="accountPassword" 	/>
+    	<result 	column="MBR_NO" 			property="mbrNo"		 	/>
+    	<result 	column="ACCOUNT_ST" 		property="accountSt"		/>
     </resultMap>
     
     
@@ -84,19 +84,16 @@
 		and 	ACCOUNT_PASSWORD 	= #{accountPassword}
 	</select>
 	
-
+	<!-- 
+		 * 설  명: 비밀번호 변경
+		 * 작성자: 김상헌 
+	-->
+	<update id="changePassword" parameterType="Account">
+	    update 	ACCOUNT
+	    set 	ACCOUNT_PASSWORD = #{accountPassword}
+	    where 	1 = 1
+	    and 	ACCOUNT_EMAIL = #{accountEmail}
+	</update>
  
 </mapper> 
-
-
-
-
-
-
-
-
-
-
-
-
 

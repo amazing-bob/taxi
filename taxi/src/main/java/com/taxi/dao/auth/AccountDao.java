@@ -31,6 +31,12 @@ public interface AccountDao {
 	 */
 	Account loginAccount(Account account) throws Exception;
 
+	/**
+	 * 설  명: 비밀번호 변경
+	 * 작성자: 김상헌 
+	 */
+	int changePassword(Account account) throws Exception;
+
 	
 
 	

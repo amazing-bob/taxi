@@ -302,4 +302,33 @@ public class AuthControl {
 		
 		return jsonResult;
 	}
+	
+	
+	/**
+	 * 설  명: 비밀번호 찾기 
+	 * 작성자: 김상 
+	 */
+	@RequestMapping("/findPassword")
+	@ResponseBody
+	public Object findPassword( String accountEmail ) {
+		JsonResult jsonResult = new JsonResult();
+		
+		try {
+			Account account = authService.sendEmailForFindPassword( accountEmail );
+
+			if ( account != null && account.getAccountEmail() != null ) {
+				jsonResult.setStatus("success");
+				jsonResult.setData(account.getAccountEmail());
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+			jsonResult.setStatus("fail");
+			jsonResult.setData( e.getMessage() );
+			
+		}
+		
+		return jsonResult;
+	}
 }
