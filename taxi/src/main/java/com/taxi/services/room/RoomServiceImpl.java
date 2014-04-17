@@ -70,7 +70,19 @@ public class RoomServiceImpl implements RoomService {
 		paramMap.put("endLng"		, endLng);
 		paramMap.put("endRange"		, endRange);
 
+		
+		
+		long startL = System.currentTimeMillis(); /////////////////////////  시간 측정 테스트
+		
 		List<Room> searchRoomList = roomDao.getRoomList(paramMap);
+		
+		/////////////////////////  시간 측정 테스트
+		long endL = System.currentTimeMillis();
+		long gap = endL - startL;
+		System.out.println("============= startTime ::" + startL);
+		System.out.println("============= endTime ::" + endL);
+		System.out.println("============= roomSearchTime ::" + gap );
+		/////////////////////////  시간 측정 테스트
 		
 		return searchRoomList;
 	}
