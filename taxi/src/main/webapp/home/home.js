@@ -249,8 +249,11 @@ $(document).ready(function() {
 	$("#divAddRoom").on("click", function(event) {
 		event.stopPropagation();
 		
-//		push.initialise("addRoom");
-		addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
+		if ( window["cordova"] != undefined ) {
+			push.initialise("addRoom");
+		} else {
+			addRoom('111111111111111111111111111'); //////////////////////////////////////////// Web용 임시
+		}
 		
 		$("#divAddRoomCondition_popup").popup("close");
 		
@@ -1238,8 +1241,11 @@ var createRoomList = function( roomList, isRoomMbr ) {
 												});
 												
 											} else {
-//												push.initialise("joinRoom", joinRoomNo);
-												joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시	
+												if ( window["cordova"] != undefined ) {
+													push.initialise("joinRoom", joinRoomNo);
+												} else {
+													joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시
+												}
 											}
 											
 											return false;
@@ -1653,9 +1659,11 @@ var outRoomToJoinRoom = function(mbrNo, outRoomNo, joinRoomNo) {
 					if(result.status == "success") {
 						// myRoom SessionStorage에 방 정보 제거
 						removeSessionItem("myRoom");
-		
-//						push.initialise("joinRoom", joinRoomNo);
-						joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시
+						if ( window["cordova"] != undefined ) {
+							push.initialise("joinRoom", joinRoomNo);
+						} else {
+							joinRoom('111111111111111111111111111', joinRoomNo); //////////////////////////////////////////// Web용 임시
+						}
 		
 					} else {
 						showAlertToast("실행중 오류발생!"); 
