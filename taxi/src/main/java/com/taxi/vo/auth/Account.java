@@ -1,6 +1,7 @@
 package com.taxi.vo.auth;
 
 import java.io.Serializable;
+
 import com.taxi.vo.auth.base.BaseAccount;
 
 
@@ -19,7 +20,15 @@ public class Account extends BaseAccount implements Serializable {
 	
 	// protected int 		추가되는 변수;
 	
+	protected String accountNewPassword;
 	
+	public String getAccountNewPassword() {
+		return accountNewPassword;
+	}
+	public Account setAccountNewPassword(String accountNewPassword) {
+		this.accountNewPassword = accountNewPassword;
+		return this;
+	}
 	public Account setAccountNo(int accountNo) {
 		return (Account) super.setAccountNo(accountNo);
 	}

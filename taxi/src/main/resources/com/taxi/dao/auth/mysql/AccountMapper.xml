@@ -95,5 +95,36 @@
 	    and 	ACCOUNT_EMAIL = #{accountEmail}
 	</update>
  
+	<!-- 
+		* 설  명 : 계정비밀번호 확인
+		* 작성자 : 김태경
+	 -->
+	<select id="getPassword" parameterType="Int" resultType="String">
+	    select
+	    		ACCOUNT_PASSWORD
+	    from
+	    		ACCOUNT
+	    where
+	    		1 = 1
+	    and		ACCOUNT_NO = #{accountNo}
+	    
+	</select>
+	
+	<!-- 
+		* 설  명 : 계정 비밀번호 변경
+		* 작성자 : 김태경
+	 -->
+	<update id="updatePassword" parameterType="Account">
+	    
+	    update 
+	    		ACCOUNT
+	    set 
+	    		ACCOUNT_PASSWORD = #{accountNewPassword}
+	    where
+	    		1 = 1
+	    and		ACCOUNT_NO = #{accountNo}
+	    
+	</update>
+	
 </mapper> 
 

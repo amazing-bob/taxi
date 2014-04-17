@@ -306,7 +306,7 @@ public class AuthControl {
 	
 	/**
 	 * 설  명: 비밀번호 찾기 
-	 * 작성자: 김상 
+	 * 작성자: 김상헌
 	 */
 	@RequestMapping("/findPassword")
 	@ResponseBody
@@ -327,6 +327,42 @@ public class AuthControl {
 			jsonResult.setStatus("fail");
 			jsonResult.setData( e.getMessage() );
 			
+		}
+		
+		return jsonResult;
+	}
+	
+	/**
+	 * 설  명 : 계정 비밀번호 변경 
+	 * 작성자 : 김태경
+	 */
+	@RequestMapping("/passwordUpdate")
+	@ResponseBody
+	public Object updatePassword( @RequestBody String json ) {
+		
+		JsonResult jsonResult = new JsonResult();
+		try {
+			
+			Gson gson = new Gson();
+			JsonParser parser = new JsonParser();
+			JsonObject jsonObject = (JsonObject) parser.parse(json);
+			
+			
+			Account account = gson.fromJson(jsonObject, new TypeToken<Account>() {}.getType());
+			
+			System.out.println(account.getAccountNo());
+			System.out.println(account.getAccountPassword());
+			System.out.println(account.getAccountNewPassword());
+			boolean bool = authService.updatePassword(account);
+			
+			jsonResult.setData(bool);
+			jsonResult.setStatus("success");
+			
+
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			jsonResult.setStatus("fail");
 		}
 		
 		return jsonResult;

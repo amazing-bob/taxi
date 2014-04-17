@@ -203,5 +203,32 @@ public class AuthServiceImpl implements AuthService {
 		
 		return sb.toString();
 	}
-
+	/**
+	 * 설  명 : 비밀번호 변경
+	 * 작성자 : 김태경
+	 */
+	@Override
+	public boolean updatePassword(Account account) {
+		
+		
+		boolean result;
+		String pwd = account.getAccountPassword();
+		String password = accountDao.getPassword(account.getAccountNo());
+		System.out.println("입력된 패스워드"+pwd);
+		System.out.println("확인된 패스워드"+password);
+		//패스워드가 일치할경우 업데이트
+		if(pwd.equals(password)){
+			
+			System.out.println("!");
+			accountDao.updatePassword(account);
+			result = true;
+		
+		//패스워드가 일치하지 않을경우
+		}else{
+			
+			result = false;
+		}
+		
+		return result;
+	}
 }

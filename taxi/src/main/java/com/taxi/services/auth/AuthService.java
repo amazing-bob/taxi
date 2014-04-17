@@ -42,5 +42,11 @@ public interface AuthService {
 	 * 작성자: 김상헌 
 	 */
 	String generateTempPassword(int length) throws Exception;
+	/**
+	 * 설  명: 계정비밀번호 변경 
+	 * 작성자 : 김태경
+	 */
+	boolean updatePassword(Account account);
+	
 	
 }

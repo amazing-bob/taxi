@@ -37,7 +37,19 @@ public interface AccountDao {
 	 */
 	int changePassword(Account account) throws Exception;
 
-	
+	/**
+	 * 설  명: 비밀번호 확인
+	 * 작성자: 김태경
+	 */
+
+	String getPassword(int accountNo);
+
+	/**
+	 * 설  명 : 비밀번호 변경 
+	 * 작성자 : 김태경
+	 */
+	void updatePassword(Account account);
+
 
 	
 }
