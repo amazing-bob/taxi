@@ -552,18 +552,18 @@ document.addEventListener('DOMContentLoaded', loadedMyScroll, false);
  * 작성자: 김상헌 - 수정자 ) 장종혁
  */
 var init = function() {
-	
+    	
 	if($("#endInput").val() == ""){
 		$("#aEndSearchClear").css("visibility", "hidden");
 	}
-	 if (navigator.geolocation) {
-		 getNavigationGeolocation(1000,0);
-	 }else{
+	if (navigator.geolocation) {
+		getNavigationGeolocation(1000,0);
+	}else{
 		alert("현재 기기는 위치 정보를 지원하지 않습니다.");
-	 }
-	 
-	 //데이터 들어가 있는지 확인용. 
-	 testDataInsert();
+	}
+	
+	//데이터 들어가 있는지 확인용. 
+	testDataInsert();
 };
 
 
