@@ -648,12 +648,15 @@ var showhideBlackBackground = function(visibleCommand) {
 	console.log("showhideBlackBackground(visibleCommand)");
 //	console.log(visibleCommand);
 	
+	
 	if ( $(".divBlackBackground")[0] ) {
 		if ( visibleCommand == "show" ) {
 			$(".divBlackBackground").show();
+			$(".divBlackBackground").css("visibility"	, "visible");
 			
 		} else {
 			$(".divBlackBackground").hide();
+			$(".divBlackBackground").css("visibility"	, "hidden");
 			
 		}
 	} else {
