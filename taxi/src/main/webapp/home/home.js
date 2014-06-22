@@ -563,7 +563,7 @@ var init = function() {
 	}
 	
 	//데이터 들어가 있는지 확인용. 
-	testDataInsert();
+//	testDataInsert();
 };
 
 

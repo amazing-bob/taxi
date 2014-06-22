@@ -251,6 +251,7 @@ function extractionContactData(contacts) {
     }
     
     var num = 0;
+    var pnstr = "";
 //    console.log(contactsList);
     for(var i = 0; i<contactsList.length;i++){
     	
@@ -258,9 +259,16 @@ function extractionContactData(contacts) {
 
     	if( contactsList[i].value.substring(0,3)=="010"){
     		
+    		pnstr = contactsList[i].value;
+    		
+    		if(pnstr.length> 9){
+    			pnstr = pnstr.replace("-", "");
+    			pnstr = pnstr.replace("-", "");
+    		}
+    		
     		frndList[num] = {
     				frndName : contactsList[i].name ,
-    				frndPhoneNo : contactsList[i].value
+    				frndPhoneNo : pnstr
     				//frndPhoneNo : b64_md5(contactsList[i].value)
     		};
     		
