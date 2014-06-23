@@ -49,7 +49,7 @@ public class GcmServiceImpl implements GcmService {
 		System.out.println("performService()");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 		
-		String criteriaTime = "0:10:0";
+		String criteriaTime = "0:15:1";
 		
 		List<Room> alramGcmTargetRoomList = roomDao.getAlramGcmTargetRoomList(criteriaTime);
 		

@@ -263,7 +263,7 @@
 	<select id="getAlramGcmTargetRoomList" parameterType="string" resultMap="alramGcmTargetRoomResultMap">
          SELECT   room_no
 				, room_start_time
-				, MINUTE(SUBTIME(room_start_time, now())) as differenceTime
+				, TIMESTAMPDIFF(MINUTE,now(), room_start_time) as differenceTime
 		  FROM 	ROOM
 		 WHERE
 				1=1

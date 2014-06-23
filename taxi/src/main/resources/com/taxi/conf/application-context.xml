@@ -69,7 +69,7 @@
         <property name="jobDetail" ref="jobQuartz" />
         <property name="startDelay" value="3000" />
         <!-- 10분 반복 -->
-        <property name="repeatInterval" value="600000" />
+        <property name="repeatInterval" value="300000" />
     </bean>
  
     <bean id='testScheduler' class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
