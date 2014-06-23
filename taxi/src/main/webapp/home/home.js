@@ -18,6 +18,8 @@ var myScroll;
 
 var roomList = [];
 
+var gpscnt=0;
+
 
 $(document).ready(function() {
 	initAjaxLoading();
@@ -563,11 +565,7 @@ var init = function() {
 	}
 	
 	//데이터 들어가 있는지 확인용. 
-<<<<<<< HEAD
 	//testDataInsert();
-=======
-//	testDataInsert();
->>>>>>> refs/remotes/origin/master
 };
 
 
@@ -595,7 +593,6 @@ var getNavigationGeolocation = function(timeOut,callType){
 		    		drawMapCanvas(position,0);
 		    		checkStartLocation();
 		    	}
- 		    	
  		    },
  		    function(error){
  		    	if(error.code==3){
@@ -604,12 +601,12 @@ var getNavigationGeolocation = function(timeOut,callType){
  		    			checkStartLocation();
  		    			getNavigationGeolocation(10000,1);
  		    		}else if(callType==1){
- 		    			showAlertToast("일시적으로 위치 정보를 확인할 수 없습니다.");
+		    			showAlertToast("일시적으로 위치 정보를 확인할 수 없습니다.");
  		    			getNavigationGeolocation(2000,3);
  		    		}else if(callType==3){
- 		    			getNavigationGeolocation(10,2);
+ 		    			getNavigationGeolocation(4500,2);
  		    		}else if(callType==2){
- 						var options = { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
+ 						var options = { maximumAge: 3000, timeout: timeOut, enableHighAccuracy: true };
  			    		navigator.geolocation.watchPosition( 
  			    				function(position){
  			    					//성공일 때
@@ -624,7 +621,12 @@ var getNavigationGeolocation = function(timeOut,callType){
  			    				},
  			    				function(error){
  			    					//실패일 때
- 			 		    			getNavigationGeolocation(1000,5);
+ 			    					if(gpscnt>3){
+ 			    						getNavigationGeolocation(3500,5);
+ 			    					}else{
+ 			    						gpscnt++;
+ 			    						getNavigationGeolocation(3500,3);
+ 			    					}
  			    				},
  			    				options);
  					}else if(callType==5){
