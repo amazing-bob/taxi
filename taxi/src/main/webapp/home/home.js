@@ -1003,6 +1003,7 @@ var searchRooms = function( mbrNo, refreshFlag ) {
 						var endInfo 		= null;
 						var waypoints 		= [];
 						var startTime 		= null;
+						var startDate		= null;
 						var isMyRoom 		= "false";
 
 						var realignRoomList = [];
@@ -1033,7 +1034,16 @@ var searchRooms = function( mbrNo, refreshFlag ) {
 
 							// 출발시간 설정
 							startTime = new Date(searchRoomList[i].roomStartTime);
+							var nowTime  = new Date();
+							
+							if(startTime.getDate() - nowTime.getDate() > 0){
+								startDate = "내일";
+							}else{
+								startDate = "오늘";
+							}
+								
 							startTime = startTime.toTimeString().substr(0, 5);
+							
 							
 							
 							realignRoomList[i] = {
@@ -1049,7 +1059,8 @@ var searchRooms = function( mbrNo, refreshFlag ) {
 								waypoints 	: waypoints,
 								roomMbrNumLimit : result.data[i].roomMbrNumLimit,
 								roomMbrList : roomMbrList,
-								roomPathList: roomPathList
+								roomPathList: roomPathList,
+								startDate	: startDate
 							};
 
 						}
@@ -1205,6 +1216,10 @@ var createRoomList = function( roomList, isRoomMbr ) {
 						.append(
 								$("<h2>")
 									.text( roomList[i].startTime ) )
+						.append(
+								$("<span>")
+									.addClass("spanStartDateLabel")
+									.text(roomList[i].startDate) )
 						.append(
 								$("<span>")
 									.addClass("spanStartLabel")
