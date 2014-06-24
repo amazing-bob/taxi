@@ -1060,7 +1060,8 @@ var searchRooms = function( mbrNo, refreshFlag ) {
 								roomMbrNumLimit : result.data[i].roomMbrNumLimit,
 								roomMbrList : roomMbrList,
 								roomPathList: roomPathList,
-								startDate	: startDate
+								startDate	: startDate,
+								relationCd : searchRoomList[i].relationCd
 							};
 
 						}
@@ -1212,6 +1213,13 @@ var createRoomList = function( roomList, isRoomMbr ) {
 													.addClass("headerVar"))) )
 				.append(
 						$("<div>")
+							.addClass("relMark")
+							.append(
+									$("<img>")
+									.attr("src", "../images/common/blankBookmark.png")
+									.addClass("relMarkImg")))
+				.append(
+						$("<div>")
 						.addClass("divRoomInfoArea")
 						.append(
 								$("<h2>")
@@ -1345,7 +1353,14 @@ var createRoomList = function( roomList, isRoomMbr ) {
 											return false;
 										}) ) )
 				.appendTo( $("#ulRoomList") );
-
+			
+			//북마크 표시
+			if(roomList[i].relationCd==1){
+				$(".relMarkImg")[i].src = "../images/common/bookmark_green_2.png";
+			}else if(roomList[i].relationCd==2){
+				$(".relMarkImg")[i].src = "../images/common/bookmark_yellow_2.png";
+			}
+			
 			//방관계도 그리기
 			relLineUp(roomMbrList,i,roomList[i].roomMbrNumLimit);
 			
@@ -2019,16 +2034,16 @@ var relLineUp = function(roomMbrData, roomCnt,roomMbrLimit){
 		};
 	
 		//테스트용 값 출력 2020202020202020
-		console.log("faceCoordinate Test**********************************")
-
-		console.log("face[0] : ");
-		console.log(JSON.stringify(faceCoordinate[0]));
-		console.log("face[1] : ");
-		console.log(JSON.stringify(faceCoordinate[1]));
-		console.log("face[2] : ");
-		console.log(JSON.stringify(faceCoordinate[2]));
-		console.log("face[3] : ");
-		console.log(JSON.stringify(faceCoordinate[3]));
+//		console.log("faceCoordinate Test**********************************")
+//
+//		console.log("face[0] : ");
+//		console.log(JSON.stringify(faceCoordinate[0]));
+//		console.log("face[1] : ");
+//		console.log(JSON.stringify(faceCoordinate[1]));
+//		console.log("face[2] : ");
+//		console.log(JSON.stringify(faceCoordinate[2]));
+//		console.log("face[3] : ");
+//		console.log(JSON.stringify(faceCoordinate[3]));
 		
 	makeReletionHomeHtml(roomMbrData,faceCoordinate,roomCnt,roomMbrLimit);
 };
