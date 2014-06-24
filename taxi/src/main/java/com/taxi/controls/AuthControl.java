@@ -49,6 +49,40 @@ public class AuthControl {
 	@Autowired FriendService    friendService;
 	@Autowired RoomService 		roomService;
 	
+	/**
+	 * 설  명 : App 버전 및 공지알림
+	 * 작성자 : 장종혁
+	 */
+	@RequestMapping("/appVersionck")
+	@ResponseBody
+	public <T> Object appVersionck()throws Exception{
+		JsonResult jsonResult = new JsonResult();
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		String version = new String();
+		String notice = new String();
+		int noticeType = 0; 
+		
+		//현재 App스토어에 올라간 버전
+		version = "1.0.0";
+		
+		//공지사항
+		notice = "";
+		
+		//공지종류
+		noticeType = 0;
+		// 0 = 없음  1 = 일반 공지  2 = 점검 공지
+		
+		resultMap.put("version" 	, version);
+		resultMap.put("notice"	, notice);
+		resultMap.put("noticeType"	, noticeType);
+
+		jsonResult = new JsonResult().setStatus("success");
+		jsonResult.setData(resultMap);
+		
+		return jsonResult;
+	}
 	
 	/**
 	 * 설  명: 회원가입 여부 조회 
