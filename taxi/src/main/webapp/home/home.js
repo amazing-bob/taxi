@@ -1389,10 +1389,6 @@ var createRoomList = function( roomList, isRoomMbr ) {
 		$(".startLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
 		$(".endLocName").width( ($(".divRoomPathInfo").outerWidth() - 70 ) + "px");
 
-		$(".divRoomDetailInfo").css("visibility", "hidden");
-		$(".divRoomMbrThumbs").css("display", "");
-		$(".divRoomDistanceAndFare").css("display", "none");
-
 		var roomLi = $( $("#ulRoomList li").get(0) );
 
 		initRoute();
